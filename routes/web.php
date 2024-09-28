@@ -1,0 +1,169 @@
+<?php
+
+use App\Http\Middleware\Admin;
+use App\Http\Middleware\Pendaftar;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+
+// Global Controller
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Auth\RegisterController;
+// Admin Controller
+use App\Http\Controllers\Pendaftar\BuktiController;
+use App\Http\Controllers\Admin\Prodi\ProdiController;
+use App\Http\Controllers\Admin\Jurusan\JurusanController;
+use App\Http\Controllers\Admin\Laporan\LaporanController;
+use App\Http\Controllers\Admin\Pendaftar\ExcelController;
+use App\Http\Controllers\Pendaftar\BiodataDiriController;
+use App\Http\Controllers\Admin\Golongan_UKT\UKTController;
+use App\Http\Controllers\Admin\Pendaftar\MabaUKTController;
+use App\Http\Controllers\Admin\Pendaftar\TesMabaController;
+use App\Http\Controllers\Admin\Gelombang\GelombangController;
+use App\Http\Controllers\Admin\Pendaftar\CamabaAccController;
+use App\Http\Controllers\Admin\Pendaftar\PendaftarController;
+use App\Http\Controllers\Admin\Transaksi\TransaksiController;
+use App\Http\Controllers\Pendaftar\BerkasPendukungController;
+use App\Http\Controllers\Pendaftar\BiodataOrangTuaController;
+use App\Http\Controllers\Admin\Berkas\SettingBerkasController;
+use App\Http\Controllers\Admin\Pendaftar\SoalTesMabaController;
+
+// Pendaftar Controller
+use App\Http\Controllers\Admin\Pengumuman\PengumumanController;
+use App\Http\Controllers\Admin\Pendaftar\MabaAttributController;
+use App\Http\Controllers\Admin\Golongan_UKT\GolonganUKTController;
+use App\Http\Controllers\Admin\Golongan_UKT\PendaftarUKTController;
+use App\Http\Controllers\Admin\Pendaftar\CamabaSdhBlmUKTController;
+use App\Http\Controllers\Admin\PesanSiaran\PesanSiaranController;
+use App\Http\Controllers\Pendaftar\KelengkapanDataController;
+
+// Import UserController
+use App\Http\Controllers\UserController;
+// GenerateNim Controller
+use App\Http\Controllers\GenerateNimController;
+use App\Http\Controllers\Panitia\PanitiaController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::post('/cek_va_ukt', [App\Http\Controllers\DashboardController::class, 'CekUKT']);
+Route::get('/', [App\Http\Controllers\LandingController::class, 'index']);
+Route::get('/pengumuman/{id}', [App\Http\Controllers\LandingController::class, 'pengumuman']);
+Route::post('/cekkode', [App\Http\Controllers\LandingController::class, 'cekkode']);
+Route::get('/cektemplate', function () {
+    return view('ui-cards');
+});
+
+Auth::routes([]);
+
+//Language Translation
+Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
+
+Route::group(['prefix' => 'error'], function () {
+    Route::get('404', function () {
+        return view('error.404');
+    })->name('error-404');
+    Route::get('500', function () {
+        return view('error.500');
+    })->name('error-500');
+});
+
+Route::get('/optimize', function () {
+    Artisan::call('optimize');
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    return "App optimized";
+});
+
+//Update User Details
+Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
+Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+
+Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
+    //Pendaftar
+    Route::resource('pendaftar', PendaftarController::class);
+ // Route untuk update status pendaftaran
+Route::post('/pendaftar/update-status', [PendaftarController::class, 'updateStatus'])->name('pendaftar.update-status');
+
+
+    Route::post('pendaftar-excel', [ExcelController::class, 'import'])->name('import.pendaftar');
+    Route::post('ukt-excel', [ExcelController::class, 'import_ukt'])->name('import.ukt');
+    Route::resource('camaba-acc', CamabaAccController::class);
+    Route::resource('camaba-ukt', CamabaSdhBlmUKTController::class);
+    Route::resource('maba-ukt', MabaUKTController::class);
+    Route::resource('tes-maba', TesMabaController::class);
+    Route::resource('pengumuman', PengumumanController::class);
+
+    Route::get('/soal-tes-maba/{id}', [SoalTesMabaController::class, 'show'])->name('soal-tes-maba.show');
+    Route::post('/soal-tes-maba-add', [SoalTesMabaController::class, 'store'])->name('soal-tes-maba-add.store');
+
+    Route::get('/maba-attribut', [MabaAttributController::class, 'index'])->name('maba-attribut.index');
+    Route::get('/maba-attribut-pdf/{id}', [MabaAttributController::class, 'pdf'])->name('maba-attribut.pdf');
+    Route::post('/maba-attribut-kaos/{id}', [MabaAttributController::class, 'updateKaos'])->name('maba-attribut.kaos');
+    Route::post('/maba-attribut-topi/{id}', [MabaAttributController::class, 'updateTopi'])->name('maba-attribut.topi');
+    Route::post('/maba-attribut-almamater/{id}', [MabaAttributController::class, 'updateAlmamater'])->name('maba-attribut.almamater');
+    Route::post('/maba-attribut-jas/{id}', [MabaAttributController::class, 'updateJasLab'])->name('maba-attribut.jas');
+    Route::post('/maba-attribut-baju-lapangan/{id}', [MabaAttributController::class, 'updateBajuLapangan'])->name('maba-attribut.baju-lapangan');
+
+    Route::resource('gelombang', GelombangController::class);
+    Route::post('transaksi_berkas_gelombang', [TransaksiController::class, 'BerkasGelombang'])->name('transaksis.berkas_gelombang');
+
+    Route::resource('jurusan', JurusanController::class);
+    Route::get('sync/jurusan', [JurusanController::class, 'sync'])->name('jurusan.sync');
+    Route::resource('prodi', ProdiController::class);
+    Route::get('sync/prodi', [ProdiController::class, 'sync'])->name('prodi.sync');
+    Route::resource('settingberkas', SettingBerkasController::class);
+
+    //Golongan & UKT
+    Route::resource('golongan-ukt', GolonganUKTController::class);
+    Route::resource('ukt', UKTController::class);
+    Route::get('listPendaftar/{id}', [PendaftarUKTController::class, 'listPendaftar'])->name('listPendaftar.ukt');
+    Route::post('pendaftarCreateUKT', [PendaftarUKTController::class, 'pendaftarCreateUKT'])->name('pendaftarCreateUKT.ukt');
+    Route::post('pendaftarDeleteUKT/', [PendaftarUKTController::class, 'pendaftarDeleteUKT'])->name('pendaftarDeleteUKT.ukt');
+
+    // Laporan
+    Route::get('laporan/laporan-penerimaan', [LaporanController::class, 'laporan_penerimaan'])->name('laporanPenerimaan');
+    Route::get('laporan/laporan-pembayaran', [LaporanController::class, 'laporan_pembayaran'])->name('laporanPembayaran');
+    Route::get('laporan/grafik-provinsi', [LaporanController::class, 'grafik_provinsi'])->name('grafikProvinsi');
+    Route::get('laporan/grafik-prodi', [LaporanController::class, 'grafik_prodi'])->name('grafikProdi');
+
+    // Pesan Siaran
+    Route::get('pesan-siaran', [PesanSiaranController::class, 'index'])->name('pesanSiaran');
+
+    // User Management
+    Route::resource('users', UserController::class); // Add this line
+    // Menampilkan daftar pendaftar dan melakukan generate NIM massal
+Route::get('/generate-nim', [GenerateNimController::class, 'index'])->name('generate-nim.index');
+Route::post('/generate-nim-massal', [GenerateNimController::class, 'generateNIMMassal'])->name('generate-nim.massal');
+
+    // // Route::get('/', [UserController::class, 'index'])->name('users.index'); // List all users
+    // Route::get('/create', [UserController::class, 'create'])->name('users.create'); // Show create user form
+    // Route::post('/', [UserController::class, 'store'])->name('users.store'); // Store new user
+    // Route::get('/{user}', [UserController::class, 'show'])->name('users.show'); // Show user details
+    // Route::get('/{user}/edit', [UserController::class, 'edit'])->name('users.edit'); // Show edit user form
+    // Route::put('/{user}', [UserController::class, 'update'])->name('users.update'); // Update user
+    // Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.destroy'); // Delete user
+});
+
+Route::middleware([Pendaftar::class, 'auth'])->prefix('pendaftar')->group(function () {
+    Route::post('upload/bukti-bayar-pendaftaran',  [BuktiController::class, 'upload_bukti_pendaftaran'])->name('upload-bukti-pendaftaran');
+    Route::post('upload/bukti-bayar-ukt',  [BuktiController::class, 'upload_bukti_ukt'])->name('upload-bukti-ukt');
+    Route::get('kelengkapan-data/{id}', [KelengkapanDataController::class, 'edit'])->name('kelengkapan-data.edit');
+    Route::patch('kelengkapan-data/{id}', [KelengkapanDataController::class, 'update'])->name('kelengkapan-data.update');
+    Route::get('bukti/{id}', [BuktiController::class, 'show'])->name('bukti.show');
+});
+
+
+Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+Route::post('/xendit/callback', [RegisterController::class, 'xenditCallback']);
