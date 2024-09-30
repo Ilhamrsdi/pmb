@@ -27,7 +27,7 @@ jobs:
       # Step 4: Deploy your files using rsync or SSH command
       - name: Deploy to Server
         run: |
-            rsync -avz --delete-after ./ user@192.168.1.100:/path/to/deploy/
+            rsync -avz --delete-after ./ vianziro@http://103.109.210.53:/path/to/deploy/
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
