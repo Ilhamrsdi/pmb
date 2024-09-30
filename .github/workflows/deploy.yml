@@ -3,35 +3,19 @@ name: Continuous Deployment
 on:
   push:
     branches:
-      - main  # Set this to your deployment branch, e.g., main or develop
+      - main  # Sesuaikan dengan branch yang Anda gunakan
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Checkout your repository
       - uses: actions/checkout@v2
 
-      # Step 2: Set up SSH agent for connecting to your server
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # Step 3: Install necessary dependencies if any
-      - name: Install Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y rsync
-
-      # Step 4: Deploy your files using rsync or SSH command
       - name: Deploy to Server
         run: |
-            rsync -avz --delete-after ./ vianziro@http://103.109.210.53:/path/to/deploy/
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      # Step 5: Clean up if necessary
-      - name: Post deployment cleanup
-        run: |
-          echo "Deployment successful!"
+          rsync -avz --delete-after ./ vianziro@103.109.210.53:/path/to/deploy/
