@@ -1,36 +1,71 @@
-name: Publish Website to CPanel
+# name: Publish Website to CPanel
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   FTP-Deploy-Action:
+#     name: FTP-Deploy-Action
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v2.1.0
+#       with:
+#         fetch-depth: 2
+
+#     - name: Install PHP and Composer
+#       uses: shivammathur/setup-php@v2
+#       with:
+#         php-version: '8.2'
+#         tools: 'composer'
+
+#     - name: Install PHP dependencies
+#       run: composer install --no-dev --optimize-autoloader --prefer-dist
+
+#     - name: FTP-Deploy-Action
+#       uses: SamKirkland/FTP-Deploy-Action@4.3.3
+#       with:
+#         server: '103.109.210.53'
+#         username: ${{ secrets.USERNAME }}
+#         password: ${{ secrets.PASSWORD }}
+#         protocol: ftp
+#         port: 21
+#         local-dir: './'
+#         server-dir: '/public_html/'
+#         log-level: 'verbose'
+name: Deploy Laravel to FTP
 
 on:
   push:
     branches:
-      - main
+      - main  # Atur ke branch yang digunakan untuk deployment
 
 jobs:
-  FTP-Deploy-Action:
-    name: FTP-Deploy-Action
+  deploy:
     runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2.1.0
-      with:
-        fetch-depth: 2
 
-    - name: Install PHP and Composer
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.2'
-        tools: 'composer'
+        php-version: '8.0'
 
-    - name: Install PHP dependencies
-      run: composer install --no-dev --optimize-autoloader --prefer-dist
+    - name: Install Composer Dependencies
+      run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
-    - name: FTP-Deploy-Action
-      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+    - name: Generate Application Key
+      run: php artisan key:generate
+
+    - name: Deploy via FTP
+      uses: SamKirkland/FTP-Deploy-Action@4.3.0
       with:
-        server: '103.109.210.53'
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        protocol: ftp
-        port: 21
-        local-dir: './'
-        server-dir: '/public_html/'
-        log-level: 'verbose'
+        server: 103.109.210.53
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./  # Folder lokal yang akan diupload, bisa diubah sesuai kebutuhan
+        server-dir: /public_html/  # Direktori di server tujuan (sesuaikan dengan struktur CPanel Anda)
+        log-level: verbose
