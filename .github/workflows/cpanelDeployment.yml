@@ -25,4 +25,4 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
     - name: 🗃️ Run Database Migrations and Seed
-      run: php artisan migrate --seed
+      run: php artisan migrate --seed --force
