@@ -41,7 +41,8 @@ class UserSeeder extends Seeder
             'email' => 'user3@gmail.com',
             'password' => Hash::make('user123'),
             'email_verified_at' => '2022-01-02 17:04:58',
-            'avatar' => 'avatar-1.jpg'
+            'avatar' => 'avatar-1.jpg',
+            'role_id' => 2
         ]);
 
         User::create([

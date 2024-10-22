@@ -47,6 +47,7 @@ class RegisterController extends Controller
             'program_studi' => ['required', 'string'],
             'gelombang' => ['required', 'integer'],
         ]);
+        
         return $validate;
     }
 
@@ -102,7 +103,7 @@ class RegisterController extends Controller
             'pendaftar_id' => $pendaftar->id,
             'kode_bayar' => random_int(100000, 999999), // Menghasilkan angka acak 6 digit
             'tanggal_daftar' => now(),
-            // 'va_pendaftaran' => $va_bni['virtual_account'],
+            'va_pendaftaran' => random_int(100000, 999999),
             // 'trx_va' => $va_bni['trx_id'],
             // 'datetime_expired' => $cek_pendaftar_va_bni['datetime_expired'],
         ]);
@@ -122,9 +123,10 @@ class RegisterController extends Controller
             'title' => 'Mail from PMB Poliwangi',
             'body' => 'Silahkan mengikuti tata cara pendaftaran dan masuk kedalam aplikasi. Mohon menjaga privasi akun masing masing',
             'email' => $user->email,
-            'password' => $detailPendaftar->kode_bayar,
+            'password' => 'password',
             'gelombang' => $gelombang->nama_gelombang . " - " . $gelombang->deskripsi,
-            'program_studi' => $program_studi->nama_program_studi
+            'program_studi' => $program_studi->nama_program_studi,
+            
         ];
 
         Mail::to($user->email)->send(new EmailNotification($mailData));
@@ -172,7 +174,7 @@ class RegisterController extends Controller
                 'title' => 'Mail from PMB Poliwangi',
                 'body' => 'Silahkan mengikuti tata cara pendaftaran dan masuk kedalam aplikasi. Mohon menjaga privasi akun masing masing',
                 'email' => $user->email,
-                'password' => $detailPendaftar->kode_bayar,
+                'password' => $detailPendaftar->password,
                 'gelombang' => $gelombang->nama_gelombang . " - " . $gelombang->deskripsi,
                 'program_studi' => $program_studi->nama_program_studi
             ];

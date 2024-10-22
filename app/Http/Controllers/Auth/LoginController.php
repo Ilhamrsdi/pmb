@@ -44,11 +44,11 @@ class LoginController extends Controller
     {
         // Override Login menggunakan NIK
         $request->validate([
-            'nik' => 'required|string',
+            'email' => 'required|string',
             'password' => 'required|string'
         ]);
 
-        $credentials = $request->only('nik', 'password');
+        $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
@@ -59,8 +59,7 @@ class LoginController extends Controller
             return redirect()->intended('dashboard');
         }
 
-        return back()->with([
-            'loginError' => 'nik atau Password salah',
-        ]);
+        return back()->with('loginError', 'Email atau Password salah');
+
     }
 }

@@ -46,7 +46,7 @@
           <form id="myform" action="{{ route('kelengkapan-data.update', $pendaftar->id) }}" method="post"
             enctype="multipart/form-data">
             @csrf
-            @method('PATCH')
+            @method('PUT')
             <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
               <ul class="nav nav-pills nav-justified custom-nav" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -143,7 +143,7 @@
                         name="jenis_tinggal">
                         <option selected>Pilih Jenis Tempat Tinggal...</option>
                         @foreach ($tempat_tinggal as $item)
-                          <option {{ $item->name == $pendaftar->jenis_tinggal ? 'selected' : '' }}>{{ $item->name }}
+                          <option {{ $item['name'] == $pendaftar->jenis_tinggal ? 'selected' : '' }}>{{ $item['name'] }}
                           </option>
                         @endforeach
                       </select>
@@ -156,7 +156,7 @@
                         name="kendaraan">
                         <option selected>Pilih Jenis Kendaraan...</option>
                         @foreach ($kendaraan as $item)
-                          <option {{ $item->name == $pendaftar->kendaraan ? 'selected' : '' }}>{{ $item->name }}
+                          <option {{ $item['name'] == $pendaftar->kendaraan ? 'selected' : '' }}>{{ $item['name'] }}
                           </option>
                         @endforeach
                       </select>
@@ -183,8 +183,8 @@
                         name="negara">
                         <option>Pilih Negara...</option>
                         @foreach ($negara as $item)
-                          <option value="{{ $item->id }}" {{ $item->id == $pendaftar->negara ? 'selected' : '' }}>
-                            {{ $item->name }}</option>
+                          <option value="{{ $item['id'] }}" {{ $item['id'] == $pendaftar->negara ? 'selected' : '' }}>
+                            {{ $item['name'] }}</option>
                         @endforeach
                       </select>
 
@@ -192,32 +192,31 @@
                     <!--end col-->
                     <div class="col-md-4 mb-3">
                       <label for="provinsi" class="form-label">Provinsi</label>
-                      <select id="provinsi" class="form-select" data-choices data-choices-sorting="true"
-                        name="provinsi">
-                        <option>Pilih Provinsi...</option>
-                        @foreach ($provinsi as $item)
-                          <option value="{{ $item->id }}" id-provinsi="{{ $item->id }}"
-                            {{ $item->id == $pendaftar->provinsi ? ' selected' : '' }}>
-                            {{ $item->name }}</option>
-                        @endforeach
+                      <select id="provinsi" class="form-select" data-choices data-choices-sorting="true" name="provinsi">
+                        <option value="">-- Pilih Provinsi --</option>
+                        @foreach($provinsi as $item)
+                        <option value="{{ $item['id'] }}" {{ $pendaftar->provinsi == $item['id'] ? 'selected' : '' }}>
+                            {{ $item['name'] }}
+                        </option>
+                    @endforeach
                       </select>
-
-                    </div>
+                  </div>
                     <!--end col-->
                     <div class="col-md-4 mb-3" id="select_kabupaten">
                       <label for="kabupaten" class="form-label">Kabupaten</label>
                       <select data-select="kabupaten" id="kabupaten" class="form-select" name="kabupaten">
-                        <option>Pilih Kabupaten...</option>
-
+                          <option value="">-- Pilih Kabupaten/Kota --</option>
                       </select>
-
-                    </div>
+                  </div>
+                  
+                  
+                
+                  
                     <!--end col-->
                     <div class="col-md-4 mb-3" id=" select_kecamatan">
                       <label for="kecamatan" class="form-label">Kecamatan</label>
                       <select id="kecamatan" data-select="kecamatan" class="form-select" name="kecamatan">
                         <option>Pilih Kecamatan...</option>
-
                       </select>
 
                     </div>
@@ -284,8 +283,8 @@
                         name="agama">
                         <option selected>Pilih Agama...</option>
                         @foreach ($agama as $item)
-                          <option {{ $item->name == $pendaftar->agama ? 'selected' : '' }}>
-                            {{ $item->name }}</option>
+                          <option {{ $item['name'] == $pendaftar->agama ? 'selected' : '' }}>
+                            {{ $item['name'] }}</option>
                         @endforeach
                       </select>
 
@@ -346,7 +345,7 @@
                     <!--end col-->
                     <div class="col-md-4 mb-3">
                       <label for="pendidikan_ayah" class="form-label">Pendidikan Ayah</label>
-                      <select id="pendidikan_ayah" class="form-select" data-choices data-choices-sorting="true"
+                      {{-- <select id="pendidikan_ayah" class="form-select" data-choices data-choices-sorting="true"
                         name="pendidikan_ayah">
                         <option selected>Pilih Pendidikan Terakhir...</option>
                         @foreach ($pendidikan as $item)
@@ -354,12 +353,14 @@
                             {{ $item->name }}
                           </option>
                         @endforeach
-                      </select>
+                      </select> --}}
+                      <input id="pendidikan_ayah" class="form-control" 
+                        name="pendidikan_ayah" value="SMA">
                     </div>
                     <!--end col-->
                     <div class="col-md-4 mb-3">
                       <label for="pekerjaan_ayah" class="form-label">Pekerjaan Ayah</label>
-                      <select id="pekerjaan_ayah" class="form-select" data-choices data-choices-sorting="true"
+                      {{-- <select id="pekerjaan_ayah" class="form-select" data-choices data-choices-sorting="true"
                         name="pekerjaan_ayah">
                         <option selected>Pilih Pekerjaan...</option>
                         @foreach ($profesi as $item)
@@ -367,19 +368,23 @@
                             {{ $item->name }}
                           </option>
                         @endforeach
-                      </select>
+                      </select> --}}
+                      <input id="pekerjaan_ayah" class="form-control" 
+                      name="pekerjaan_ayah" value="Dagang">
                     </div>
                     <!--end col-->
                     <div class="col-md-4 mb-3">
                       <label for="penghasilan_ayah" class="form-label">Penghasilan Ayah</label>
-                      <select id="penghasilan_ayah" class="form-select" data-choices data-choices-sorting="true"
+                      {{-- <select id="penghasilan_ayah" class="form-select" data-choices data-choices-sorting="true"
                         name="penghasilan_ayah">
                         <option selected>Pilih Pendapatan...</option>
                         @foreach ($pendapatan as $item)
                           <option {{ $item->name == $pendaftar->wali->penghasilan_ayah ? 'selected' : '' }}>
                             {{ $item->name }}</option>
                         @endforeach
-                      </select>
+                      </select> --}}
+                      <input id="pekerjaan_ayah" class="form-control" 
+                      name="penghasilan_ayah" value="100000000">
                     </div>
                     <!--end col-->
                   </div>
@@ -420,19 +425,21 @@
                     <!--end col-->
                     <div class="col-md-4 mb-3">
                       <label for="pendidikan_ibu" class="form-label">Pendidikan Ibu</label>
-                      <select id="pendidikan_ibu" class="form-select" data-choices data-choices-sorting="true"
+                      {{-- <select id="pendidikan_ibu" class="form-select" data-choices data-choices-sorting="true"
                         name="pendidikan_ibu">
                         <option selected>Pilih Pendidikan Terakhir...</option>
                         @foreach ($pendidikan as $item)
                           <option {{ $item->name == $pendaftar->wali->pendidikan_ibu ? 'selected' : '' }}>
                             {{ $item->name }}</option>
                         @endforeach
-                      </select>
+                      </select> --}}
+                      <input id="pendidikan_ibu" class="form-control" 
+                      name="pendidikan_ibu" value="SMA">
                     </div>
                     <!--end col-->
                     <div class="col-md-4 mb-3">
                       <label for="pekerjaan_ibu" class="form-label">Pekerjaan Ibu</label>
-                      <select id="pekerjaan_ibu" class="form-select" data-choices data-choices-sorting="true"
+                      {{-- <select id="pekerjaan_ibu" class="form-select" data-choices data-choices-sorting="true"
                         name="pekerjaan_ibu">
                         <option selected>Pilih Pekerjaan...</option>
                         @foreach ($profesi as $item)
@@ -440,19 +447,23 @@
                             {{ $item->name }}
                           </option>
                         @endforeach
-                      </select>
+                      </select> --}}
+                      <input id="pekerjaan_ibu" class="form-control" 
+                      name="pekerjaan_ibu" value="Dagang">
                     </div>
                     <!--end col-->
                     <div class="col-md-4 mb-3">
                       <label for="penghasilan_ibu" class="form-label">Penghasilan Ibu</label>
-                      <select id="penghasilan_ibu" class="form-select" data-choices data-choices-sorting="true"
+                      {{-- <select id="penghasilan_ibu" class="form-select" data-choices data-choices-sorting="true"
                         name="penghasilan_ibu">
                         <option selected>Pilih Pendapatan...</option>
                         @foreach ($pendapatan as $item)
                           <option {{ $item->name == $pendaftar->wali->penghasilan_ibu ? 'selected' : '' }}>
                             {{ $item->name }}</option>
                         @endforeach
-                      </select>
+                      </select> --}}
+                      <input id="penghasilan_ibu" class="form-control" 
+                      name="penghasilan_ibu" value="1000000000">
                     </div>
                     <!--end col-->
                   </div>
@@ -683,112 +694,146 @@
       })
     });
   </script>
-  <script>
-    let provinsi = document.getElementById('provinsi');
-    let kabupaten_kota = document.getElementById('kabupaten');
-    let kecamatan = document.getElementById('kecamatan');
-
-    function removeOptions(selectElement) {
-      var i, L = selectElement.options.length - 1;
-      for (i = L; i >= 0; i--) {
-        selectElement.remove(i);
-      }
-    }
-
-    choices_kabupaten = new Choices(kabupaten_kota, {
-      placeholderValue: "This is a placeholder set in the config",
-      searchPlaceholderValue: "Search results here",
-    })
-
-    provinsi.addEventListener('change', (event) => {
-      //   let id_provinsi = provinsi.options[provinsi.selectedIndex].getAttribute('id-provinsi')
-      let id_provinsi = provinsi.options[provinsi.selectedIndex].value
-
-      fetch('http://localhost:8000/api/region/' + id_provinsi).then(function(response) {
-        // The API call was successful!
-        return response.json();
-      }).then(function(data) {
-
-        item = data.map(value => {
-          return {
-            value: value.id,
-            label: value.name,
-            id: value.id,
+<script>
+  $(document).ready(function() {
+      $('#provinsi').change(function() {
+          var provinsiId = $(this).val();
+  
+          // Kosongkan dropdown kabupaten
+          $('#kabupaten').empty();
+          $('#kabupaten').append('<option value="">-- Pilih Kabupaten/Kota --</option>');
+  
+          // Cek jika provinsiId tidak kosong
+          if (provinsiId) {
+              $.ajax({
+                  url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
+                  type: 'GET',
+                  headers: {
+                      'Authorization': 'Bearer 775|6eJhC2w1YOiakYbOGYnubdOiT4psnsRIzB5Xp1TW' // Token Anda
+                  },
+                  success: function(response) {
+                      var kabupatenKotaData = response.data;
+  
+                      // Filter data kabupaten/kota berdasarkan provinsi
+                      $.each(kabupatenKotaData, function(key, kabupaten) {
+                          // Cek apakah ID parent kabupaten sama dengan ID provinsi
+                          if (kabupaten.parent.id == provinsiId) { 
+                              $('#kabupaten').append('<option value="' + kabupaten.id + '">' + kabupaten.name.trim() + '</option>'); // Menggunakan trim untuk menghilangkan spasi
+                          }
+                      });
+                      
+                      // Cek apakah ada kabupaten yang ditambahkan
+                      if ($('#kabupaten option').length <= 1) {
+                          $('#kabupaten').append('<option value="">Tidak ada Kabupaten/Kota</option>');
+                      }
+                  },
+                  error: function(xhr, status, error) {
+                      console.error('Error fetching data:', error);
+                  }
+              });
           }
-        });
-
-        choices_kabupaten.clearChoices()
-        choices_kabupaten.setChoices(item)
-
-        // removeOptions(kabupaten_kota)
-        // kabupaten_kota.add(new Option('Pilih Kabupaten...'))
-
-        // data.forEach(function(item, index) {
-        //   option = new Option(item['name'], item['id'])
-        //   option.setAttribute('id-kabupaten', item['id'])
-        //   kabupaten_kota.add(option)
-        // });
-
-      }).catch(function(err) {
-        // There was an error
-        console.warn('Something went wrong.', err);
-        item = [{
-          value: 0,
-          label: 'Data Kabupaten gagal dimuat',
-          id: 0,
-        }]
-        choices_kabupaten.clearChoices()
-        choices_kabupaten.setChoices(item)
       });
+  });
+</script>
+    <script>
+     $(document).ready(function() {
+    $('#kabupaten').change(function() {
+        var kabupatenId = $(this).val();  // Ambil ID kabupaten yang dipilih
 
-    })
+        // Kosongkan dropdown kecamatan
+        $('#kecamatan').empty();
+        $('#kecamatan').append('<option value="">-- Pilih Kecamatan --</option>');
 
-    choices_kecamatan = new Choices(kecamatan, {
-      placeholderValue: "This is a placeholder set in the config",
-      searchPlaceholderValue: "Search results here",
-    })
+        // Cek jika kabupatenId tidak kosong
+        if (kabupatenId) {
+            $.ajax({
+                url: 'http://backend.sepyankristanto.my.id/api/v1/master/sub-districts', // Endpoint untuk mendapatkan kecamatan
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer 775|6eJhC2w1YOiakYbOGYnubdOiT4psnsRIzB5Xp1TW' // Token Anda
+                },
+                success: function(response) {
+                    var kecamatanData = response.data;
 
-    kabupaten_kota.addEventListener('change', (event) => {
-      //   let id_kabupaten = kabupaten_kota.options[kabupaten_kota.selectedIndex].getAttribute('id-kabupaten')
-      let id_kabupaten = kabupaten_kota.options[kabupaten_kota.selectedIndex].value
+                    // Filter kecamatan berdasarkan parent.id (ID kabupaten)
+                    $.each(kecamatanData, function(key, kecamatan) {
+                        // Pastikan parent tidak null sebelum mengakses id-nya
+                        if (kecamatan.parent && kecamatan.parent.id == kabupatenId) {
+                            $('#kecamatan').append('<option value="' + kecamatan.id + '">' + kecamatan.name.trim() + '</option>');
+                        }
+                    });
 
-      fetch('http://localhost:8000/api/region/' + id_kabupaten).then(function(response) {
-        // The API call was successful!
-        return response.json();
-      }).then(function(data) {
+                    // Cek apakah ada kecamatan yang ditambahkan
+                    if ($('#kecamatan option').length <= 1) {
+                        $('#kecamatan').append('<option value="">Tidak ada Kecamatan</option>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+        } else {
+            $('#kecamatan').empty();
+            $('#kecamatan').append('<option value="">Pilih Kecamatan</option>');
+        }
+    });
+});
+</script>
 
-        item = data.map(value => {
-          return {
-            value: value.id,
-            label: value.name,
-            id: value.id,
+{{-- <script>
+  provinsi.addEventListener('change', (event) => {
+    let id_provinsi = provinsi.value;
+
+    // Kosongkan dropdown kabupaten/kota
+    kabupaten.innerHTML = '<option value="">Pilih Kabupaten/Kota...</option>';
+
+    // Memanggil endpoint untuk mengambil data kabupaten
+    fetch(`http://localhost:8000/api/get-kabupaten/${id_provinsi}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            data.forEach(kota => {
+                let option = document.createElement('option');
+                option.value = kota.id; // Pastikan ini sesuai dengan struktur data yang diterima
+                option.textContent = kota.name; // Ganti dengan nama kabupaten/kota
+                kabupaten.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+});
+
+</script> --}}
+{{-- <script>
+  $(document).ready(function() {
+      // Ketika halaman siap, jalankan AJAX
+      $.ajax({
+          url: '/api/get-provinsi',  // Route API
+          method: 'GET',
+          success: function(data) {
+              // Jika request sukses, iterasi data dan masukkan ke dropdown
+              let dropdown = $('#provinsi');
+              dropdown.empty(); // Kosongkan dropdown
+
+              dropdown.append('<option value="">-- Pilih Provinsi --</option>'); // Option default
+              
+              // Looping melalui data provinsi
+              $.each(data, function(index, provinsiItem) {
+                  dropdown.append('<option value="' + provinsiItem.id + '">' + provinsiItem.nama + '</option>');
+              });
+          },
+          error: function(err) {
+              console.log("Terjadi kesalahan:", err);
           }
-        });
-
-        choices_kecamatan.clearChoices()
-        choices_kecamatan.setChoices(item)
-
-        // removeOptions(kecamatan)
-        // kecamatan.add(new Option('Pilih Kecamatan...'))
-
-        // data.forEach(function(item, index) {
-        //   kecamatan.add(new Option(item['name'], item['id']))
-        // });
-
-      }).catch(function(err) {
-        // There was an error
-        console.warn('Something went wrong.', err);
-        item = [{
-          value: 0,
-          label: 'Data Kecamatan gagal dimuat',
-          id: 0,
-        }]
-        choices_kecamatan.clearChoices()
-        choices_kecamatan.setChoices(item)
       });
-    })
-  </script>
-  <script>
+  });
+</script> --}}
+ <script>
     let button = document.getElementById('btn-submit')
     let form = document.getElementById('myform')
 

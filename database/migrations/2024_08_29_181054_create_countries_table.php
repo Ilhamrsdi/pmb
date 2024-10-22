@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('countries', function (Blueprint $table) {
-            $table->id();
+            $table->string('id');
             $table->string('name');  // Membuat kolom name
             $table->string('code')->nullable();  // Membuat kolom code yang boleh null
             $table->timestamps();

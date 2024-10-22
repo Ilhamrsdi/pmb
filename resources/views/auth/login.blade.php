@@ -36,20 +36,27 @@
         <div class="row justify-content-center">
           <div class="col-md-8 col-lg-6 col-xl-5">
             <div class="card mt-2">
-
               <div class="card-body p-4">
                 <div class="text-center">
                   <h5 class="text-primary">Login</h5>
                 </div>
                 <div class="p-2 mt-2">
+                  <!-- Notifikasi Error -->
+                  @if(session('loginError'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      {{ session('loginError') }}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                  @endif
+
                   <form action="{{ route('login') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                      <label for="nik" class="form-label">NIK</label>
-                      <input type="text" class="form-control @error('nik') is-invalid @enderror" value=""
-                        id="nik" name="nik" placeholder="Masukkan NIK">
+                      <label for="email" class="form-label">Email</label>
+                      <input type="email" class="form-control @error('email') is-invalid @enderror" value=""
+                        id="email" name="email" placeholder="Masukkan Email">
 
-                      @error('nik')
+                      @error('email')
                         <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
                         </span>
@@ -59,10 +66,13 @@
                     <div class="mb-3">
                       <label class="form-label" for="password-input">Password</label>
                       <div class="position-relative auth-pass-inputgroup mb-3">
-                        <input type="password" class="form-control pe-5 @error('password') is-invalid @enderror"
+                        <input type="password"
+                          class="form-control pe-5 @error('password') is-invalid @enderror"
                           name="password" placeholder="Masukkan password" id="password-input" value="">
                         <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted"
-                          type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
+                          type="button" id="password-addon" onclick="togglePassword()">
+                          <i class="ri-eye-fill align-middle" id="password-icon"></i>
+                        </button>
 
                         @error('password')
                           <span class="invalid-feedback" role="alert">
@@ -74,9 +84,8 @@
 
                     <div class="mb-3">
                       <label for="gelombang" class="form-label fs-13">Gelombang Pendaftaran</label>
-                      <select class="form-select" placeholder="Masukkan " aria-label="Default select example"
-                        name="gelombang" id="gelombang">
-
+                      <select class="form-select" aria-label="Default select example" name="gelombang"
+                        id="gelombang">
                         @php
                           $gelombang = App\Models\GelombangPendaftaran::get();
                         @endphp
@@ -91,7 +100,6 @@
                     <div class="mt-4">
                       <button class="btn btn-success w-100" type="submit">Masuk</button>
                     </div>
-
                   </form>
 
                   <span class="invalid-feedback" role="alert">
@@ -100,19 +108,12 @@
 
                 </div>
               </div>
-              <!-- end card body -->
             </div>
-            <!-- end card -->
-
           </div>
         </div>
-        <!-- end row -->
       </div>
-      <!-- end container -->
     </div>
-    <!-- end auth page content -->
 
-    <!-- footer -->
     <footer class="footer">
       <div class="container">
         <div class="row">
@@ -128,11 +129,28 @@
         </div>
       </div>
     </footer>
-    <!-- end Footer -->
   </div>
 @endsection
+
 @section('script')
   <script src="assets/libs/particles.js/particles.js.min.js"></script>
   <script src="assets/js/pages/particles.app.js"></script>
   <script src="assets/js/pages/password-addon.init.js"></script>
+  
+  <script>
+    function togglePassword() {
+      const passwordInput = document.getElementById('password-input');
+      const passwordIcon = document.getElementById('password-icon');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        passwordIcon.classList.remove('ri-eye-fill');
+        passwordIcon.classList.add('ri-eye-close-fill');
+      } else {
+        passwordInput.type = 'password';
+        passwordIcon.classList.remove('ri-eye-close-fill');
+        passwordIcon.classList.add('ri-eye-fill');
+      }
+    }
+  </script>
 @endsection

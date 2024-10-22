@@ -20,6 +20,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('region/{id}', [KelengkapanDataController::class, 'region'])->name('region');
+// Route::get('region/{id}', [KelengkapanDataController::class, 'region'])->name('region');
 Route::get('grafik/setahun', [GrafikController::class, 'grafik_setahun'])->name('grafik-setahun');
 Route::get('grafik/sebulan', [GrafikController::class, 'grafik_sebulan'])->name('grafik-sebulan');
+// Route::get('region/{id}', [KelengkapanDataController::class, 'region'])->name('region');
+Route::get('get-provinsi', [KelengkapanDataController::class, 'region'])->name('get-provinsi');
+// Route::get('/get-kabupaten/{provinsiId}', [KelengkapanDataController::class, 'getKabupaten']);
+Route::get('/get-kabupaten/{provinsiId}', [KelengkapanDataController::class, 'getKabupaten']);
+
+

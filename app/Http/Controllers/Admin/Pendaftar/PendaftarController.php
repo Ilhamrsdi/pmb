@@ -70,25 +70,29 @@ class PendaftarController extends Controller
      */
     public function updateStatus(Request $request)
     {
-        $request->validate([
-            'status_pendaftaran' => 'required|in:sudah,belum', // Validasi input
-            'id' => 'required|exists:pendaftars,id' // Pastikan ID pendaftar ada
-        ]);
+        // return $request->all();
 
+        // $request->validate([
+        //     'status_pendaftaran' => 'required', // Validasi input
+        //     'id' => 'required|exists:pendaftars,id' // Pastikan ID pendaftar ada
+        // ]);
         try {
             // Cari pendaftar dan detail pendaftar berdasarkan ID
-            $pendaftar = Pendaftar::findOrFail($request->id);
-            $detailPendaftar = DetailPendaftar::where('pendaftar_id', $pendaftar->id)->firstOrFail();
+            // $pendaftar = Pendaftar::findOrFail($request->id);
+            $detailPendaftar = DetailPendaftar::findOrFail($request->id);
         
             // Update status pendaftaran
-            $detailPendaftar->status_pendaftaran = $request->input('status_pendaftaran');
-            $detailPendaftar->save();
+            $detailPendaftar->update([
+                'status_pendaftaran' =>  $request->status_pendaftaran,
+            ]);
+            // $detailPendaftar->status_pendaftaran = $request->input('status_pendaftaran');
+            // $detailPendaftar->save();
         
             // Mengembalikan response JSON
-            return response()->json(['success' => true, 'message' => 'Status pendaftaran berhasil diperbarui.']);
+            return redirect()->back();
         } catch (\Exception $e) {
             \Log::error('Error updating status: ' . $e->getMessage());
-            return response()->json(['success' => false, 'message' => 'Gagal memperbarui status.']);
+            return response()->json(['success' => false, 'message' => 'Gagal memperbarui status.' . $e]);
         }    
     }
 

@@ -638,7 +638,7 @@
                 alt="Header Avatar">
               <span class="text-start ms-xl-2">
                 <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
-                  {{ Auth::user()->role_id == 1 ? 'Administrator' : (Auth::user()->pendaftar->isNotEmpty() ? Auth::user()->pendaftar[0]->nama : 'No Name') }}
+                  {{ Auth::user()->username}}
               </span>
               
                 <span
@@ -651,7 +651,7 @@
             {{-- <h6 class="dropdown-header">Welcome
               {{ Auth::user()->role_id == 1 ? 'Administrator' : Auth::user()->pendaftar[0]->nama }}</h6> --}}
               <h6 class="dropdown-header">Welcome
-                {{ Auth::user()->role_id == 1 ? 'Administrator' : (Auth::user()->pendaftar->isNotEmpty() ? Auth::user()->pendaftar[0]->nama : 'No Name') }}
+                {{ Auth::user()->username }}
               </h6>
             
             {{-- <a class="dropdown-item" href="pages-profile"><i

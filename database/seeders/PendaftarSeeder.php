@@ -44,7 +44,7 @@ class PendaftarSeeder extends Seeder
         ]);
 
         // Pastikan UUID program studi ketiga benar dan ada
-        $programStudi3Id = '1595d492-7643-470e-9a3e-cf2c4be4d38a';
+        $programStudi3Id = '3be03222-479e-442d-b5d2-5512bc619fb9';
         $programStudi3 = DB::table('program_studis')->where('id', $programStudi3Id)->first();
 
         if (!$programStudi3) {

@@ -162,12 +162,45 @@
                           <td class="email">{{ $row->gelombangPendaftaran->nama_gelombang ?? '-' }}</td>
                           <td class="phone">{{ $row->programStudi->nama_program_studi ?? '-' }}</td>
                           <td class="status text-center">
-                            @if ($row->detailPendaftar?->status_acc == 'sudah')
-                                <span class="badge badge-soft-success text-uppercase">{{ $row->detailPendaftar->status_acc }}</span>
+                            @if ($row->detailPendaftar?->status_pendaftaran == 'sudah')
+                                <span class="badge badge-soft-success text-uppercase">{{ $row->detailPendaftar->status_pendaftaran }}</span>
                             @else
-                                <span class="badge badge-soft-danger text-uppercase">belum</span>
+                                {{-- <span class="badge badge-soft-danger text-uppercase">belum</span> --}}
+                                <!-- Button trigger modal -->
+<a  class="badge badge-soft-danger text-uppercase" data-bs-toggle="modal" data-bs-target="#exampleModal-{{$row->detailPendaftar->id}}">
+ {{$row->detailPendaftar->status_pendaftaran ?? 'Belum'}}
+</a>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal-{{$row->detailPendaftar->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title {{$row->detailPendaftar->id}}</h5>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="{{route('pendaftar.update-status')}}" method="POST">
+        @csrf
+        
+      <div class="modal-body">
+        Apakah  Anda yakin ingin mengubah status pendaftaran?
+        <input type="hidden" value="sudah" name="status_pendaftaran">
+        <input type="hidden" value="{{$row->detailPendaftar->id}}" name="id">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+        <button type="submit" class="btn btn-primary">Ya</button>
+      </div>
+    </form>
+
+    </div>
+  </div>
+</div>
                             @endif
                         </td>
+                        
                         
 
 <td class="status text-center">
@@ -278,7 +311,7 @@
               <tbody>
                 <tr>
                   <td style="width: 400px">NIK</td>
-                  <td>{{ $row->user->nik }}</td>
+                  <td>{{ $row->user->nik ?? '-'}}</td>
                 </tr>
                 <tr>
                   <td style="width: 400px">NAMA PENDAFTAR</td>
@@ -286,7 +319,7 @@
                 </tr>
                 <tr>
                   <td style="width: 400px">EMAIL</td>
-                  <td>{{ $row->user->email }}</td>
+                  <td>{{ $row->user->email ?? '-' }}</td>
                 </tr>
                 <tr>
                   <td style="width: 400px">NO. TELP</td>
@@ -301,16 +334,39 @@
                   <td>{{ $row->detailPendaftar?->kode_pendaftaran }}</td>
                 </tr>
                 <tr>
+                  <td style="width: 400px;">BUKTI PEMBAYARAN PENDAFTARAN</td>
+                  <td>  @php
+                    $extensions = ['jpg', 'png', 'jpeg']; // Daftar ekstensi yang didukung
+                    $filePath = '';
+
+                    foreach ($extensions as $ext) {
+                        $possiblePath =
+                            'assets/file/bukti-pendaftaran/' .
+                            $row->detailPendaftar->pendaftar_id .
+                            '.' .
+                            $ext;
+                        if (file_exists(public_path($possiblePath))) {
+                            $filePath = asset($possiblePath);
+                            break;
+                        }
+                    }
+                @endphp
+
+                @if ($filePath)
+                    <a href="{{ $filePath }}" target=_blank>Download Bukti Pendaftaran</a>
+                @else
+                    <p>File tidak ditemukan.</p>
+                @endif
+               
+</td>
+                </tr>
+                <tr>
                   <td style="width: 400px">NOMINAL PEMBAYARAN PENDAFTARAN</td>
                   <td>{{ $row->gelombangPendaftaran->nominal_pendaftaran }}</td>
                 </tr>
                 <tr>
                   <td style="width: 400px">STATUS PENDAFTARAN</td>
-                  @if ($row->detailPendaftar?->status_pendaftaran === 'belum')
-                    <td><span class="badge badge-soft-danger text-uppercase">BELUM BAYAR</span></td>
-                  @else 
-                    <td><span class="badge badge-soft-success text-uppercase">SUDAH BAYAR</span></td>
-                  @endif
+                    <td><span class="badge badge-soft-danger text-uppercase">{{ $row->detailPendaftar->status_pendaftaran ?? 'Belum'}}</span></td>
                 </tr>
                 <tr>
                   <td style="width: 400px">KODE BAYAR UKT</td>
@@ -322,11 +378,7 @@
                 </tr>
                 <tr>
                   <td style="width: 400px">STATUS UKT</td>
-                  @if ($row->detailPendaftar?->status_ukt == 'belum')
-                    <td><span class="badge badge-soft-danger text-uppercase">BELUM BAYAR</span></td>
-                  @else
-                    <td><span class="badge badge-soft-success text-uppercase">SUDAH BAYAR</span></td>
-                  @endif
+                    <td><span class="badge badge-soft-danger text-uppercase">{{ $row->detailPendaftar?->status_ukt ?? 'Belum'}}</span></td>
                 </tr>
                 <tr>
                   <td style="width: 400px">THN AJAR & GELOMBANG PENDAFTARAN</td>

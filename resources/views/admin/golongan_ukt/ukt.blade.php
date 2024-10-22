@@ -231,7 +231,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="table-responsive table-card mt-3 mb-1">
+                                {{-- <div class="table-responsive table-card mt-3 mb-1">
                                     <table class="table align-middle table-nowrap" id="customerTable">
                                         <thead class="table-light">
                                             <tr>
@@ -264,7 +264,7 @@
                                             @endforeach
                                         </tbody>
                                     </table>
-                                </div>
+                                </div> --}}
                                 <input type="hidden" name="golongan_id" value="{{ $golongan->id }}">
                                 <div class="mb-3">
                                     <label for="phone-field" class="form-label">NOMINAL UKT
@@ -369,30 +369,192 @@
         </div>
     @endforeach
     @forelse ($ukt as $i => $row)
-        <!-- Modal List Pendaftar -->
-        <div class="modal fade" id="listPendaftarUKT{{ $row->id }}" tabindex="-1"
-            aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header bg-light p-3">
-                        <h5 class="modal-title" id="exampleModalLabel"></h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                            id="close-modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4 class="card-title mb-0">LIST PENDAFTAR UKT
-                                            {{ $row->golongan->nama_golongan }}
-                                        </h4>
-                                    </div><!-- end card header -->
+    <!-- Modal List Pendaftar -->
+    <div class="modal fade" id="listPendaftarUKT{{ $row->id }}" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-light p-3">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="close-modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title mb-0">LIST PENDAFTAR UKT
+                                        {{ $row->golongan->nama_golongan }}
+                                    </h4>
+                                </div><!-- end card header -->
 
+                                <div class="card-body">
+                                    <div id="#customerList">
+                                        <div class="row g-4 mb-3">
+                                            <div class="col-sm-auto">
+                                            </div>
+                                            <div class="col-sm">
+                                                <div class="d-flex justify-content-sm-end">
+                                                    <div class="search-box ms-2">
+                                                        <input type="text" class="form-control search"
+                                                            placeholder="Search...">
+                                                        <i class="ri-search-line search-icon"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive table-card mt-3 mb-1">
+                                            <table class="table align-middle table-nowrap" id="customerTable">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>NO</th>
+                                                        <th class="sort" data-sort="customer_name">NIK</th>
+                                                        <th class="sort" data-sort="email">NAMA</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="list form-check-all">
+                                                    @foreach ($listPendaftar as $i => $pendaftar)
+                                                        <tr>
+                                                            <td>{{ ++$i }}</td>
+                                                            <td class="customer_name">{{ $pendaftar->user->nik }}
+                                                            </td>
+                                                            <td class="email">{{ $pendaftar->nama }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                            <div class="noresult" style="display: none">
+                                                <div class="text-center">
+                                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json"
+                                                        trigger="loop" colors="primary:#121331,secondary:#08a88a"
+                                                        style="width:75px;height:75px">
+                                                    </lord-icon>
+                                                    <h5 class="mt-2">Sorry! No Result Found</h5>
+                                                    <p class="text-muted mb-0">We've searched more than 150+ Orders
+                                                        We
+                                                        did not find any
+                                                        orders for you search.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end">
+                                            <div class="pagination-wrap hstack gap-2">
+                                                <a class="page-item pagination-prev disabled" href="#">
+                                                    Previous
+                                                </a>
+                                                <ul class="pagination listjs-pagination mb-0"></ul>
+                                                <a class="page-item pagination-next" href="#">
+                                                    Next
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end card -->
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end col -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@empty
+    <div class="modal fade" id="listPendaftarUKT_empty" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-light p-3">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="close-modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title mb-0">LIST PENDAFTAR UKT - Data Kosong</h4>
+                                </div><!-- end card header -->
+
+                                <div class="card-body">
+                                    <div id="#customerList">
+                                        <div class="row g-4 mb-3">
+                                            <div class="col-sm-auto">
+                                            </div>
+                                            <div class="col-sm">
+                                                <div class="d-flex justify-content-sm-end">
+                                                    <div class="search-box ms-2">
+                                                        <input type="text" class="form-control search"
+                                                            placeholder="Search...">
+                                                        <i class="ri-search-line search-icon"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive table-card mt-3 mb-1">
+                                            <table class="table align-middle table-nowrap" id="customerTable">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>NO</th>
+                                                        <th class="sort" data-sort="customer_name">NIK</th>
+                                                        <th class="sort" data-sort="email">NAMA</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="list form-check-all">
+                                                    <tr>
+                                                        <td colspan="3" class="text-center">Data tidak tersedia.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div><!-- end card -->
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end col -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endforelse
+@foreach ($ukt as $i => $row)
+    <!-- Modal Add Pendaftar -->
+    <div class="modal fade" id="addPendaftarUKT{{ $row->id }}" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-light p-3">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="close-modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title mb-0">ADD PENDAFTAR UKT
+                                        {{ $row->golongan->nama_golongan }}
+                                        {{ $row->id }}
+                                    </h4>
+                                </div><!-- end card header -->
+                                <form action="{{ route('pendaftarCreateUKT.ukt') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="ukt_id" value="{{ $row->id }}">
+                                    <input type="hidden" name="nominal_ukt"
+                                        value="{{ $nominal_ukt->nominal_reguler }}">
                                     <div class="card-body">
-                                        <div id="#customerList">
+                                        <div id="customerList">
                                             <div class="row g-4 mb-3">
                                                 <div class="col-sm-auto">
+                                                    <div>
+                                                        <button type="submit" class="btn btn-success add-btn"><i
+                                                                class="ri-add-line align-bottom me-1"></i>Submit</button>
+                                                    </div>
                                                 </div>
                                                 <div class="col-sm">
                                                     <div class="d-flex justify-content-sm-end">
@@ -409,41 +571,62 @@
                                                     <thead class="table-light">
                                                         <tr>
                                                             <th>NO</th>
-                                                            <th class="sort" data-sort="customer_name">NIK</th>
-                                                            <th class="sort" data-sort="email">NAMA</th>
+                                                            <th scope="col" style="width: 50px;">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        id="checkAll" value="option">
+                                                                </div>
+                                                            </th>
+                                                            <th class="sort" data-sort="customer_name">NIK
+                                                            </th>
+                                                            <th class="sort" data-sort="email">NAMA
+                                                            </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody class="list form-check-all">
-                                                        @forelse ($listPendaftar as $i => $row)
+                                                        @foreach ($addPendaftar as $i => $data)
                                                             <tr>
                                                                 <td>{{ ++$i }}</td>
-                                                                <td class="customer_name">{{ $row->user->nik }}
-                                                                </td>
-                                                                <td class="email">{{ $row->nama }}</td>
+                                                                <th scope="row">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input"
+                                                                            type="checkbox" name="pendaftar[]"
+                                                                            value="{{ $data->id }}">
+                                                                    </div>
+                                                                </th>
+                                                                <td class="customer_name">
+                                                                    {{ $data->User->nik }}</td>
+                                                                <td class="email">
+                                                                    {{ $data->nama }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
                                                 </table>
+
                                                 <div class="noresult" style="display: none">
                                                     <div class="text-center">
                                                         <lord-icon src="https://cdn.lordicon.com/msoeawqm.json"
                                                             trigger="loop" colors="primary:#121331,secondary:#08a88a"
                                                             style="width:75px;height:75px">
                                                         </lord-icon>
-                                                        <h5 class="mt-2">Sorry! No Result Found</h5>
-                                                        <p class="text-muted mb-0">We've searched more than 150+ Orders
+                                                        <h5 class="mt-2">Sorry! No Result
+                                                            Found</h5>
+                                                        <p class="text-muted mb-0">We've
+                                                            searched more than 150+ Orders
                                                             We
                                                             did not find any
                                                             orders for you search.</p>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="d-flex justify-content-end">
+
+                                            <div class="d-flex justify-content-center">
                                                 <div class="pagination-wrap hstack gap-2">
                                                     <a class="page-item pagination-prev disabled" href="#">
                                                         Previous
                                                     </a>
-                                                    <ul class="pagination listjs-pagination mb-0"></ul>
+                                                    <ul class="pagination listjs-pagination mb-0">
+                                                    </ul>
                                                     <a class="page-item pagination-next" href="#">
                                                         Next
                                                     </a>
@@ -451,93 +634,20 @@
                                             </div>
                                         </div>
                                     </div><!-- end card -->
-                                </div>
-                                <!-- end col -->
+                                </form>
                             </div>
                             <!-- end col -->
                         </div>
+                        <!-- end col -->
                     </div>
                 </div>
             </div>
         </div>
-    @empty
-        <div class="modal fade" id="listPendaftarUKT{{ $row->id }}" tabindex="-1"
-            aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header bg-light p-3">
-                        <h5 class="modal-title" id="exampleModalLabel"></h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                            id="close-modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4 class="card-title mb-0">LIST PENDAFTAR UKT
-                                            {{ $row->golongan->nama_golongan }}
-                                        </h4>
-                                    </div><!-- end card header -->
+    </div>
+@endforeach
 
-                                    <div class="card-body">
-                                        <div id="#customerList">
-                                            <div class="row g-4 mb-3">
-                                                <div class="col-sm-auto">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <div class="d-flex justify-content-sm-end">
-                                                        <div class="search-box ms-2">
-                                                            <input type="text" class="form-control search"
-                                                                placeholder="Search...">
-                                                            <i class="ri-search-line search-icon"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="table-responsive table-card mt-3 mb-1">
-                                                <table class="table align-middle table-nowrap" id="customerTable">
-                                                    <thead class="table-light">
-                                                        <tr>
-                                                            <th>NO</th>
-                                                            <th class="sort" data-sort="customer_name">NIK</th>
-                                                            <th class="sort" data-sort="email">NAMA</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody class="list form-check-all">
-                                                        <tr>
-                                                            <div class="noresult" style="display: none">
-                                                                <div class="text-center">
-                                                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json"
-                                                                        trigger="loop"
-                                                                        colors="primary:#121331,secondary:#08a88a"
-                                                                        style="width:75px;height:75px">
-                                                                    </lord-icon>
-                                                                    <h5 class="mt-2">Sorry! No Result Found</h5>
-                                                                    <p class="text-muted mb-0">We've searched more than
-                                                                        150+ Orders
-                                                                        We
-                                                                        did not find any
-                                                                        orders for you search.</p>
-                                                                </div>
-                                                            </div>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div><!-- end card -->
-                                </div>
-                                <!-- end col -->
-                            </div>
-                            <!-- end col -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforelse
-    @foreach ($ukt as $i => $row)
+
+    {{-- @foreach ($ukt as $i => $row)
         <!-- Modal Add Pendaftar -->
         <div class="modal fade" id="addPendaftarUKT{{ $row->id }}" tabindex="-1"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -660,7 +770,7 @@
                 </div>
             </div>
         </div>
-    @endforeach
+    @endforeach --}}
 @endsection
 @section('script')
     <script src="{{ URL::asset('assets/libs/prismjs/prismjs.js') }}"></script>

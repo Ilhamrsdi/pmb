@@ -73,10 +73,10 @@
                   <a href="{{ route('maba-attribut.index') }}" class="nav-link">Daftar Atribut
                     Maba</a>
                 </li>
-                <!--<li class="nav-item">-->
-                <!--  <a href="{{ route('tes-maba.index') }}" class="nav-link">Tes-->
-                <!--    Maba</a>-->
-                <!--</li>-->
+                <li class="nav-item">
+                 <a href="{{ route('tes-maba.index') }}" class="nav-link">Tes
+                  Maba</a>
+                </li>
               </ul>
             </div>
           </li>
@@ -213,11 +213,11 @@
             <?php
             $id = session('pendaftar_id');
             ?>
-            {{-- <li class="nav-item">
+            <li class="nav-item">
               <a class="nav-link menu-link" href="{{ route('kelengkapan-data.edit', $id) }}">
                 <i class="las la-user"></i> <span>Kelengkapan Data</span>
               </a>
-            </li> <!-- end Kelengkapan Data Menu --> --}}
+            </li> <!-- end Kelengkapan Data Menu -->
             {{-- <li class="nav-item">
                 <a class="nav-link menu-link" href="#">
                   <i class="las la-pen"></i><span>Tes Maba</span>
@@ -235,11 +235,11 @@
                 <i class="las la-tachometer-alt"></i> <span>@lang('translation.dashboards')</span>
               </a>
             </li> <!-- end Dashboard Menu -->
-            {{-- <li class="nav-item">
+            <li class="nav-item">
                 <a class="nav-link menu-link">
                   <i class="las la-user"></i><span> Data Diri</span>
                 </a>
-              </li> <!-- end Data Diri Menu --> --}}
+              </li> <!-- end Data Diri Menu -->
               @elseif (
                 isset($user->pendaftar[0]) &&
                 $user->pendaftar[0]->detailPendaftar?->status_pendaftaran == 'sudah' &&
@@ -251,6 +251,11 @@
                 <i class="las la-print"></i><span> Cetak Bukti </span>
               </a>
             </li> <!-- end Dashboard Menu -->
+            {{-- <li class="nav-item">
+              <a class="nav-link menu-link" href="{{ route('pendaftar.ujian.start', session('pendaftar_id')) }}">
+                <i class="las la-book"></i><span> Ujian </span>
+              </a>
+            </li> <!-- end Dashboard Menu --> --}}
           @else
             <li class="menu-title"><span>Tidak ada Menu</span></li>
           @endif

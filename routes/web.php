@@ -158,9 +158,13 @@ Route::post('/generate-nim-massal', [GenerateNimController::class, 'generateNIMM
 
 Route::middleware([Pendaftar::class, 'auth'])->prefix('pendaftar')->group(function () {
     Route::post('upload/bukti-bayar-pendaftaran',  [BuktiController::class, 'upload_bukti_pendaftaran'])->name('upload-bukti-pendaftaran');
+    Route::get('pendaftar/ujian/{id}', [SoalTesMabaController::class, 'index'])->name('ujian.index');
+    // Route::get('/pendaftar/ujian/{id}', [SoalTesMabaController::class, 'index'])->name('pendaftar.ujian.index');
+    Route::post('ujian/result', [SoalTesMabaController::class, 'result'])->name('pendaftar.ujian.result');
     Route::post('upload/bukti-bayar-ukt',  [BuktiController::class, 'upload_bukti_ukt'])->name('upload-bukti-ukt');
+    // Route::get('kelengkapan-data/{id}', [KelengkapanDataController::class, 'edit'])->name('kelengkapan-data.edit');
     Route::get('kelengkapan-data/{id}', [KelengkapanDataController::class, 'edit'])->name('kelengkapan-data.edit');
-    Route::patch('kelengkapan-data/{id}', [KelengkapanDataController::class, 'update'])->name('kelengkapan-data.update');
+    Route::put('kelengkapan-data/{id}', [KelengkapanDataController::class, 'update'])->name('kelengkapan-data.update');
     Route::get('bukti/{id}', [BuktiController::class, 'show'])->name('bukti.show');
 });
 
