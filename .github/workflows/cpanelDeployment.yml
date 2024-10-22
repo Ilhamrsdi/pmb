@@ -24,3 +24,5 @@ jobs:
         server: 103.109.210.53
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
+    - name: 🗃️ Run Database Migrations and Seed
+      run: php artisan migrate --seed --force
