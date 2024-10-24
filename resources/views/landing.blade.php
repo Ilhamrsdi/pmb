@@ -192,10 +192,10 @@
                   </div>
                 </div>
                 <div class="card-footer d-flex justify-content-between">
-                  <a href="javascript:void(0);" style="display:none " id="close{{ $h->id }}"
+                  <a href="javascript:void(0);" style="display:none; text-decoration: none;" id="close{{ $h->id }}"
                     onclick="hide( '{{ $h->id }}' )" class="card-link link-danger">Close <i
                       class="ri-close-line ms-1 align-middle lh-1"></i></a>
-                  <a href="javascript:void(0);" onclick="show( '{{ $h->id }}' )"
+                  <a href="javascript:void(0);" style="text-decoration: none" onclick="show( '{{ $h->id }}' )"
                     class="card-link link-secondary">Read More <i
                       class="ri-arrow-right-s-line ms-1 align-middle lh-1"></i></a>
                 </div>
@@ -321,6 +321,7 @@
                       <label for="email" class="form-label fs-13">Email</label>
                       <input name="email" id="email" type="email" class="form-control"
                         placeholder="Masukkan Email">
+                        <small class="form-text text-success"> *Silahkan menggunakan Email Aktif </small>
                     </div>
                   </div>
                 </div>
@@ -328,14 +329,14 @@
                   <div class="col-lg-6">
                     <div class="mb-4">
                       <label for="nik" class="form-label fs-13">NIK</label>
-                      <input name="nik" id="nik" type="text" class="form-control"
+                      <input name="nik" id="nik" type="number" class="form-control"
                         placeholder="Masukkan NIK">
                     </div>
                   </div>
                   <div class="col-lg-6">
                     <div class="mb-4">
                       <label for="no_hp" class="form-label fs-13">No Hp</label>
-                      <input name="no_hp" id="no_hp" type="text" class="form-control"
+                      <input name="no_hp" id="no_hp" type="number" class="form-control"
                         placeholder="Masukkan No HP">
                     </div>
                   </div>
@@ -418,7 +419,8 @@
                     <div class="card-body">
                       <h4 class="card-title mb-2">{{ $item->judul_pengumuman }}</h4>
                       <p class="card-text mb-0 fs-6">
-                        {{ Str::limit($item->isi_pengumuman, 100) }}</p>
+                        {!! Str::limit($item->isi_pengumuman, 100) !!}
+                      </p>
                     </div>
                     <div class="card-footer d-flex justify-content-end">
                       <a href="{{ url('pengumuman/' . $item->id) }}" class="card-link link-secondary">Read More <i

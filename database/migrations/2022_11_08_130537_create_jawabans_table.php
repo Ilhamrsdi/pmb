@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('pendaftar_id');
             $table->foreignId('soal_id');
-            $table->foreignId('jawaban');
+            $table->foreignId('hasil_jawaban');
             $table->foreignId('status');
             $table->timestamps();
         });

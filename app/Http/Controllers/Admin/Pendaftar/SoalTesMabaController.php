@@ -53,7 +53,7 @@ class SoalTesMabaController extends Controller
         $examResults = $ujian->results; // Pastikan relasi ini ada di model HasilUjian
 
         // Kirim variabel ke view
-        return view('ujian.hasil', compact('examResults')); // Hanya kirim examResults
+        return view('pendaftar.ujian.result', compact('examResults')); // Hanya kirim examResults
     }
     
     

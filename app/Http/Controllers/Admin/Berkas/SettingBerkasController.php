@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin\Berkas;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SettingBerkas;
-use File;
+// use File;
+use Illuminate\Support\Facades\File;
+
 
 class SettingBerkasController extends Controller
 {
@@ -44,7 +46,7 @@ class SettingBerkasController extends Controller
     public function store(Request $request)
     {
 
-        $path = public_path() . '/assets/' . $request->path;
+        $path = public_path() . '/file_pendamping/' . $request->path;
         File::makeDirectory($path, $mode = 0777, true, true);
         $berkas = SettingBerkas::create([
             "nama_berkas" => $request->nama_berkas,
@@ -85,7 +87,7 @@ class SettingBerkasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $path = public_path() . '/assets/' . $request->path;
+        $path = public_path() . '/file_pendamping/' . $request->path;
         File::makeDirectory($path, $mode = 0777, true, true);
         $berkas = SettingBerkas::where('id', $id)->update([
             "nama_berkas" => $request->nama_berkas,

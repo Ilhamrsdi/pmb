@@ -591,19 +591,24 @@
                   <div class="row">
                     @foreach ($list_berkas as $berkas)
                       <div class="col-lg-12 mb-3">
-                        <label for="{{ 'file-' . $berkas->berkas->nama_berkas }}"
-                          class="d-flex justify-content-between align-items-center">Upload Berkas
-                          {{ Str::upper($berkas->berkas->nama_berkas) }}
-                          {{-- <a class="btn btn-sm btn-primary" href="{{ asset('assets/file/' . $pendaftar->'file-'.$berkas ) }}"
-                            download>Download Berkas</a> --}}
+                        <label for="{{ 'file-' . ($berkas->berkas->id ?? '') }}" class="d-flex justify-content-between align-items-center">
+                          Upload Berkas
+                          {{ $berkas->berkas->nama_berkas ?? 'Nama berkas tidak tersedia' }}
+                          <a class="btn btn-sm btn-primary" href="{{ asset('file_pendamping/file/' . ($pendaftar->{'file-' . $berkas->id} ?? '')) }}" download>
+                            Download Berkas
+                        </a>
                         </label>
-                        <label for="{{ 'file-' . $berkas->berkas->nama_berkas }}" class="drop-container">
-                          <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
-                          <h4 class="drop-title">Drop files here or click to upload.</h4>
-                          <input type="file" name="{{ 'file[' . $berkas->berkas->nama_berkas . ']' }}"
-                            id="{{ 'file-' . $berkas->berkas->nama_berkas }}"
-                            accept="application/pdf,image/jpg,image/jpeg,image/png" required>
-                        </label>
+                      
+                      
+                      <label for="{{ 'file_pendamping-' . ($berkas->berkas->nama_berkas ?? '') }}" class="drop-container">
+                        <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                        <h4 class="drop-title">Drop files here or click to upload.</h4>
+                        <input type="file" name="{{ '/file_pendamping[' . ($berkas->berkas->nama_berkas ?? '') . ']' }}" 
+                               id="{{ 'file_pendamping-' . ($berkas->berkas->nama_berkas ?? '') }}" 
+                               accept="application/pdf,image/jpg,image/jpeg,image/png" required>
+                    </label>
+                    
+                    
                       </div>
                     @endforeach
                   </div>
@@ -709,7 +714,7 @@
                   url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
                   type: 'GET',
                   headers: {
-                      'Authorization': 'Bearer 775|6eJhC2w1YOiakYbOGYnubdOiT4psnsRIzB5Xp1TW' // Token Anda
+                      'Authorization': 'Bearer 780|DZRuatWtZYtyRtm39NLgNCaTyD4xyqpnokHSdxOc' // Token Anda
                   },
                   success: function(response) {
                       var kabupatenKotaData = response.data;
@@ -750,7 +755,7 @@
                 url: 'http://backend.sepyankristanto.my.id/api/v1/master/sub-districts', // Endpoint untuk mendapatkan kecamatan
                 type: 'GET',
                 headers: {
-                    'Authorization': 'Bearer 775|6eJhC2w1YOiakYbOGYnubdOiT4psnsRIzB5Xp1TW' // Token Anda
+                    'Authorization': 'Bearer 780|DZRuatWtZYtyRtm39NLgNCaTyD4xyqpnokHSdxOc' // Token Anda
                 },
                 success: function(response) {
                     var kecamatanData = response.data;

@@ -89,7 +89,7 @@
                 <div class="card-body">
                   <div class="text-muted">
                     <h6 class="mb-3 fw-semibold text-uppercase">Pengumuman </h6>
-                    <p>{{ $pengumuman->isi_pengumuman }}</p>
+                    <p>{!! $pengumuman->isi_pengumuman !!}</p>
 
                     {{-- <ul class="ps-4 vstack gap-2">
                       <li>Product Design, Figma (Software), Prototype</li>

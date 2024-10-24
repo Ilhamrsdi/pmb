@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_berkas');
             $table->string('path');
-            $table->integer('hapus');
+            $table->integer('hapus')->default(0);
             $table->timestamps();
         });
     }

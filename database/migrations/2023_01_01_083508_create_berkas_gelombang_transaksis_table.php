@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('gelombang_id');
             $table->integer('berkas_id');
-            $table->integer('hapus');
+            $table->integer('hapus')->default(0);
             $table->timestamps();
         });
     }

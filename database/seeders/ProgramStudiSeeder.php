@@ -19,10 +19,10 @@ class ProgramStudiSeeder extends Seeder
         $jurusan2Id = (string) Str::uuid();
         DB::table('program_studis')->insert([
             [
-                'id' => (string) Str::uuid(),
+                'id' => 'c5de86f9-c6b4-4740-961b-32da3b1c003a',
                 'jurusan_id' => $jurusan1Id, // Ganti dengan ID jurusan yang valid jika ada
-                'kode_program_studi' => 'TI1',
-                'nama_program_studi' => 'Teknologi Rekayasa Perangkat Lunak',
+                'kode_program_studi' => '41311',
+                'nama_program_studi' => 'Agribisnis',
                 'jenjang_pendidikan' => 'D4',
                 'akreditasi' => 'A',
                 'kuota_diterima' => 100,
@@ -32,11 +32,11 @@ class ProgramStudiSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id' => (string) Str::uuid(),
+                'id' => '7831ea95-1f70-4335-93c8-a81f14745b2c',
                 'jurusan_id' => $jurusan2Id, // Ganti dengan ID jurusan yang valid jika ada
-                'kode_program_studi' => 'TM1',
-                'nama_program_studi' => 'Sarjana Terapan Teknik Rekayasa Manufaktur',
-                'jenjang_pendidikan' => 'D4',
+                'kode_program_studi' => '55401',
+                'nama_program_studi' => 'Teknik Informatika',
+                'jenjang_pendidikan' => 'D3',
                 'akreditasi' => 'B',
                 'kuota_diterima' => 50,
                 'nomer_urut_nim' => 1,

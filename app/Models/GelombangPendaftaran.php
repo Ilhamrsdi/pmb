@@ -32,6 +32,6 @@ class GelombangPendaftaran extends Model
 
     public function berkas()
     {
-        return $this->hasMany(BerkasGelombangTransaksi::class, 'gelombang_id');
+        return $this->hasMany(BerkasGelombangTransaksi::class, 'berkas_id');
     }
 }

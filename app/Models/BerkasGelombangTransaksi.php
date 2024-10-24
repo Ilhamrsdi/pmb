@@ -14,4 +14,9 @@ class BerkasGelombangTransaksi extends Model
     {
         return $this->belongsTo(GelombangPendaftaran::class);
     }
+    public function berkas()
+    {
+        return $this->belongsTo(SettingBerkas::class, 'berkas_id');
+    }
+    
 }

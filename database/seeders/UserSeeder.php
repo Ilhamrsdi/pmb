@@ -18,34 +18,6 @@ class UserSeeder extends Seeder
     {
 
         User::create([
-            'nik' => '001',
-            'username' => 'user 1',
-            'email' => 'user1@gmail.com',
-            'password' => Hash::make('user123'),
-            'email_verified_at' => '2022-01-02 17:04:58',
-            'avatar' => 'avatar-1.jpg'
-        ]);
-
-        User::create([
-            'nik' => '002',
-            'username' => 'user 2',
-            'email' => 'user2@gmail.com',
-            'password' => Hash::make('user123'),
-            'email_verified_at' => '2022-01-02 17:04:58',
-            'avatar' => 'avatar-1.jpg'
-        ]);
-
-        User::create([
-            'nik' => '003',
-            'username' => 'user 3',
-            'email' => 'user3@gmail.com',
-            'password' => Hash::make('user123'),
-            'email_verified_at' => '2022-01-02 17:04:58',
-            'avatar' => 'avatar-1.jpg',
-            'role_id' => 2
-        ]);
-
-        User::create([
             'nik' => '000',
             'username' => 'admin',
             'email' => 'admin@gmail.com',
@@ -53,6 +25,15 @@ class UserSeeder extends Seeder
             'email_verified_at' => '2022-01-02 17:04:58',
             'avatar' => 'avatar-1.jpg',
             'role_id' => 1
+        ]);
+        User::create([
+            'nik' => '123',
+            'username' => 'panitia',
+            'email' => 'panitia@gmail.com',
+            'password' => Hash::make('panitia123'),
+            'email_verified_at' =>  '2022-01-02 17:04:58',
+            'avatar' => 'avatar-2.jpg',
+            'role_id' => 3
         ]);
     }
 }

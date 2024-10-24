@@ -12,6 +12,6 @@ class SettingBerkas extends Model
 
     public function berkas_gelombang_trans()
     {
-        return $this->hasMany(BerkasGelombangTransaksi::class, 'id');
+        return $this->hasMany(BerkasGelombangTransaksi::class, 'berkas_id');
     }
 }
