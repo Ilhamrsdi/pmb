@@ -166,6 +166,7 @@ Route::middleware([Pendaftar::class, 'auth'])->prefix('pendaftar')->group(functi
     Route::get('kelengkapan-data/{id}', [KelengkapanDataController::class, 'edit'])->name('kelengkapan-data.edit');
     Route::put('kelengkapan-data/{id}', [KelengkapanDataController::class, 'update'])->name('kelengkapan-data.update');
     Route::get('bukti/{id}', [BuktiController::class, 'show'])->name('bukti.show');
+    
 });
 
 
