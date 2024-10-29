@@ -32,7 +32,14 @@
                       <lord-icon src="https://cdn.lordicon.com/nocovwne.json" trigger="loop"
                         colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon>
                     </div>
-                    <h5>Silakan melengkapi data diri dan berkas pendukung</h5>
+                    <h5>
+                      @php
+                        use App\Models\Pendaftar; // Impor model Pendaftar
+                        $pendaftar = Pendaftar::where('user_id', auth()->user()->id)->first();
+                      @endphp
+                      <a href="{{ route('kelengkapan-data.edit', ['id' => $pendaftar->id]) }}" class="text-decoration-none">
+                        Silakan melengkapi data diri dan berkas pendukung
+                      </a>
                   </div>
                 </div>
               </div>

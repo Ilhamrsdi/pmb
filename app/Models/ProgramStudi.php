@@ -17,6 +17,7 @@ class ProgramStudi extends Model
         'nama_program_studi',
         'jenjang_pendidikan',
         'akreditasi',
+        'kode_nim',
         'nomer_urut_nim',
         'status',
     ];

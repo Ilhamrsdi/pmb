@@ -710,7 +710,7 @@
                   url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
                   type: 'GET',
                   headers: {
-                      'Authorization': 'Bearer 780|DZRuatWtZYtyRtm39NLgNCaTyD4xyqpnokHSdxOc' // Token Anda
+                      'Authorization': '785|DxzlIZ6zVYfrlDCE7QB9W8F0Vcz5hqAnfiqvtvMI' // Token Anda
                   },
                   success: function(response) {
                       var kabupatenKotaData = response.data;
@@ -751,7 +751,7 @@
                 url: 'http://backend.sepyankristanto.my.id/api/v1/master/sub-districts', // Endpoint untuk mendapatkan kecamatan
                 type: 'GET',
                 headers: {
-                    'Authorization': 'Bearer 780|DZRuatWtZYtyRtm39NLgNCaTyD4xyqpnokHSdxOc' // Token Anda
+                    'Authorization': '785|DxzlIZ6zVYfrlDCE7QB9W8F0Vcz5hqAnfiqvtvMI' // Token Anda
                 },
                 success: function(response) {
                     var kecamatanData = response.data;

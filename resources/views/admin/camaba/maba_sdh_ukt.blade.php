@@ -98,7 +98,7 @@
                                             <td class="email">{{ $row->gelombangPendaftaran->nama_gelombang }}</td>
                                             <td class="phone">{{ $row->programStudi?->nama_program_studi }}</td>
                                             <td class="status">
-                                                <span>{{ $row->detailPendaftar?->created_at->format('d-m-Y') }}</span>
+                                                <span>{{ $row->created_at->format('d-m-Y') }}</span>
                                             </td>
                                             <td>
                                                 <div class="d-flex gap-2">
@@ -114,7 +114,7 @@
                                                             <form action="{{ route('maba-ukt.store') }}" method="POST">
                                                                 @csrf
                                                                 <input type="hidden" name="id_pendaftar"
-                                                                    value="{{ $row->id }}">
+                                                                    value="{{ $row->pendaftar_id }}">
                                                                 <input type="hidden" name="kode_nim"
                                                                     value="{{ $row->programStudi?->kode_nim }}">
                                                                 <button type="submit"

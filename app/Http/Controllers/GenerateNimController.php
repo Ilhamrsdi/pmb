@@ -28,29 +28,55 @@ use App\Models\ProgramStudi;
     
 
     // Melakukan generate NIM secara massal
-public function generateNIMMassal(Request $request)
-{
-    $maba_nim = Pendaftar::whereHas('detailPendaftar', function ($query) {
-        $query->where('nim', '!=', null);
-    })
-
-        ->whereHas('programStudi', function ($query) use ($request) {
-            $query->where('kode_nim', $request->kode_nim);
-        })->latest()->first();
-        // dd($maba_nim->nim);
-        $nomer_urut = ProgramStudi::where('kode_nim', $request->kode_nim)->first();
+    public function generateNIMMassal(Request $request)
+    {
+        
+        // Cek semua data yang dikirim pada request
+        $id_pendaftar = $request->id_pendaftar[0] ?? null; // Ambil nilai pertama dari array atau null jika kosong
+        $kode_nim = $request->kode_nim ?? null;
+    
+        // Pastikan id_pendaftar dan kode_nim ada
+        if (!$id_pendaftar || !$kode_nim) {
+            return redirect()->back()->withErrors(['error' => 'ID pendaftar atau kode NIM tidak valid.']);
+        }
+    
+        // Dapatkan pendaftar terakhir yang memiliki NIM sesuai kode NIM program studi
+        $maba_nim = Pendaftar::where('nim', '!=', null)
+            ->whereHas('programStudi', function ($query) use ($kode_nim) {
+                $query->where('kode_nim', $kode_nim);
+            })->latest()->first();
+    
+        // Pastikan kode NIM ada pada ProgramStudi
+        $nomer_urut = ProgramStudi::where('kode_nim', $kode_nim)->first();
+        if (!$nomer_urut) {
+            return redirect()->back()->withErrors(['error' => 'Kode NIM tidak ditemukan pada program studi. Pastikan kode NIM yang dikirim benar.']);
+        }
+    
         $tahun_masuk = date('Y');
-        // dd($nomer_urut);
         $kode_kampus = 36;
-        if ($maba_nim == null || $maba_nim->nim == null) {
-            $nim_mhs = $kode_kampus . substr($tahun_masuk, -2) . $request->kode_nim . $nomer_urut->nomer_urut_nim;
+    
+        // Menentukan NIM mahasiswa baru
+        if ($maba_nim == null) {
+            $nim_mhs = $kode_kampus . substr($tahun_masuk, -2) . $kode_nim . $nomer_urut->nomer_urut_nim;
         } else {
             $nim_mhs = $maba_nim->nim + 1;
         }
-    //    dd($nim_mhs);
-       Pendaftar::where('id', $request->id_pendaftar)->update(['nim' => $nim_mhs]);
-       return redirect()->back();
-}
+    
+        // Update NIM pada tabel Pendaftar
+        $updated = Pendaftar::where('id', $id_pendaftar)->update(['nim' => $nim_mhs]);
+    
+        if ($updated) {
+            return redirect()->back()->with('success', 'NIM berhasil di-generate dan diperbarui.');
+        } else {
+            return redirect()->back()->withErrors(['error' => 'Gagal memperbarui NIM. Pastikan ID pendaftar valid.']);
+        }
+    }
+    
+    
+
+
+    
+    
 // public function generateNIMMassal(Request $request)
 // {
 //     // Debugging untuk melihat data request

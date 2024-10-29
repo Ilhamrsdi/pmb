@@ -97,7 +97,7 @@
                           </td>
                           <td class="customer_name">{{ $row->user->nik ?? 'Tidak Ada' }}</td>
                           <td class="customer_name">{{ $row->nama ?? 'Tidak Ada' }}</td>
-                          <td class="date">{{ $row->detailPendaftar?->tanggal_daftar ?? 'Tidak Ada' }}</td>
+                          <td class="date">{{ $row->detailPendaftar->tanggal_daftar ?? 'Tidak Ada' }}</td>
                           <td class="email">{{ $row->gelombangPendaftaran?->nama_gelombang ?? 'Tidak Ada' }}</td>
                           <td class="phone">{{ $row->programStudi?->nama_program_studi ?? 'Tidak Ada' }}</td>
                           <td class="status">
