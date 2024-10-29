@@ -105,17 +105,17 @@
                           class="fw-medium link-primary">#VZ2101</a></td>
                       <td class="customer_name">{{ $row->user->nik }}</td>
                       <td class="customer_name">{{ $row->nama }}</td>
-                      <td class="date">{{ $row->detailPendaftar?->created_at->format('d-m-Y') }}</td>
+                      <td class="date">{{ $row->created_at->format('d-m-Y') }}</td>
                       <td class="email">{{ $row->gelombangPendaftaran->nama_gelombang }}</td>
                       <td class="phone">{{ $row->programStudi?->nama_program_studi }}</td>
-                      @if ($row->detailPendaftar?->status_ukt == 'sudah')
+                      @if ($row->status_ukt == 'sudah')
                         <td class="status"><span class="badge badge-soft-success text-uppercase">SUDAH DIATUR</span>
                         </td>
                       @else
                         <td class="status"><span class="badge badge-soft-danger text-uppercase">BELUM DIATUR</span>
                         </td>
                       @endif
-                      @if ($row->detailPendaftar?->status_pembayaran == 'sudah')
+                      @if ($row->status_pembayaran == 'sudah')
                         <td class="status"><span class="badge badge-soft-success text-uppercase">SUDAH
                             MEMBAYAR</span>
                         </td>

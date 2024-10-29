@@ -7,32 +7,44 @@ use App\Models\Jawaban;
 use Illuminate\Http\Request;
 use App\Models\Soal;
 use App\Models\TesMaba;
-use DB;
 
 class SoalTesMabaController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function index($id)
     {
-        // Mengambil data tes berdasarkan ID
-        $tesMaba = TesMaba::find($id);
-    
-        // Jika tes tidak ditemukan, lempar error atau redirect dengan pesan
-        if (!$tesMaba) {
-            return redirect()->back()->with('error', 'Tes tidak ditemukan.');
+        // Validasi: pastikan ID adalah angka
+        if (!is_numeric($id)) {
+            return redirect()->back()->with('error', 'ID tidak valid.');
         }
     
-        // Mengambil semua soal yang terkait dengan tes_maba_id
-        $soals = Soal::where('tes_maba_id', $id)->get();
+        // Mengambil data tes berdasarkan ID
+        $tesMaba = TesMaba::find($id);
+        // if (!$tesMaba) {
+        //     return redirect()->back()->with('error', 'Tes tidak ditemukan.');
+        // }
     
-        // Menyediakan data tes dan soal ke view
-        return view('pendaftar.ujian.soal', compact('tesMaba', 'soals'));
+        // Ambil data soal
+        $soals = Soal::where('tes_maba_id', $id)->get();
+        $pendaftar_id = auth()->user()->id;
+    
+        return view('pendaftar.ujian.soal', compact('tesMaba', 'soals', 'pendaftar_id'));
     }
+    
+    
+    
 
+    /**
+     * Menampilkan hasil ujian berdasarkan pendaftar_id.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function result(Request $request)
     {
         // Validasi input untuk memastikan pendaftar_id ada
@@ -41,8 +53,7 @@ class SoalTesMabaController extends Controller
         ]);
 
         // Mengambil hasil ujian berdasarkan ID pendaftar
-        // Mengambil hasil ujian berdasarkan ID pendaftar
-        $ujian = Soal::where('pendaftar_id', $request->pendaftar_id)->first();
+        $ujian = Jawaban::where('pendaftar_id', $request->pendaftar_id)->first();
 
         // Jika hasil ujian tidak ditemukan, kembalikan ke halaman sebelumnya dengan pesan
         if (!$ujian) {
@@ -50,132 +61,93 @@ class SoalTesMabaController extends Controller
         }
 
         // Mengambil semua detail hasil ujian yang terkait
-        $examResults = $ujian->results; // Pastikan relasi ini ada di model HasilUjian
+        $examResults = $ujian->results; // Pastikan relasi ini ada di model Jawaban
 
         // Kirim variabel ke view
-        return view('pendaftar.ujian.result', compact('examResults')); // Hanya kirim examResults
+        return view('pendaftar.ujian.result', compact('examResults'));
     }
-    
-    
-    // public function start($id)
-    // {
-    //   // Ambil data berdasarkan ID
-    // $tesMaba = TesMaba::find($id);
-    // $soals = Soal::where('tes_maba_id', $id)->get();
-    // if (!$tesMaba) {
-    //     // Jika data tidak ditemukan, bisa kembalikan 404
-    //     abort(404);
-    // }
 
-    //     return view('pendaftar.ujian.soal', compact(['tesMaba','soals']));
-    //     //
-    // }
     /**
-     * Show the form for creating a new resource.
+     * Menyimpan jawaban ujian.
      *
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function create()
+    public function storeAnswers(Request $request)
     {
-        //
+        $dataJawaban = $request->answers; // Mengambil jawaban dari request
+    
+        foreach ($dataJawaban as $soal_id => $jawaban) {
+            Jawaban::updateOrCreate(
+                [
+                    'pendaftar_id' => $request->pendaftar_id, // ID pendaftar
+                    'soal_id' => $soal_id, // ID soal
+                ],
+                [
+                    'jawaban' => $jawaban, // Menyimpan jawaban
+                    'status' => 1, // Set status menjadi 1 setelah ujian
+                ]
+            );
+        }
+    
+        return response()->json(['message' => 'Jawaban berhasil disimpan.'], 200);
     }
+    
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan data soal.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(Request $request)
-    // {
-
-    //     // for ($i=0; $i < $request->jlm_soal; $i++) {
-    //     //     array_push($arr_soal, $request->soal[$i]);
-    //     //     array_push($arr_jawaban, $request->jawaban[$i]);
-    //     // array_push($arr_jawaban, $request->JB[$i]);
-    //     // array_push($arr_jawaban, $request->JC[$i]);
-    //     // array_push($arr_jawaban, $request->JD[$i]);
-    //     // $a[$i] = $request->soal[$i];
-    //     // }
-
-
-    //     $arr_soal = $request->soal;
-    //     $arr_jawaban = $request->jawaban;
-    //     $arr_jawaban1 = $request->jawaban1;
-    //     $arr_jawaban2 = $request->jawaban2;
-    //     $arr_jawaban3 = $request->jawaban3;
-    //     // dd($arr_jawaban2);
-    //     //     $data = [];
-    //     //     foreach($arr_soal as $seat_id) {
-    //     //         $Soal[] = array(
-    //     //             'tes_maba_id' => $request->id_tes,
-    //     //             'soal' => $arr_soal,
-    //     //             'jawaban' => $arr_jawaban
-    //     //         );
-    //     //   Soal::insert(json_encode($data));
-
-    //     for ($i = 0; $i < count($arr_soal); $i++) {
-    //         $Soal[] = [
-    //             'tes_maba_id' => $request->id_tes,
-    //             'soal' => $arr_soal[$i],
-    //             'jawaban' => $arr_jawaban[$i],
-    //             'jawaban1' => $arr_jawaban1[$i],
-    //             'jawaban2' => $arr_jawaban2[$i],
-    //             'jawaban3' => $arr_jawaban3[$i],
-    //         ];
-    //     }
-    //     if (Soal::where('tes_maba_id', $request->id_tes)->exists()) {
-
-    //         Soal::where('tes_maba_id', $request->id_tes)->update($Soal);
-    //     } else {
-    //         Soal::insert($Soal);
-    //     }
-
-    //     return redirect()->back();
-    // }
     public function store(Request $request)
-{
-    $arr_soal = $request->soal;
-    $arr_jawaban = $request->jawaban;
-    $arr_jawaban1 = $request->jawaban1;
-    $arr_jawaban2 = $request->jawaban2;
-    $arr_jawaban3 = $request->jawaban3;
+    {
+        // Validasi input
+        $request->validate([
+            'soal' => 'required|array',
+            'jawaban' => 'required|array',
+            'id_tes' => 'required|exists:tes_mabas,id',
+        ]);
 
-    for ($i = 0; $i < count($arr_soal); $i++) {
-        $data = [
-            'tes_maba_id' => $request->id_tes,
-            'soal' => $arr_soal[$i],
-            'jawaban' => $arr_jawaban[$i],
-            'jawaban1' => $arr_jawaban1[$i],
-            'jawaban2' => $arr_jawaban2[$i],
-            'jawaban3' => $arr_jawaban3[$i],
-        ];
+        $arr_soal = $request->soal;
+        $arr_jawaban = $request->jawaban;
+        $arr_jawaban1 = $request->jawaban1 ?? [];
+        $arr_jawaban2 = $request->jawaban2 ?? [];
+        $arr_jawaban3 = $request->jawaban3 ?? [];
 
-        // Cek jika soal sudah ada berdasarkan id_tes dan soal
-        if (Soal::where('tes_maba_id', $request->id_tes)->where('soal', $arr_soal[$i])->exists()) {
-            // Update soal yang sudah ada
-            Soal::where('tes_maba_id', $request->id_tes)->where('soal', $arr_soal[$i])->update($data);
-        } else {
-            // Insert soal baru jika belum ada
-            Soal::create($data);
+        for ($i = 0; $i < count($arr_soal); $i++) {
+            $data = [
+                'tes_maba_id' => $request->id_tes,
+                'soal' => $arr_soal[$i],
+                'jawaban' => $arr_jawaban[$i],
+                'jawaban1' => $arr_jawaban1[$i] ?? null,
+                'jawaban2' => $arr_jawaban2[$i] ?? null,
+                'jawaban3' => $arr_jawaban3[$i] ?? null,
+            ];
+
+            // Cek jika soal sudah ada berdasarkan id_tes dan soal
+            Soal::updateOrCreate(
+                [
+                    'tes_maba_id' => $request->id_tes,
+                    'soal' => $arr_soal[$i]
+                ],
+                $data
+            );
         }
+
+        return redirect()->back()->with('success', 'Data soal berhasil disimpan.');
     }
-
-    return redirect()->back();
-}
-
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         $jumlah_soal = TesMaba::where('id', $id)->first();
         $soal = TesMaba::with('soal')->where('id', $id)->first();
-        // dd($jumlah_soal, $soal);
 
         return view('admin.camaba.soal_tes_maba', compact(['jumlah_soal', 'soal']));
     }
@@ -183,7 +155,7 @@ class SoalTesMabaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -194,8 +166,8 @@ class SoalTesMabaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -206,7 +178,7 @@ class SoalTesMabaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

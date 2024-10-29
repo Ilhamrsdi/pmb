@@ -44,7 +44,10 @@ class CamabaAccController extends Controller
         if ($request->statusacc != '') {
             $query->where('detail_pendaftars.status_acc', $request->statusacc);
         }
-    
+        
+        if ($request->tanggal_daftar !='') {
+            $query->where('detail_pendaftars.tanggal_daftar', $request->tanggal_daftar);
+        }
         // Ambil hasil query
         $camaba_acc = $query->get();
     

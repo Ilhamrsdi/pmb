@@ -27,7 +27,8 @@ class CamabaSdhBlmUKTController extends Controller
 
     // Relasi dan join yang diperlukan
     $query->with('gelombangPendaftaran', 'programStudi', 'detailPendaftar', 'refNegara', 'user')
-        ->join('detail_pendaftars', 'pendaftars.id', '=', 'detail_pendaftars.pendaftar_id');
+        ->join('detail_pendaftars', 'pendaftars.id', '=', 'detail_pendaftars.pendaftar_id')
+        ->distinct();
 
     // Filter berdasarkan gelombang pendaftaran
     if ($request->gelombang != '') {
@@ -55,6 +56,7 @@ class CamabaSdhBlmUKTController extends Controller
         return response()->json(['camaba_ukt' => $camaba_ukt]);
     }
 
+    // return $camaba_ukt;
     return view('admin.camaba.camaba_sdh_blm_ukt', compact('camaba_ukt', 'gelombangPendaftaran', 'programStudi'));
 }
 

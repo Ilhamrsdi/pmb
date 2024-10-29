@@ -75,4 +75,24 @@ class Pendaftar extends Model
     {
         return $this->belongsTo(refRegion::class);
     }
+
+    public function generateNIM()
+    {
+        // Menghasilkan NIM berdasarkan format yang diinginkan
+        // Contoh: Kode Kampus + Tahun Masuk + Kode Prodi + Nomor Urut
+        $tahun_masuk = date('y');
+        $kode_kampus = 36;
+        $kode_prodi = $this->programStudi->kode_prodi;
+        $kode_nim = $this->programStudi->kode_nim;
+        // Mengambil nomor urut terakhir untuk menghasilkan NIM baru
+        $nomor_urut = $this->getLastNomorUrut() + 1; // Anda perlu mendefinisikan logika getLastNomorUrut()
+
+        return $kode_kampus . $tahun_masuk . $kode_prodi . $kode_nim . str_pad($nomor_urut, 3, '0', STR_PAD_LEFT);
+    }
+
+    // private function getLastNomorUrut()
+    // {
+    //     // Logic to get the last 'nomor_urut' from the database
+    //     return static::where('kode_prodi', $this->kode_prodi)->max('nomor_urut') ?? 0;
+    // }
 }

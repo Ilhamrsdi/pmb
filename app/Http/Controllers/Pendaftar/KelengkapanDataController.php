@@ -31,16 +31,14 @@ class KelengkapanDataController extends Controller
     $client = new Client();
     
     // Mengambil data provinsi dari API Fariz
-    $authToken = 'Bearer ' . '780|DZRuatWtZYtyRtm39NLgNCaTyD4xyqpnokHSdxOc';
+    $authToken = 'Bearer ' . '785|DxzlIZ6zVYfrlDCE7QB9W8F0Vcz5hqAnfiqvtvMI';
     $responseProvinsi = $client->get('http://backend.sepyankristanto.my.id/api/v1/master/provinces', [
         'headers' => [
             'Authorization' => $authToken,
         ],
     ]);
     $provinsi = json_decode($responseProvinsi->getBody(), true)['data']; // Ambil array 'provinsi'
-  
-  
-    $authToken = 'Bearer ' . '780|DZRuatWtZYtyRtm39NLgNCaTyD4xyqpnokHSdxOc'; // Ganti dengan token yang sesuai
+
 
     $responseKendaraan = $client->get('http://backend.sepyankristanto.my.id/api/v1/master/transportations', [
         'headers' => [
@@ -197,8 +195,9 @@ $kecamatan = json_decode($responsekecamatan->getBody(), true)['data'];
                 $value->move(public_path('assets/file/' . $key . '/'), $nama);
             }
         }
-
-        return redirect(route('kelengkapan-data.edit', $id));
+        return redirect()->route('dashboard');
+        // return redirect(route('kelengkapan-data.edit', $id));
+        // return 'testing kelengkapan data';
     }
 
 //   use Illuminate\Support\Facades\Http; // Pastikan ini di-import
