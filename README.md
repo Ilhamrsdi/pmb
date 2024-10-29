@@ -11,7 +11,7 @@
 1. Buka terminal dan clone projek ini dari github
 
 ```bash
-git clone https://github.com/Dhikaaaa/pmb-poliwangi.git
+git clone https://github.com/Ilhamrsdi/pmb.git
 ```
 
 2. Arahkan lokasi terminal ke lokasi projek yang sudah di clone
