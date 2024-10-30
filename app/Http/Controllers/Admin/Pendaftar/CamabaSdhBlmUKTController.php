@@ -70,6 +70,40 @@ class CamabaSdhBlmUKTController extends Controller
         //
     }
 
+    public function updateStatus(Request $request)
+{
+    $request->validate([
+        'status_pembayaran' => 'required', // Validasi input
+        'id' => 'required|exists:detail_pendaftars,id' // Pastikan ID pendaftar ada pada tabel detail_pendaftars
+    ]);
+
+    try {
+        // Cari detail pendaftar berdasarkan ID
+        $detailPendaftar = DetailPendaftar::findOrFail($request->id);
+
+        // Update status pembayaran
+        $detailPendaftar->update([
+            'status_pembayaran' => $request->status_pembayaran,
+        ]);
+
+        // Kembalikan response JSON jika request adalah AJAX, atau redirect kembali
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'Status pembayaran berhasil diperbarui.']);
+        }
+
+        return redirect()->back()->with('success', 'Status pembayaran berhasil diperbarui.');
+    } catch (\Exception $e) {
+        \Log::error('Error updating status: ' . $e->getMessage());
+        
+        if ($request->ajax()) {
+            return response()->json(['success' => false, 'message' => 'Gagal memperbarui status.']);
+        }
+
+        return redirect()->back()->withErrors('Gagal memperbarui status.');
+    }    
+}
+
+
     /**
      * Store a newly created resource in storage.
      *

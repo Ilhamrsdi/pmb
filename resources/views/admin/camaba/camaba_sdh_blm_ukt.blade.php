@@ -120,9 +120,37 @@
                             MEMBAYAR</span>
                         </td>
                       @else
-                        <td class="status"><span class="badge badge-soft-danger text-uppercase">BELUM MEMBAYAR</span>
+                        <td class="status">
+                          <a class="badge badge-soft-danger text-uppercase" data-bs-toggle="modal" data-bs-target="#exampleModal-{{$row->id}}">
+                            {{$row->status_pembayaran ?? 'Belum Membayar'}}
+                        </a>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal-{{$row->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel-{{$row->id}}" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel-{{$row->id}}">Update Status Pembayaran {{$row->id}}</h5>
+                              </div>
+                              <form action="{{ route('camaba-ukt.update-status') }}" method="POST">
+                                @csrf
+                                <div class="modal-body">
+                                  Apakah Anda yakin ingin mengubah status pembayaran?
+                                  Mohon Cek Kembali Data Anda Sebelum Mengubah Status Pembayaran
+
+                                  <input type="hidden" value="sudah" name="status_pembayaran">
+                                  <input type="hidden" value="{{$row->id}}" name="id">
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                                  <button type="submit" class="btn btn-primary">Ya</button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                                                    @endif
                         </td>
-                      @endif
                       <td>
                         <div class="d-flex gap-2">
                           <div class="edit">

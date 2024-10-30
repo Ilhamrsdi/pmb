@@ -95,6 +95,8 @@ Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
     Route::resource('pendaftar', PendaftarController::class);
  // Route untuk update status pendaftaran
 Route::post('/pendaftar/update-status', [PendaftarController::class, 'updateStatus'])->name('pendaftar.update-status');
+// Route untuk update status pembayaran
+Route::post('/camaba-ukt/update-status', [CamabaSdhBlmUKTController::class, 'updateStatus'])->name('camaba-ukt.update-status');
 
 
     Route::post('pendaftar-excel', [ExcelController::class, 'import'])->name('import.pendaftar');
