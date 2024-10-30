@@ -57,7 +57,7 @@ class PendaftarController extends Controller
         if ($request->ajax()) {
             return response()->json(['pendaftar' => $pendaftar]);
         }
-    
+        // return $pendaftar;
         // Mengirimkan data ke view
         return view('admin.camaba.pendaftar', compact('pendaftar', 'gelombangPendaftaran', 'programStudi'));
     }

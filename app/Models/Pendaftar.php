@@ -18,6 +18,7 @@ class Pendaftar extends Model
         'program_studi_id',
         'gelombang_id',
         'ukt_id',
+        'nim'
     ];
 
     public function user()
