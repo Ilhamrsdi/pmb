@@ -30,48 +30,55 @@ use App\Models\ProgramStudi;
     // Melakukan generate NIM secara massal
     public function generateNIMMassal(Request $request)
     {
-        
-        // Cek semua data yang dikirim pada request
-        $id_pendaftar = $request->id_pendaftar[0] ?? null; // Ambil nilai pertama dari array atau null jika kosong
-        $kode_nim = $request->kode_nim ?? null;
-    
-        // Pastikan id_pendaftar dan kode_nim ada
-        if (!$id_pendaftar || !$kode_nim) {
-            return redirect()->back()->withErrors(['error' => 'ID pendaftar atau kode NIM tidak valid.']);
-        }
-    
-        // Dapatkan pendaftar terakhir yang memiliki NIM sesuai kode NIM program studi
-        $maba_nim = Pendaftar::where('nim', '!=', null)
-            ->whereHas('programStudi', function ($query) use ($kode_nim) {
-                $query->where('kode_nim', $kode_nim);
-            })->latest()->first();
-    
-        // Pastikan kode NIM ada pada ProgramStudi
-        $nomer_urut = ProgramStudi::where('kode_nim', $kode_nim)->first();
-        if (!$nomer_urut) {
-            return redirect()->back()->withErrors(['error' => 'Kode NIM tidak ditemukan pada program studi. Pastikan kode NIM yang dikirim benar.']);
-        }
-    
+        // Mendapatkan tahun masuk dengan format empat angka, misalnya "2024"
         $tahun_masuk = date('Y');
+
+        // Kode kampus tetap diatur ke 36
         $kode_kampus = 36;
-    
-        // Menentukan NIM mahasiswa baru
-        if ($maba_nim == null) {
-            $nim_mhs = $kode_kampus . substr($tahun_masuk, -2) . $kode_nim . $nomer_urut->nomer_urut_nim;
-        } else {
-            $nim_mhs = $maba_nim->nim + 1;
+
+        // Pastikan 'id_pendaftar' adalah array
+        if (is_array($request->id_pendaftar)) {
+            foreach ($request->id_pendaftar as $id) {
+                // Ambil data pendaftar berdasarkan ID
+                $pendaftar = Pendaftar::with('programStudi')->find($id);
+                // Lanjutkan ke pendaftar berikutnya jika data tidak ditemukan atau pendaftar tidak memiliki kode NIM
+                if (!$pendaftar || !$pendaftar->programStudi || !$pendaftar->programStudi->kode_nim) {
+                    continue;
+                }
+                
+                // Ambil kode NIM berdasarkan program studi pendaftar
+                $kode_nim = $pendaftar->programStudi->kode_nim;
+
+                // Cari NIM terakhir yang sudah terdaftar untuk program studi ini
+                $maba_nim = Pendaftar::whereHas('detailPendaftar', function ($query) {
+                    $query->where('nim', '!=', null);
+                })
+                    ->whereHas('programStudi', function ($query) use ($kode_nim) {
+                        $query->where('kode_nim', $kode_nim);
+                    })
+                    ->latest()
+                    ->first();
+                    // Mendapatkan nomor urut dari program studi
+                    $nomer_urut = ProgramStudi::where('kode_nim', $kode_nim)->first();
+
+                // Generate NIM berdasarkan data terakhir atau mulai dari nomor urut program studi
+                if ($maba_nim == null || $maba_nim->nim == null) {
+                    // Jika belum ada NIM, mulai dari nomor urut default program studi
+                    $nim_mhs = $kode_kampus . substr($tahun_masuk, -2) . $kode_nim . $nomer_urut->nomer_urut_nim;
+                } else {
+                    // Jika ada NIM, tambahkan 1 dari NIM terakhir
+                    $nim_mhs = $maba_nim->nim + 1;
+                }
+
+                // Update NIM untuk pendaftar saat ini
+              $pendaftar->update(['nim' => $nim_mhs]) ;
+                
+            }
         }
-    
-        // Update NIM pada tabel Pendaftar
-        $updated = Pendaftar::where('id', $id_pendaftar)->update(['nim' => $nim_mhs]);
-    
-        if ($updated) {
-            return redirect()->back()->with('success', 'NIM berhasil di-generate dan diperbarui.');
-        } else {
-            return redirect()->back()->withErrors(['error' => 'Gagal memperbarui NIM. Pastikan ID pendaftar valid.']);
-        }
+
+        // Kembali ke halaman sebelumnya setelah proses selesai
+        return redirect()->back();
     }
-    
     
 
 
