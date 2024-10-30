@@ -31,7 +31,7 @@ class KelengkapanDataController extends Controller
     $client = new Client();
     
     // Mengambil data provinsi dari API Fariz
-    $authToken = 'Bearer ' . '780|DZRuatWtZYtyRtm39NLgNCaTyD4xyqpnokHSdxOc';
+    $authToken = 'Bearer ' . '786|BB3GSA7F3ypyGRLgYCKKrCY0CHzGEByTDBofIrDR';
     $responseProvinsi = $client->get('http://backend.sepyankristanto.my.id/api/v1/master/provinces', [
         'headers' => [
             'Authorization' => $authToken,
@@ -40,7 +40,7 @@ class KelengkapanDataController extends Controller
     $provinsi = json_decode($responseProvinsi->getBody(), true)['data']; // Ambil array 'provinsi'
   
   
-    $authToken = 'Bearer ' . '780|DZRuatWtZYtyRtm39NLgNCaTyD4xyqpnokHSdxOc'; // Ganti dengan token yang sesuai
+    $authToken = 'Bearer ' . '786|BB3GSA7F3ypyGRLgYCKKrCY0CHzGEByTDBofIrDR'; // Ganti dengan token yang sesuai
 
     $responseKendaraan = $client->get('http://backend.sepyankristanto.my.id/api/v1/master/transportations', [
         'headers' => [
@@ -126,6 +126,7 @@ $kecamatan = json_decode($responsekecamatan->getBody(), true)['data'];
     $list_berkas = BerkasGelombangTransaksi::where('gelombang_id', $pendaftar->gelombang_id)
         ->with('berkas') // Eager load relasi settingBerkas
         ->get();
+        // return $list_berkas;
     // dd($list_berkas);    
     // Kirim data ke view
     return view('pendaftar.kelengkapan-data.kelengkapan-data', compact(
@@ -191,6 +192,7 @@ $kecamatan = json_decode($responsekecamatan->getBody(), true)['data'];
             'atribut_baju_lapangan' => $request->atribut_baju_lapangan,
         ]);
 
+        // return Pendaftar::find($id);
         if (!empty($request->file)) {
             foreach ($request->file as $key => $value) {
                 $nama =  $id . '.' . $value->extension();
