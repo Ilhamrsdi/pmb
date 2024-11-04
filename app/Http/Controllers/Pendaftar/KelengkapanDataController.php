@@ -31,7 +31,8 @@ class KelengkapanDataController extends Controller
     $client = new Client();
     
     // Mengambil data provinsi dari API Fariz
-    $authToken = 'Bearer ' . '785|DxzlIZ6zVYfrlDCE7QB9W8F0Vcz5hqAnfiqvtvMI';
+
+    $authToken = 'Bearer ' . '786|BB3GSA7F3ypyGRLgYCKKrCY0CHzGEByTDBofIrDR';
     $responseProvinsi = $client->get('http://backend.sepyankristanto.my.id/api/v1/master/provinces', [
         'headers' => [
             'Authorization' => $authToken,
@@ -147,9 +148,9 @@ $kecamatan = json_decode($responsekecamatan->getBody(), true)['data'];
             "kendaraan"         => $request->kendaraan,
             "kewarganegaraan"   => $request->kewarganegaraan,
             "negara"            => $request->negara,
-            "provinsi"          => $request->provinsi,
-            "kabupaten"         => $request->kabupaten,
-            "kecamatan"         => $request->kecamatan,
+            "provinsi"          => $request->provinsi ?? 'jatim',
+            "kabupaten"         => $request->kabupaten ?? 'banyuwangi',
+            "kecamatan"         => $request->kecamatan ?? 'banyuwangi',
             "kelurahan_desa"    => $request->kelurahan_desa,
             "rt"                => $request->rt,
             "rw"                => $request->rw,
@@ -188,13 +189,27 @@ $kecamatan = json_decode($responsekecamatan->getBody(), true)['data'];
             'atribut_jas_lab' => $request->atribut_jas_lab,
             'atribut_baju_lapangan' => $request->atribut_baju_lapangan,
         ]);
-
+        // $namas = [];
         if (!empty($request->file)) {
             foreach ($request->file as $key => $value) {
+                $directory = public_path('assets/file/' . $key . '/');
+                $extensions = ['pdf','jpg', 'png', 'jpeg'];
+
+                // Cek dan hapus file lama jika ada
+                foreach ($extensions as $ext) {
+                    $existingFile = $directory . $id . '.' . $ext;
+                    if (file_exists($existingFile)) {
+                        unlink($existingFile); // Menghapus file lama
+                    }
+                }
                 $nama =  $id . '.' . $value->extension();
-                $value->move(public_path('assets/file/' . $key . '/'), $nama);
+                // $namas[]    = $nama;
+                $value->move($directory, $nama);
             }
         }
+
+        // return $namas;
+
         return redirect()->route('dashboard');
         // return redirect(route('kelengkapan-data.edit', $id));
         // return 'testing kelengkapan data';
