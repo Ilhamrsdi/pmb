@@ -591,20 +591,20 @@
                   <div class="row">
                     @foreach ($list_berkas as $berkas)
                         <div class="col-lg-12 mb-3">
-                            <label for="{{ 'file-' . $berkas->nama_berkas }}"
+                            <label for="{{ 'assets/file_pendamping-' . $berkas->nama_berkas }}"
                                 class="d-flex justify-content-between align-items-center">
                                 Upload Berkas {{ Str::upper($berkas->nama_berkas) }}
                                 <a class="btn btn-sm btn-primary" 
-                                   href="{{ asset('file_pendamping/' . $berkas->path) }}" 
-                                   download>Download Berkas</a>
+                                href="{{ url('assets/file_pendamping/' . $berkas->path) }}" 
+                                download>Download Berkas</a>
                             </label>
                 
-                            <label for="{{ 'file-' . $berkas->nama_berkas }}" class="drop-container">
+                            <label for="{{ 'assets/file_pendamping-' . $berkas->nama_berkas }}" class="drop-container">
                                 <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
                                 <h4 class="drop-title">Drop files here or click to upload.</h4>
                                 <input type="file" 
-                                       name="{{ 'file[' . $berkas->nama_berkas . ']' }}" 
-                                       id="{{ 'file-' . $berkas->nama_berkas }}" 
+                                       name="{{ 'assets/file_pendamping[' . $berkas->nama_berkas . ']' }}" 
+                                       id="{{ 'assets/file_pendamping-' . $berkas->nama_berkas }}" 
                                        accept="application/pdf,image/jpg,image/jpeg,image/png" 
                                        required>
                             </label>

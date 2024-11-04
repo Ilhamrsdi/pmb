@@ -264,7 +264,7 @@ class DashboardController extends Controller
                             $id_pendaftar = $data->detailPendaftar->id;
                             $nama_pendaftar = $data->nama;
                             $dataPendaftar = $data->detailPendaftar->pendaftar_id;
-                            return view('pendaftar.dashboard.dashboard-ukt', compact('nomer_va', 'expired_va', 'nominal_ukt', 'nama_pendaftar', 'id_pendaftar', 'dataPendaftar'));
+                            return view('pendaftar.dashboard.dashboard-ukt', compact('nomer_va', 'expired_va', 'nominal_ukt', 'nama_pendaftar', 'id_pendaftar', 'dataPendaftar', 'tata_cara'));
                         } else {
                             return redirect(route('bukti.show', $data->id));
                         }

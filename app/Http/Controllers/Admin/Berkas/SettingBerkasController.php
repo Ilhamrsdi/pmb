@@ -44,17 +44,22 @@ class SettingBerkasController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+{
+    // Tentukan path untuk folder public/asset/file_pendamping
+    $path = public_path('assets/file_pendamping/' . $request->path);
+    
+    // Buat folder secara rekursif jika belum ada
+    File::makeDirectory($path, $mode = 0777, true, true);
+    
+    // Simpan data berkas ke database
+    $berkas = SettingBerkas::create([
+        "nama_berkas" => $request->nama_berkas,
+        "path" => 'asset/file_pendamping/' . $request->path,
+    ]);
 
-        $path = public_path() . '/file_pendamping/' . $request->path;
-        File::makeDirectory($path, $mode = 0777, true, true);
-        $berkas = SettingBerkas::create([
-            "nama_berkas" => $request->nama_berkas,
-            "path"  => $request->path,
-        ]);
+    return redirect()->back();
+}
 
-        return redirect()->back();
-    }
 
     /**
      * Display the specified resource.
