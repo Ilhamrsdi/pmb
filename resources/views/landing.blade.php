@@ -382,8 +382,8 @@
                 
                 <div class="row">
                   <div class="col-lg-12 text-end">
-                    <a data-bs-toggle="modal" data-bs-target="#forgetcode" class="btn btn-warning">Lupa Kode
-                      Bayar</a>
+                    <a data-bs-toggle="modal" data-bs-target="#forgetcode" class="btn btn-warning">Lupa Kode Virtual Account
+                      Pembayaran</a>
                     <input type="submit" id="submit" name="send" class="submitBnt btn btn-primary"
                       value="Daftar">
                   </div>
