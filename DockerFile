@@ -1,0 +1,33 @@
+# Menggunakan image PHP resmi dengan Nginx
+FROM php:8.0-fpm
+
+# Install dependencies sistem
+RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev zip git
+
+# Install ekstensi PHP
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd pdo pdo_mysql
+
+# Menentukan direktori kerja di dalam container
+WORKDIR /var/www
+
+# Salin file composer.json dan composer.lock
+COPY composer.json composer.lock /var/www/
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Install dependensi proyek
+RUN composer install
+
+# Salin file proyek Laravel ke dalam container
+COPY . /var/www
+
+# Menentukan izin file
+RUN chown -R www-data:www-data /var/www
+
+# Menyediakan port 9000
+EXPOSE 9000
+
+# Menjalankan server PHP-FPM
+CMD ["php-fpm"]
