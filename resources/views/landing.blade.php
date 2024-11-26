@@ -572,7 +572,7 @@
               </div>
               <div class="mt-4 fs-13">
                 <p class="text-white">Politeknik Negeri Poliwangi</p>
-                <p class="ff-secondary text-white">Kolaborasi antara pengetahuan dan kemampuan teoritis untuk
+                <p class="ff-secondary text-muted">Kolaborasi antara pengetahuan dan kemampuan teoritis untuk
                   penerapan kesatuan
                   ilmu dalam dunia bisnis dan dunia kerja.</p>
               </div>
