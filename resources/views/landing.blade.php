@@ -501,6 +501,9 @@
           <!-- end col -->
           <div class="col-lg-4">
             <div class="process-card mt-4">
+              <div class="process-arrow-img d-none d-lg-block">
+                <img src="assets/images/landing/process-arrow-img.png" alt="" class="img-fluid">
+              </div>
               <div class="avatar-sm icon-effect mx-auto mb-4">
                 <div class="avatar-title bg-transparent text-success rounded-circle h1">
                   <i class="ri-book-mark-line"></i>
