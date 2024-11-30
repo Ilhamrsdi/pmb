@@ -925,46 +925,55 @@
     });
   </script>
 <script>
-  $(document).ready(function() {
-      $('#provinsi').change(function() {
-          var provinsiId = $(this).val();
+    $(document).ready(function() {
+        $('#provinsi').change(function() {
+            var provinsiId = $(this).val();
+    
+            // Kosongkan dropdown kabupaten
+            $('#kabupaten').empty();
+            $('#kabupaten').append('<option value="">-- Pilih Kabupaten/Kota --</option>');
+    
+            // Cek jika provinsiId tidak kosong
+            if (provinsiId) {
+                $.ajax({
+                    url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
+                    type: 'GET',
+                    headers: {
+                        'Authorization': '802|vIEfwFi4JdPpzUwv3urejddukoentneZdubkuklc' // Token Anda
+                    },
+                    success: function(response) {
+                        // Cek jika data tersedia
+                        if (response && response.data) {
+                            var kabupatenKotaData = response.data;
+    
+                            // Filter data kabupaten/kota berdasarkan provinsi
+                            var kabupatenAdded = false; // Flag untuk cek apakah ada kabupaten yang ditambahkan
+                            $.each(kabupatenKotaData, function(key, kabupaten) {
+                                // Cek apakah ID parent kabupaten sama dengan ID provinsi
+                                if (kabupaten.parent.id == provinsiId) {
+                                    $('#kabupaten').append('<option value="' + kabupaten.id + '">' + kabupaten.name.trim() + '</option>');
+                                    kabupatenAdded = true; // Menandakan ada kabupaten yang ditambahkan
+                                }
+                            });
+    
+                            // Cek apakah ada kabupaten yang ditambahkan
+                            if (!kabupatenAdded) {
+                                $('#kabupaten').append('<option value="">Tidak ada Kabupaten/Kota</option>');
+                            }
+                        } else {
+                            $('#kabupaten').append('<option value="">Tidak ada data kabupaten/kota</option>');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching data:', error);
+                        $('#kabupaten').append('<option value="">Gagal mengambil data</option>');
+                    }
+                });
+            }
+        });
+    });
+  </script>
   
-          // Kosongkan dropdown kabupaten
-          $('#kabupaten').empty();
-          $('#kabupaten').append('<option value="">-- Pilih Kabupaten/Kota --</option>');
-  
-          // Cek jika provinsiId tidak kosong
-          if (provinsiId) {
-              $.ajax({
-                  url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
-                  type: 'GET',
-                  headers: {
-                      'Authorization': '802|vIEfwFi4JdPpzUwv3urejddukoentneZdubkuklc' // Token Anda
-                  },
-                  success: function(response) {
-                      var kabupatenKotaData = response.data;
-  
-                      // Filter data kabupaten/kota berdasarkan provinsi
-                      $.each(kabupatenKotaData, function(key, kabupaten) {
-                          // Cek apakah ID parent kabupaten sama dengan ID provinsi
-                          if (kabupaten.parent.id == provinsiId) { 
-                              $('#kabupaten').append('<option value="' + kabupaten.id + '">' + kabupaten.name.trim() + '</option>'); // Menggunakan trim untuk menghilangkan spasi
-                          }
-                      });
-                      
-                      // Cek apakah ada kabupaten yang ditambahkan
-                      if ($('#kabupaten option').length <= 1) {
-                          $('#kabupaten').append('<option value="">Tidak ada Kabupaten/Kota</option>');
-                      }
-                  },
-                  error: function(xhr, status, error) {
-                      console.error('Error fetching data:', error);
-                  }
-              });
-          }
-      });
-  });
-</script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var e = document.querySelectorAll('[data-plugin="choices"]');
