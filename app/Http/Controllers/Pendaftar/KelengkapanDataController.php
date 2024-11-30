@@ -32,7 +32,7 @@ class KelengkapanDataController extends Controller
     
     // Mengambil data provinsi dari API Fariz
 
-    $authToken = 'Bearer ' . '786|BB3GSA7F3ypyGRLgYCKKrCY0CHzGEByTDBofIrDR';
+    $authToken = 'Bearer ' . '802|vIEfwFi4JdPpzUwv3urejddukoentneZdubkuklc';
     $responseProvinsi = $client->get('http://backend.sepyankristanto.my.id/api/v1/master/provinces', [
         'headers' => [
             'Authorization' => $authToken,

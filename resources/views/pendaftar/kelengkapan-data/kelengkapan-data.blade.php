@@ -939,7 +939,7 @@
                   url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
                   type: 'GET',
                   headers: {
-                      'Authorization': '785|DxzlIZ6zVYfrlDCE7QB9W8F0Vcz5hqAnfiqvtvMI' // Token Anda
+                      'Authorization': '802|vIEfwFi4JdPpzUwv3urejddukoentneZdubkuklc' // Token Anda
                   },
                   success: function(response) {
                       var kabupatenKotaData = response.data;

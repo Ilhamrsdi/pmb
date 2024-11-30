@@ -57,4 +57,9 @@ class LandingController extends Controller
         $pengumumans = Pengumuman::get()->take(5);
         return view('pengumuman', compact('pengumuman', 'pengumumans'));
     }
+
+
+    public function cekVa(Request $request){
+        return view('pendaftar.cekva.index');
+    }
 }

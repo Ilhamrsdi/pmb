@@ -501,7 +501,7 @@
           <!-- end col -->
           <div class="col-lg-4">
             <div class="process-card mt-4">
-              <div class="process-arrow-img d-none d-lg-block">
+               <div class="process-arrow-img d-none d-lg-block">
                 <img src="assets/images/landing/process-arrow-img.png" alt="" class="img-fluid">
               </div>
               <div class="avatar-sm icon-effect mx-auto mb-4">
@@ -538,7 +538,7 @@
 
           <div class="col-lg-3 col-6">
             <div>
-              <h2 class="mb-2"><span class="counter-value" data-target="9">0</span></h2>
+              <h2 class="mb-2"><span class="counter-value" data-target="{{ \Illuminate\Support\Facades\DB::table('program_studis')->count() }}"></span></h2>
               <div class="text-muted">Program Studi</div>
             </div>
           </div>
