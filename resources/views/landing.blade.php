@@ -23,11 +23,35 @@
   <!-- Icons Css -->
   <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
   <!-- App Css-->
-  {{-- <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" /> --}}
+  <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
   <!-- swiper css-->
-  {{-- <link href="{{ asset('assets/libs/swiper/swiper.min.css') }}" /> --}}
+  <link href="{{ asset('assets/libs/swiper/swiper.min.css') }}" />
   <!-- custom Css-->
   <link href="{{ asset('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
+  {{-- <style>
+    @keyframes movePattern {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+  
+    .demo-img-patten-top img {
+      animation: movePattern 3s ease-in-out infinite;
+    }
+  </style> --}}
+  <style>
+    .demo-img-patten-top img {
+      position: relative;
+      transition: transform 1.5s ease-in-out;
+    }
+  </style>
+    
 
 </head>
 
@@ -38,8 +62,8 @@
     <nav class="navbar navbar-expand-lg navbar-landing fixed-top" id="navbar">
       <div class="container">
         <a class="navbar-brand" href="index.html">
-          {{-- <img src="assets/images/logo-dark.png" class="card-logo card-logo-dark" alt="logo dark" height="50"> --}}
-          <img src="assets/images/logo-light.png" class="card-logo card-logo-light" alt="logo light" height="50">
+          <img src="assets/images/logo-dark.png" class="card-logo card-logo-dark" alt="logo dark" height="50">
+          {{-- <img src="assets/images/logo-light.png" class="card-logo card-logo-light" alt="logo light" height="50"> --}}
         </a>
         <button class="navbar-toggler py-0 fs-20 text-body" type="button" data-bs-toggle="collapse"
           data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -797,6 +821,92 @@
       s0.parentNode.insertBefore(s1, s0);
     })();
   </script>
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  canvas {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  // Background bergerak dengan Particles
+  document.addEventListener('DOMContentLoaded', function () {
+    const canvas = document.createElement('canvas');
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = Array.from({ length: 100 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 3 + 1,
+      speedX: Math.random() * 2 - 1,
+      speedY: Math.random() * 2 - 1,
+    }));
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.fill();
+        p.x += p.speedX;
+        p.y += p.speedY;
+        if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+      });
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  });
+</script>
+<script>
+  function moveImageRandomly() {
+    const img = document.querySelector('.demo-img-patten-top img');
+    const container = document.querySelector('.demo-img-patten-top');
+    if (!img || !container) return;
+
+    // Ukuran container (untuk memastikan gambar tidak keluar area)
+    const containerWidth = container.offsetWidth;
+    const containerHeight = container.offsetHeight;
+
+    // Ukuran gambar
+    const imgWidth = img.offsetWidth;
+    const imgHeight = img.offsetHeight;
+
+    // Tentukan gerakan random dalam batas container
+    const randomX = Math.random() * (containerWidth - imgWidth);
+    const randomY = Math.random() * (containerHeight - imgHeight);
+
+    // Update posisi gambar
+    img.style.transform = `translate(${randomX}px, ${randomY}px)`;
+  }
+
+  // Panggil fungsi setiap 1.5 detik
+  setInterval(moveImageRandomly, 1500);
+</script>
+
+
 </body>
 
 
