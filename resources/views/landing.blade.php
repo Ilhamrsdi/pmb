@@ -64,7 +64,7 @@
   <div class="layout-wrapper landing">
     <nav class="navbar navbar-expand-lg navbar-landing fixed-top" id="navbar">
       <div class="container">
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" href="/">
           <img src="assets/images/logo-dark.png" class="card-logo card-logo-dark" alt="logo dark" height="50">
           {{-- <img src="assets/images/logo-light.png" class="card-logo card-logo-light" alt="logo light" height="50"> --}}
         </a>
@@ -578,18 +578,15 @@
         <div class="row">
           <div class="col-lg-5 mt-4">
             <div>
-              <div>
-                <img src="assets/images/logo-light.png" alt="logo light" height="50">
-              </div>
+              <img src="assets/images/logo-light.png" alt="logo light" height="50">
               <div class="mt-4 fs-13">
                 <p class="text-white">Politeknik Negeri Poliwangi</p>
                 <p class="ff-secondary text-white">Kolaborasi antara pengetahuan dan kemampuan teoritis untuk
-                  penerapan kesatuan
-                  ilmu dalam dunia bisnis dan dunia kerja.</p>
+                  penerapan kesatuan ilmu dalam dunia bisnis dan dunia kerja.</p>
               </div>
             </div>
           </div>
-
+    
           <div class="col-lg-7 ms-lg-auto">
             <div class="row">
               <div class="col-sm-7 mt-4">
@@ -597,12 +594,6 @@
                 <div class="text-white mt-3">
                   Jalan Raya Jember KM 13<br />
                   Banyuwangi 68461, Jawa Timur – Indonesia
-                  {{-- <ul class="list-unstyled ff-secondary footer-list">
-                    <li><a href="pages-profile.html">About Us</a></li>
-                    <li><a href="pages-gallery.html">Gallery</a></li>
-                    <li><a href="apps-projects-overview.html">Projects</a></li>
-                    <li><a href="pages-timeline.html">Timeline</a></li>
-                  </ul> --}}
                 </div>
               </div>
               <div class="col-sm-5 mt-4">
@@ -610,20 +601,16 @@
                 <div class="text-white mt-3">
                   <ul class="list-unstyled ff-secondary footer-list">
                     <li>Telepon : +62 (0333) 636780</li>
-                    <li>Email : poliwangi@poliwangi.ac.id
-                      humas@poliwangi.ac.id
-                    </li>
+                    <li>Email : poliwangi@poliwangi.ac.id<br>humas@poliwangi.ac.id</li>
                   </ul>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
-
+    
         <div class="row text-center text-sm-start align-items-center mt-5">
           <div class="col-sm-6">
-
             <div>
               <p class="copy-rights mb-0">
                 <script>
@@ -668,7 +655,16 @@
           </div>
         </div>
       </div>
+    
+      <!-- Iframe -->
+      <div style="position: absolute; bottom: 20px; right: 20px;">
+        <iframe 
+          src="https://369d7c3875414be19f88e682f82ec916.elf.site/" 
+          style="width: 300px; height: 200px; border: none; overflow: auto; z-index: 9999; display: block;">
+        </iframe>
+      </div>
     </footer>
+    
     <!-- end footer -->
 
   </div>
@@ -792,19 +788,7 @@
   <!-- landing init -->
   <script src="{{ asset('assets/js/pages/landing.init.js') }}"></script>
 
-  <script type="text/javascript">
-    var Tawk_API = Tawk_API || {},
-      Tawk_LoadStart = new Date();
-    (function() {
-      var s1 = document.createElement("script"),
-        s0 = document.getElementsByTagName("script")[0];
-      s1.async = true;
-      s1.src = 'https://embed.tawk.to/62e8256354f06e12d88c5ffa/1g9dd43jb';
-      s1.charset = 'UTF-8';
-      s1.setAttribute('crossorigin', '*');
-      s0.parentNode.insertBefore(s1, s0);
-    })();
-  </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.10/iframeResizer.min.js"></script>
 
 <style>
   body {
