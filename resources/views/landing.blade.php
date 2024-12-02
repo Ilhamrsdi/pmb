@@ -679,7 +679,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="forgetcodeLabel">Lupa Kode Bayar</h5>
+          <h5 class="modal-title" id="forgetcodeLabel">Lupa Kode Virtual Account</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -699,7 +699,7 @@
                 @endforelse
               </select>
               <div class="col-xxl-6">
-                <label for="kode" class="form-label">Kode Bayar</label>
+                <label for="kode" class="form-label">Kode Virtual Account</label>
                 <input disabled type="text" class="form-control" id="kode">
               </div>
               <!--end col-->
