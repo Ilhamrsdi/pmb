@@ -28,6 +28,9 @@
   <link href="{{ asset('assets/libs/swiper/swiper.min.css') }}" />
   <!-- custom Css-->
   <link href="{{ asset('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
+  {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
   {{-- <style>
     @keyframes movePattern {
       0% {
@@ -258,45 +261,26 @@
               </div>
             </div>
             <div class="accordion custom-accordionwithicon custom-accordion-border accordion-border-box"
-              id="genques-accordion">
-              @foreach ($tata_cara as $item)
-                @if ($loop->first)
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="{{ 'collapse-header-' . $loop->iteration }}">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#{{ 'collapse-' . $loop->iteration }}" aria-expanded="true"
-                        aria-controls="{{ 'collapse-' . $loop->iteration }}">
-                        {{ $loop->iteration . '. ' . $item->title }}
-                      </button>
-                    </h2>
-                    <div id="{{ 'collapse-' . $loop->iteration }}" class="accordion-collapse collapse show"
-                      aria-labelledby="{{ 'collapse-header-' . $loop->iteration }}"
-                      data-bs-parent="#genques-accordion">
-                      <div class="accordion-body ff-secondary">
-                        {{ $item->deskripsi }}
-                      </div>
-                    </div>
+            id="genques-accordion">
+            @foreach ($tata_cara as $item)
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="{{ 'collapse-header-' . $loop->iteration }}">
+                  <button class="accordion-button {{ $loop->first ? '' : 'collapsed' }}" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#{{ 'collapse-' . $loop->iteration }}" aria-expanded="{{ $loop->first ? 'true' : 'false' }}"
+                    aria-controls="{{ 'collapse-' . $loop->iteration }}">
+                    {{ $loop->iteration . '. ' . $item->title }}
+                  </button>
+                </h2>
+                <div id="{{ 'collapse-' . $loop->iteration }}" class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}"
+                  aria-labelledby="{{ 'collapse-header-' . $loop->iteration }}" data-bs-parent="#genques-accordion">
+                  <div class="accordion-body ff-secondary">
+                    {{ $item->deskripsi }}
                   </div>
-                @else
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="{{ 'collapse-header-' . $loop->iteration }}">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#{{ 'collapse-' . $loop->iteration }}" aria-expanded="true"
-                        aria-controls="{{ 'collapse-' . $loop->iteration }}">
-                        {{ $loop->iteration . '. ' . $item->title }}
-                      </button>
-                    </h2>
-                    <div id="{{ 'collapse-' . $loop->iteration }}" class="accordion-collapse collapse hide"
-                      aria-labelledby="{{ 'collapse-header-' . $loop->iteration }}"
-                      data-bs-parent="#genques-accordion">
-                      <div class="accordion-body ff-secondary">
-                        {{ $item->deskripsi }}
-                      </div>
-                    </div>
-                  </div>
-                @endif
-              @endforeach
-            </div>
+                </div>
+              </div>
+            @endforeach
+          </div>
+          
             <!--end accordion-->
 
           </div>
@@ -599,7 +583,7 @@
               </div>
               <div class="mt-4 fs-13">
                 <p class="text-white">Politeknik Negeri Poliwangi</p>
-                <p class="ff-secondary text-muted">Kolaborasi antara pengetahuan dan kemampuan teoritis untuk
+                <p class="ff-secondary text-white">Kolaborasi antara pengetahuan dan kemampuan teoritis untuk
                   penerapan kesatuan
                   ilmu dalam dunia bisnis dan dunia kerja.</p>
               </div>
@@ -610,7 +594,7 @@
             <div class="row">
               <div class="col-sm-7 mt-4">
                 <h5 class="text-white mb-0">Lokasi</h5>
-                <div class="text-muted mt-3">
+                <div class="text-white mt-3">
                   Jalan Raya Jember KM 13<br />
                   Banyuwangi 68461, Jawa Timur – Indonesia
                   {{-- <ul class="list-unstyled ff-secondary footer-list">
@@ -623,7 +607,7 @@
               </div>
               <div class="col-sm-5 mt-4">
                 <h5 class="text-white mb-0">Kontak</h5>
-                <div class="text-muted mt-3">
+                <div class="text-white mt-3">
                   <ul class="list-unstyled ff-secondary footer-list">
                     <li>Telepon : +62 (0333) 636780</li>
                     <li>Email : poliwangi@poliwangi.ac.id
