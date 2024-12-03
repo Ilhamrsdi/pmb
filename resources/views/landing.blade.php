@@ -28,8 +28,10 @@
   <link href="{{ asset('assets/libs/swiper/swiper.min.css') }}" />
   <!-- custom Css-->
   <link href="{{ asset('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.7/dist/sweetalert2.min.css" rel="stylesheet">
   {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
 
   {{-- <style>
     @keyframes movePattern {
@@ -391,7 +393,7 @@
                 <div class="row">
                   <div class="col-lg-12 text-end">
                     <a data-bs-toggle="modal" data-bs-target="#forgetcode" class="btn btn-warning">Lupa Kode Virtual Account
-                      Pembayaran</a>
+                      Pendaftaran</a>
                     <input type="submit" id="submit" name="send" class="submitBnt btn btn-primary"
                       value="Daftar">
                   </div>
@@ -576,23 +578,26 @@
     <footer class="custom-footer bg-dark py-5 position-relative">
       <div class="container">
         <div class="row">
+          <!-- Logo dan Deskripsi -->
           <div class="col-lg-5 mt-4">
             <div>
               <img src="assets/images/logo-light.png" alt="logo light" height="50">
               <div class="mt-4 fs-13">
                 <p class="text-white">Politeknik Negeri Poliwangi</p>
-                <p class="ff-secondary text-white">Kolaborasi antara pengetahuan dan kemampuan teoritis untuk
-                  penerapan kesatuan ilmu dalam dunia bisnis dan dunia kerja.</p>
+                <p class="ff-secondary text-white">
+                  Kolaborasi antara pengetahuan dan kemampuan teoritis untuk penerapan kesatuan ilmu dalam dunia bisnis dan dunia kerja.
+                </p>
               </div>
             </div>
           </div>
     
+          <!-- Lokasi dan Kontak -->
           <div class="col-lg-7 ms-lg-auto">
             <div class="row">
               <div class="col-sm-7 mt-4">
                 <h5 class="text-white mb-0">Lokasi</h5>
                 <div class="text-white mt-3">
-                  Jalan Raya Jember KM 13<br />
+                  Jalan Raya Jember KM 13<br>
                   Banyuwangi 68461, Jawa Timur – Indonesia
                 </div>
               </div>
@@ -600,8 +605,8 @@
                 <h5 class="text-white mb-0">Kontak</h5>
                 <div class="text-white mt-3">
                   <ul class="list-unstyled ff-secondary footer-list">
-                    <li>Telepon : +62 (0333) 636780</li>
-                    <li>Email : poliwangi@poliwangi.ac.id<br>humas@poliwangi.ac.id</li>
+                    <li>Telepon: +62 (0333) 636780</li>
+                    <li>Email: poliwangi@poliwangi.ac.id<br>humas@poliwangi.ac.id</li>
                   </ul>
                 </div>
               </div>
@@ -609,6 +614,7 @@
           </div>
         </div>
     
+        <!-- Copyright dan Sosial Media -->
         <div class="row text-center text-sm-start align-items-center mt-5">
           <div class="col-sm-6">
             <div>
@@ -657,13 +663,12 @@
       </div>
     
       <!-- Iframe -->
-     <div style="position: absolute; bottom: 20px; right: 20px;">
-                <div
-                    style="position: absolute; bottom: 20px; right: 20px; width: 300px; height: 200px; overflow: hidden;">
-                    <iframe src="https://369d7c3875414be19f88e682f82ec916.elf.site/"
-                        style="width: 320px; height: 220px; border: none; z-index: 9999; display: block; margin-right: -20px; margin-bottom: -20px;">
-                    </iframe>
-                </div>
+      <div id="floating-iframe-container" 
+      style="position: fixed; bottom: 20px; right: 20px; width: 300px; height: 200px; overflow: hidden;">
+      <iframe src="https://369d7c3875414be19f88e682f82ec916.elf.site/" 
+        style="width: 320px; height: 220px; border: none; z-index: 9999;">
+      </iframe>
+    </div>
     </footer>
     
     <!-- end footer -->
@@ -697,8 +702,18 @@
               </select>
               <div class="col-xxl-6">
                 <label for="kode" class="form-label">Kode Virtual Account</label>
-                <input disabled type="text" class="form-control" id="kode">
+                <div class="input-group">
+                  <!-- Tempat untuk menampilkan alert -->
+<div id="alertBox" class="alert alert-success alert-dismissible fade" role="alert" style="display: none;">
+  <strong id="alertTitle"></strong> <span id="alertMessage"></span>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+                  <input disabled type="text" class="form-control" id="kode" placeholder="Kode Virtual Account">
+                  <button type="button" class="btn btn-outline-secondary" id="copy-button" onclick="copyCode()">Salin</button>
+                </div>
               </div>
+              
               <!--end col-->
               <div class="col-lg-12">
                 <div class="hstack gap-2 justify-content-end">
@@ -728,6 +743,7 @@
   <script src="{{ asset('assets/libs/feather-icons/feather-icons.min.js') }}"></script>
   <script src="{{ asset('assets/js/pages/lord-icon-2.1.0.js') }}"></script>
   <script src="{{ asset('assets/js/plugins.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.7/dist/sweetalert2.all.min.js"></script>
   <script type="text/javascript">
     $.ajaxSetup({
       headers: {
@@ -759,6 +775,67 @@
 
     });
   </script>
+<script>
+  const iframeContainer = document.getElementById('floating-iframe-container');
+  let initialBottom = 20; // Jarak awal dari bawah
+  let lastScrollPosition = window.scrollY;
+
+  // Set posisi awal iframe di bawah
+  iframeContainer.style.bottom = `${initialBottom}px`;
+
+  window.addEventListener('scroll', () => {
+    const currentScrollPosition = window.scrollY;
+    const scrollDifference = currentScrollPosition - lastScrollPosition;
+
+    // Update posisi bottom berdasarkan arah scroll
+    initialBottom -= scrollDifference * 0.5; // Faktor pengurang kecepatan (lebih lambat)
+
+    // Pastikan posisi minimal tetap 20px dari bawah
+    iframeContainer.style.bottom = `${Math.max(20, initialBottom)}px`;
+
+    // Update posisi scroll terakhir
+    lastScrollPosition = currentScrollPosition;
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.7/dist/sweetalert2.all.min.js"></script>
+<script>
+function showAlert(title, message, type = 'success') {
+  // Mengatur tipe alert (success, danger, info, warning)
+  const alertBox = document.getElementById('alertBox');
+  const alertTitle = document.getElementById('alertTitle');
+  const alertMessage = document.getElementById('alertMessage');
+
+  alertTitle.textContent = title;
+  alertMessage.textContent = message;
+
+  // Menambahkan kelas untuk alert
+  alertBox.className = `alert alert-${type} alert-dismissible fade show`;
+  alertBox.style.display = 'block'; // Menampilkan alert
+}
+
+function copyCode() {
+  const kodeInput = document.getElementById('kode');
+  
+  if (kodeInput.value) {
+    kodeInput.removeAttribute('disabled');
+    kodeInput.select();
+    kodeInput.setSelectionRange(0, 99999); // Untuk mendukung browser lama
+    
+    // Menyalin kode ke clipboard
+    navigator.clipboard.writeText(kodeInput.value).then(() => {
+      showAlert('Sukses!', 'Kode Virtual Account berhasil disalin!', 'success');
+    }).catch(err => {
+      showAlert('Gagal!', 'Gagal menyalin kode. Coba lagi.', 'danger');
+    });
+    
+    kodeInput.setAttribute('disabled', true);
+  } else {
+    showAlert('Peringatan!', 'Tidak ada kode untuk disalin!', 'warning');
+  }
+}
+
+
+</script>
 
   <!--Card Gelombang js-->
   <script>

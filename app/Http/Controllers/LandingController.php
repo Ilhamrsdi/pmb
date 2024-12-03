@@ -41,12 +41,12 @@ class LandingController extends Controller
             return $query->where('nik', '=', $cek_nik);
         })
             ->whereHas('detailPendaftar', function ($query) use ($cek_nik) {
-                return $query->select('kode_bayar');
+                return $query->select('va_pendaftaran');
             })
             ->where('gelombang_id', $request->gelombang)
             ->first();
         // dd($cekkode);
-        $data = $cekkode->detailPendaftar->kode_bayar;
+        $data = $cekkode->detailPendaftar->va_pendaftaran;
         // dd($cekkode);
         return response()->json($data);
     }
