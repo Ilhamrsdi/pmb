@@ -657,12 +657,13 @@
       </div>
     
       <!-- Iframe -->
-      <div style="position: absolute; bottom: 20px; right: 20px;">
-        <iframe 
-          src="https://369d7c3875414be19f88e682f82ec916.elf.site/" 
-          style="width: 300px; height: 200px; border: none; overflow: auto; z-index: 9999; display: block;">
-        </iframe>
-      </div>
+     <div style="position: absolute; bottom: 20px; right: 20px;">
+                <div
+                    style="position: absolute; bottom: 20px; right: 20px; width: 300px; height: 200px; overflow: hidden;">
+                    <iframe src="https://369d7c3875414be19f88e682f82ec916.elf.site/"
+                        style="width: 320px; height: 220px; border: none; z-index: 9999; display: block; margin-right: -20px; margin-bottom: -20px;">
+                    </iframe>
+                </div>
     </footer>
     
     <!-- end footer -->
