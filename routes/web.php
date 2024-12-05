@@ -27,7 +27,7 @@ use App\Http\Controllers\Pendaftar\BerkasPendukungController;
 use App\Http\Controllers\Pendaftar\BiodataOrangTuaController;
 use App\Http\Controllers\Admin\Berkas\SettingBerkasController;
 use App\Http\Controllers\Admin\Pendaftar\SoalTesMabaController;
-
+use App\Http\Controllers\AccessLogController;
 // Pendaftar Controller
 use App\Http\Controllers\Admin\Pengumuman\PengumumanController;
 use App\Http\Controllers\Admin\Pendaftar\MabaAttributController;
@@ -93,10 +93,15 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('aut
 Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
     //Pendaftar
     Route::resource('pendaftar', PendaftarController::class);
+    Route::get('/access-logs', [AccessLogController::class, 'index'])->name('access-logs.index');
+    Route::delete('/access-logs/{id}', [AccessLogController::class, 'destroy'])->name('access-logs.destroy');
  // Route untuk update status pendaftaran
 Route::post('/pendaftar/update-status', [PendaftarController::class, 'updateStatus'])->name('pendaftar.update-status');
 // Route untuk update status pembayaran
 Route::post('/camaba-ukt/update-status', [CamabaSdhBlmUKTController::class, 'updateStatus'])->name('camaba-ukt.update-status');
+
+
+
 
 
     Route::post('pendaftar-excel', [ExcelController::class, 'import'])->name('import.pendaftar');

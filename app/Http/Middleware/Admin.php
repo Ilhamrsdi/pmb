@@ -22,6 +22,6 @@ class Admin
         }
 
         // Jika bukan admin, redirect ke halaman login
-        return redirect()->to('login');
+        return redirect()->to('login')->with('error', 'Akses ditolak. Anda bukan admin.');
     }
 }

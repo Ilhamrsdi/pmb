@@ -6,6 +6,7 @@
 <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="{{ asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}"></script>
 <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 {{-- <script src="{{ asset('assets/js/plugins.min.js') }}"></script> --}}
 @yield('script')

@@ -188,7 +188,7 @@
             </a>
           </li> <!-- end Pesan Menu -->
           <li class="nav-item">
-            <a class="nav-link menu-link" href="{{ '#' }}">
+            <a class="nav-link menu-link" href="{{ route('access-logs.index') }}">
               <i class="las la-history"></i> <span>Logging</span>
             </a>
           </li> <!-- end Pengumuman Menu -->
