@@ -230,6 +230,9 @@
                   <a href="javascript:void(0);" style="display:none; text-decoration: none;" id="close{{ $h->id }}"
                     onclick="hide( '{{ $h->id }}' )" class="card-link link-danger">Close <i
                       class="ri-close-line ms-1 align-middle lh-1"></i></a>
+                  <a href="javascript:void(0);" style="text-decoration: none" onclick="show( '{{ $h->id }}' )"
+                    class="card-link link-secondary">Read More <i
+                      class="ri-arrow-right-s-line ms-1 align-middle lh-1"></i></a>
                 </div>
               </div>
             </div>
