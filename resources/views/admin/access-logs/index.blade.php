@@ -1,7 +1,7 @@
 
 @extends('layouts.master')
 @section('title')
-  @lang('Lainnya ')
+  @lang('LOGGING ')
 @endsection
 @section('css')
   {{-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" /> --}}
@@ -65,6 +65,11 @@
               </div>
               <!-- end card header -->
               <div class="card-body">
+                <form id="deleteAllLogsForm" method="POST" action="{{ route('access-logs.delete-all') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-primary">Hapus Semua Log</button>
+                </form>
+                
                   <div class="table-responsive table-card mt-3 mb-1">
                       <table class="table align-middle table-nowrap" id="customerTable">
                           <thead class="table-light">
@@ -210,6 +215,27 @@ $.ajax({
 });
 
   </script>
+  <script>
+    document.getElementById('deleteAllLogsForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Mencegah pengiriman form langsung
+        
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: 'Semua log akan dihapus permanen!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit();  // Jika konfirmasi, kirim form
+            }
+        });
+    });
+    </script>
+    
   
   <!--=========================== Filter & Seearch on Select ===============================-->
   <script>

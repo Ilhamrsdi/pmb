@@ -95,6 +95,7 @@ Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
     Route::resource('pendaftar', PendaftarController::class);
     Route::get('/access-logs', [AccessLogController::class, 'index'])->name('access-logs.index');
     Route::delete('/access-logs/{id}', [AccessLogController::class, 'destroy'])->name('access-logs.destroy');
+    Route::post('/access-logs/delete-all', [AccessLogController::class, 'deleteAll'])->name('access-logs.delete-all');
  // Route untuk update status pendaftaran
 Route::post('/pendaftar/update-status', [PendaftarController::class, 'updateStatus'])->name('pendaftar.update-status');
 // Route untuk update status pembayaran
