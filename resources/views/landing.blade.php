@@ -195,16 +195,22 @@
               <div class="card">
                 <div class="card-body bg-primary text-light text-center py-5 ">
                   <div class="position-relative">
-                    <h3 class="card-title mb-3 text-light">{{ Str::upper($h->nama_gelombang) }}
+                    <h3 class="card-title mb-3 text-light">
+                        {{ Str::upper($h->nama_gelombang) }}
                     </h3>
-                    @if ($h->status == 'Aktif')
-                      <span
-                        class="position-absolute top-0 start-100 translate-middle badge badge-label bg-success">{{ $h->status }}</span>
+                    @if (strtolower($h->status) == 'active')
+                        <span
+                            class="position-absolute top-0 start-100 translate-middle badge badge-label bg-success">
+                            {{ $h->status }}
+                        </span>
                     @else
-                      <span
-                        class="position-absolute top-0 start-100 translate-middle badge badge-label bg-danger">{{ $h->status }}</span>
+                        <span
+                            class="position-absolute top-0 start-100 translate-middle badge badge-label bg-danger">
+                            {{ $h->status }}
+                        </span>
                     @endif
-                  </div>
+                </div>
+                
                   <h6 class="card-subtitle font-14 text-light mb-3">{{ $h->tahun_ajaran }}</h6>
                   <p class="card-subtitle text-light">
                     {{ Carbon\Carbon::parse($h->tanggal_mulai)->format('d M Y') . ' - ' . Carbon\Carbon::parse($h->tanggal_selesai)->format('d M Y') }}
@@ -224,9 +230,6 @@
                   <a href="javascript:void(0);" style="display:none; text-decoration: none;" id="close{{ $h->id }}"
                     onclick="hide( '{{ $h->id }}' )" class="card-link link-danger">Close <i
                       class="ri-close-line ms-1 align-middle lh-1"></i></a>
-                  <a href="javascript:void(0);" style="text-decoration: none" onclick="show( '{{ $h->id }}' )"
-                    class="card-link link-secondary">Read More <i
-                      class="ri-arrow-right-s-line ms-1 align-middle lh-1"></i></a>
                 </div>
               </div>
             </div>

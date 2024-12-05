@@ -235,7 +235,7 @@
                   id="status-field">
                   <option value="">Status</option>
                   <option value="Active" {{ $g->status == 'Active' ? 'selected' : '' }}>Active</option>
-                  <option value="Block" {{ $g->status == 'Block' ? 'selected' : '' }}>Block</option>
+                  <option value="Off" {{ $g->status == 'Off' ? 'selected' : '' }}>Off</option>
                 </select>
               </div>
               <div class="mb-3">

@@ -20,7 +20,7 @@ class GelombangSeeder extends Seeder
             'tahun_ajaran' => '2023/2024',
             'tanggal_mulai' => '2023-04-11',
             'tanggal_selesai' => '2023-05-20',
-            'status' => 'Aktif',
+            'status' => 'Active',
             'deskripsi' => 'Jalur Mandiri',
             'nominal_pendaftaran' => '200000',
             'kuota_pendaftar' => 100
@@ -30,7 +30,7 @@ class GelombangSeeder extends Seeder
             'tahun_ajaran' => '2023/2024',
             'tanggal_mulai' => '2023-04-11',
             'tanggal_selesai' => '2023-05-20',
-            'status' => 'Aktif',
+            'status' => 'Active',
             'deskripsi' => 'Jalur Mandiri',
             'nominal_pendaftaran' => '200000',
             'kuota_pendaftar' => 100
@@ -40,7 +40,7 @@ class GelombangSeeder extends Seeder
             'tahun_ajaran' => '2023/2024',
             'tanggal_mulai' => '2023-04-11',
             'tanggal_selesai' => '2023-05-20',
-            'status' => 'Aktif',
+            'status' => 'Active',
             'deskripsi' => 'jalur Mandiri',
             'nominal_pendaftaran' => '200000',
             'kuota_pendaftar' => 100
@@ -50,7 +50,7 @@ class GelombangSeeder extends Seeder
             'tahun_ajaran' => '2023/2024',
             'tanggal_mulai' => '2023-04-11',
             'tanggal_selesai' => '2023-05-20',
-            'status' => 'Aktif',
+            'status' => 'Active',
             'deskripsi' => 'Jalur Mandiri',
             'nominal_pendaftaran' => '200000',
             'kuota_pendaftar' => 100
