@@ -9,7 +9,7 @@ class RefJurusan extends Model
 {
     use HasFactory;
 
-    public $table = 'majors';
+    public $table = 'ref.majors';
     public $keyType = "string";
 
     public function program_studi()

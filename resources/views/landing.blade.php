@@ -373,11 +373,13 @@
                       <select class="form-select" aria-label="Default select example" name="program_studi" id="program_studi">
                         <option value="" selected>Pilih Program Studi</option>
                         @forelse($prodi as $h)
-                          <option value="{{ $h->id }}">{{ $h->jurusan->nama_jurusan ?? '-' }} - {{ $h->nama_program_studi }}</option>
+                            <option value="{{ $h->id }}">
+                                {{ $h->jurusan->name ?? '-' }} - {{ $h->name }}
+                            </option>
                         @empty
-                          <option value="">Data Program Studi tidak tersedia</option>
+                            <option value="">Data Program Studi tidak tersedia</option>
                         @endforelse
-                      </select>
+                    </select>
                     </div>
                   </div>
                   

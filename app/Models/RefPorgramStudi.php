@@ -9,7 +9,7 @@ class RefPorgramStudi extends Model
 {
     use HasFactory;
 
-    public $table = 'program_studis';
+    public $table = 'ref.study_programs';
     public $keyType = 'string';
 
     public function pendaftar()
