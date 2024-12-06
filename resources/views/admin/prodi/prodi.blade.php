@@ -51,7 +51,7 @@
                     <th class="sort text-center" data-sort="akreditasi">AKREDITASI</th>
                     <th class="text-center">KUOTA DITERIMA</th>
                     <th class="text-center">NO URUT NIM</th>
-                    <th class="text-center">Kode NIM</th>
+                    {{-- <th class="text-center">Kode NIM</th> --}}
                     <th class="sort text-center" data-sort="status">STATUS</th>
                     <th class="text-center">AKSI</th>
                   </tr>
@@ -68,7 +68,7 @@
                       <td class="akreditasi text-center">{{ $g->akreditasi ? $g->akreditasi : '-' }}</td>
                       <td class="text-center">{{ $g->kuota_diterima }}</td>
                       <td class="text-center">{{ $g->nomer_urut_nim }}</td>
-                      <td class="text-center">{{ $g->kode_nim}}</td>
+                      {{-- <td class="text-center">{{ $g->kode_nim}}</td> --}}
                       <td class="status text-center">
                         {{-- <span
                           class="badge text-uppercase {{ $g->status == 'aktif' ? 'badge-soft-success' : 'badge-soft-danger' }}">

@@ -90,6 +90,7 @@ class ProdiController extends Controller
     public function update(Request $request, $id)
     {
 
+        
         $prodi = ProgramStudi::find($id)->update([
             'jurusan_id' => $request->jurusan_id,
             'kode_program_studi' => $request->kode_program_studi,
@@ -123,31 +124,31 @@ class ProdiController extends Controller
 
     public function sync()
     {
-
-    // id,code,name,acreditation,major_id,education_level_id
-        $dataRef = RefPorgramStudi::with('jurusan')->get();
-
+        // id,code,name,acreditation,major_id,education_level_id
+        $dataRef = RefPorgramStudi::with('jurusan', 'pendidikan')->get();
+    
         // dd($dataRef);
-
-        foreach ($dataRef as  $value) {
-
+    
+        foreach ($dataRef as $value) {
+    
             $status = null;
-
+    
             if ($value->is_active) {
                 $status = 'aktif';
             }
-
+    
             ProgramStudi::updateOrCreate([
                 'id' => $value->id,
                 'jurusan_id' => $value->major_id,
                 'kode_program_studi' => $value->code,
                 'nama_program_studi' => $value->name,
-                'jenjang_pendidikan' => $value->pendidikan->code . ' - ' . $value->pendidikan->name,
+                'jenjang_pendidikan' => $value->pendidikan ? $value->pendidikan->code . ' - ' . $value->pendidikan->name : 'No data',
                 'akreditasi' => $value->acreditation,
                 'status' => $status,
             ]);
         }
-
+    
         return redirect()->route('prodi.index');
     }
+    
 }
