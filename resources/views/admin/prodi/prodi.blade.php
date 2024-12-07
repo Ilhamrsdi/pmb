@@ -11,6 +11,15 @@
       Program Studi
     @endslot
   @endcomponent
+  <div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; text-align: center; color: white;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <p style="margin-top: 10px;">Sedang memproses, harap tunggu...</p>
+    </div>
+</div>
+
   <div class="row">
     <div class="col-lg-12">
       <div class="card">
@@ -441,8 +450,11 @@
       });
   </script>
   <script>
-    $(document).on('click', '.btn-sync', function(e) {
+   $(document).on('click', '.btn-sync', function(e) {
     e.preventDefault();
+
+    // Tampilkan overlay loading
+    $('#loading-overlay').show();
 
     $.ajax({
         url: "{{ route('prodi.sync') }}",
@@ -457,6 +469,9 @@
             });
         },
         success: function(response) {
+            // Sembunyikan overlay loading
+            $('#loading-overlay').hide();
+
             if (response.success) {
                 // Perbarui tabel dengan HTML baru
                 $('#table-prodi').html(response.html);
@@ -478,6 +493,9 @@
             }
         },
         error: function() {
+            // Sembunyikan overlay loading
+            $('#loading-overlay').hide();
+
             Swal.fire({
                 title: 'Error!',
                 text: 'Terjadi kesalahan, coba lagi.',
@@ -487,6 +505,7 @@
         }
     });
 });
+
 
   </script>
 
