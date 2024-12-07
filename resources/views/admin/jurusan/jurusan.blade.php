@@ -11,6 +11,14 @@
       Jurusan
     @endslot
   @endcomponent
+  <div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; text-align: center; color: white;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <p style="margin-top: 10px;">Sedang memproses, harap tunggu...</p>
+    </div>
+</div>
   <div class="row">
     <div class="col-lg-12">
       <div class="card">
@@ -25,8 +33,9 @@
                 <div>
                   {{-- <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn"
                     data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i> Add</button> --}}
-                  <a href="{{ route('jurusan.sync') }}" class="btn btn-info"><i
-                      class="ri-refresh-line align-bottom me-1"></i> Sync</a>
+                    <a href="#" class="btn btn-info btn-sync">
+                      <i class="ri-refresh-line align-bottom me-1"></i> Sync
+                  </a>     
                 </div>
               </div>
               <div class="col-sm">
@@ -334,5 +343,64 @@
       });
   </script>
 
+<script>
+  $(document).on('click', '.btn-sync', function(e) {
+   e.preventDefault();
+
+   // Tampilkan overlay loading
+   $('#loading-overlay').show();
+
+   $.ajax({
+       url: "{{ route('jurusan.sync') }}",
+       type: 'GET',
+       beforeSend: function() {
+           Swal.fire({
+               title: 'Sedang menyinkronkan...',
+               text: 'Mohon tunggu.',
+               icon: 'info',
+               showConfirmButton: false,
+               allowOutsideClick: false
+           });
+       },
+       success: function(response) {
+           // Sembunyikan overlay loading
+           $('#loading-overlay').hide();
+
+           if (response.success) {
+               // Perbarui tabel dengan HTML baru
+               $('#table-prodi').html(response.html);
+
+               // Tampilkan notifikasi sukses
+               Swal.fire({
+                   title: 'Berhasil!',
+                   text: response.message,
+                   icon: 'success',
+                   confirmButtonText: 'OK'
+               });
+           } else {
+               Swal.fire({
+                   title: 'Gagal!',
+                   text: 'Sinkronisasi gagal dilakukan.',
+                   icon: 'error',
+                   confirmButtonText: 'OK'
+               });
+           }
+       },
+       error: function() {
+           // Sembunyikan overlay loading
+           $('#loading-overlay').hide();
+
+           Swal.fire({
+               title: 'Error!',
+               text: 'Terjadi kesalahan, coba lagi.',
+               icon: 'error',
+               confirmButtonText: 'OK'
+           });
+       }
+   });
+});
+
+
+ </script>
   <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
 @endsection

@@ -117,27 +117,40 @@ class JurusanController extends Controller
         return redirect()->route('jurusan.index');
     }
 
+    // public function sync()
+    // {
+
+    //     $dataRef = RefJurusan::get();
+
+    //     foreach ($dataRef as  $value) {
+
+    //         $status = null;
+
+    //         if ($value->is_active) {
+    //             $status = 'aktif';
+    //         }
+
+    //         Jurusan::updateOrCreate([
+    //             'id' => $value->id,
+    //             'nama_jurusan' => $value->name,
+    //             'alias_jurusan' => $value->alias,
+    //             'status' => $status
+    //         ]);
+    //     }
+
+    //     return redirect()->route('jurusan.index');
+    // }
     public function sync()
     {
-
-        $dataRef = RefJurusan::get();
-
-        foreach ($dataRef as  $value) {
-
-            $status = null;
-
-            if ($value->is_active) {
-                $status = 'aktif';
-            }
-
-            Jurusan::updateOrCreate([
-                'id' => $value->id,
-                'nama_jurusan' => $value->name,
-                'alias_jurusan' => $value->alias,
-                'status' => $status
-            ]);
-        }
-
-        return redirect()->route('jurusan.index');
+        // Ambil data terbaru dari database
+        $dataRef = RefJurusan::get();// Atau logika sinkronisasi dari API eksternal
+    
+        // Kembalikan data ke AJAX dalam bentuk JSON atau HTML
+        return response()->json([
+            'success' => true,
+            'data' => $dataRef,
+            'message' => 'Data berhasil disinkronisasi!'
+        ]);
     }
+
 }
