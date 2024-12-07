@@ -143,7 +143,7 @@ class JurusanController extends Controller
     public function sync()
     {
         // Ambil data terbaru dari database
-        $dataRef = RefJurusan::get();// Atau logika sinkronisasi dari API eksternal
+        $dataRef = RefJurusan::with('jurusan', 'pendidikan')->get();// Atau logika sinkronisasi dari API eksternal
     
         // Kembalikan data ke AJAX dalam bentuk JSON atau HTML
         return response()->json([
@@ -152,5 +152,6 @@ class JurusanController extends Controller
             'message' => 'Data berhasil disinkronisasi!'
         ]);
     }
+    
 
 }

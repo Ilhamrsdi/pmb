@@ -351,7 +351,7 @@
    $('#loading-overlay').show();
 
    $.ajax({
-       url: "{{ route('jurusan.sync') }}",
+       url: "{{ route('prodi.sync') }}",
        type: 'GET',
        beforeSend: function() {
            Swal.fire({
@@ -368,7 +368,7 @@
 
            if (response.success) {
                // Perbarui tabel dengan HTML baru
-               $('#table-prodi').html(response.html);
+               $('#CustomerList').html(response.html);
 
                // Tampilkan notifikasi sukses
                Swal.fire({
@@ -401,6 +401,7 @@
 });
 
 
- </script>
+ </script>  
+
   <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
 @endsection
