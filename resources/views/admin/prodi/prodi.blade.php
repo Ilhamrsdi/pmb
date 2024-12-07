@@ -25,8 +25,9 @@
                 <div>
                   {{-- <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn"
                     data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i> Add</button> --}}
-                  <a href="{{ route('prodi.sync') }}" class="btn btn-info"><i
-                      class="ri-refresh-line align-bottom me-1"></i> Sync</a>
+                    <a href="#" class="btn btn-info btn-sync">
+                      <i class="ri-refresh-line align-bottom me-1"></i> Sync
+                  </a>                  
                 </div>
               </div>
               <div class="col-sm">
@@ -438,6 +439,55 @@
             .querySelector(".active")
             .previousSibling.children[0].click());
       });
+  </script>
+  <script>
+    $(document).on('click', '.btn-sync', function(e) {
+    e.preventDefault();
+
+    $.ajax({
+        url: "{{ route('prodi.sync') }}",
+        type: 'GET',
+        beforeSend: function() {
+            Swal.fire({
+                title: 'Sedang menyinkronkan...',
+                text: 'Mohon tunggu.',
+                icon: 'info',
+                showConfirmButton: false,
+                allowOutsideClick: false
+            });
+        },
+        success: function(response) {
+            if (response.success) {
+                // Perbarui tabel dengan HTML baru
+                $('#table-prodi').html(response.html);
+
+                // Tampilkan notifikasi sukses
+                Swal.fire({
+                    title: 'Berhasil!',
+                    text: response.message,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                Swal.fire({
+                    title: 'Gagal!',
+                    text: 'Sinkronisasi gagal dilakukan.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        },
+        error: function() {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Terjadi kesalahan, coba lagi.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
+    });
+});
+
   </script>
 
   <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>

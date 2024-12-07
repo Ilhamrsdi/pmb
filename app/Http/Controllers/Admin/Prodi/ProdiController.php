@@ -122,33 +122,46 @@ class ProdiController extends Controller
         return redirect()->route('prodi.index');
     }
 
+    // public function sync()
+    // {
+    //     // id,code,name,acreditation,major_id,education_level_id
+    //     $dataRef = RefPorgramStudi::with('jurusan', 'pendidikan')->get();
+    
+    //     // dd($dataRef);
+    
+    //     foreach ($dataRef as $value) {
+    
+    //         $status = null;
+    
+    //         if ($value->is_active) {
+    //             $status = 'aktif';
+    //         }
+    
+    //         ProgramStudi::updateOrCreate([
+    //             'id' => $value->id,
+    //             'jurusan_id' => $value->major_id,
+    //             'kode_program_studi' => $value->code,
+    //             'nama_program_studi' => $value->name,
+    //             'jenjang_pendidikan' => $value->pendidikan ? $value->pendidikan->code . ' - ' . $value->pendidikan->name : 'No data',
+    //             'akreditasi' => $value->acreditation,
+    //             'status' => $status,
+    //         ]);
+    //     }
+    
+    //     return redirect()->route('prodi.index');
+    // }
     public function sync()
-    {
-        // id,code,name,acreditation,major_id,education_level_id
-        $dataRef = RefPorgramStudi::with('jurusan', 'pendidikan')->get();
-    
-        // dd($dataRef);
-    
-        foreach ($dataRef as $value) {
-    
-            $status = null;
-    
-            if ($value->is_active) {
-                $status = 'aktif';
-            }
-    
-            ProgramStudi::updateOrCreate([
-                'id' => $value->id,
-                'jurusan_id' => $value->major_id,
-                'kode_program_studi' => $value->code,
-                'nama_program_studi' => $value->name,
-                'jenjang_pendidikan' => $value->pendidikan ? $value->pendidikan->code . ' - ' . $value->pendidikan->name : 'No data',
-                'akreditasi' => $value->acreditation,
-                'status' => $status,
-            ]);
-        }
-    
-        return redirect()->route('prodi.index');
-    }
+{
+    // Ambil data terbaru dari database
+    $dataRef = RefPorgramStudi::with('jurusan', 'pendidikan')->get();// Atau logika sinkronisasi dari API eksternal
+
+    // Kembalikan data ke AJAX dalam bentuk JSON atau HTML
+    return response()->json([
+        'success' => true,
+        'data' => $dataRef,
+        'message' => 'Data berhasil disinkronisasi!'
+    ]);
+}
+
     
 }
