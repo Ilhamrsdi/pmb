@@ -1,5 +1,5 @@
 <?php
-
+// app/Http/Controllers/Auth/RegisterController.php
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
@@ -10,30 +10,30 @@ use App\Models\ProgramStudi;
 use App\Mail\EmailNotification;
 use App\Models\DetailPendaftar;
 use App\Http\Controllers\Controller;
+use App\Models\BniEnc;
 use App\Models\GelombangPendaftaran;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Models\RefPorgramStudi;
-use Xendit\Invoice\InvoiceApi;
-use Xendit\Invoice\CreateInvoiceRequest;
-use Xendit\Configuration;
+use App\Services\BNIService;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-
 
 class RegisterController extends Controller
 {
     use RegistersUsers;
 
     protected $redirectTo = RouteServiceProvider::HOME;
+    protected $bniService;
 
-    public function __construct()
+    public function __construct(BNIService $bniService)
     {
         $this->middleware('guest');
+        $this->bniService = $bniService;
     }
 
     protected function validator(array $data)
@@ -47,8 +47,6 @@ class RegisterController extends Controller
             'program_studi' => ['required', 'string'],
             'gelombang' => ['required', 'integer'],
         ]);
-        
-        return $validate;
     }
 
     protected function create(array $data)
@@ -63,14 +61,10 @@ class RegisterController extends Controller
         $user = User::where('nik', $data['nik'])->first();
 
         if ($user != NULL) {
-            $this->userIsNotNull($user, $data);
+            return $this->userIsNotNull($user, $data);
         } else {
-            $user = $this->userIsNull($data);
+            return $this->userIsNull($data);
         }
-
-        session(['gelombang_id' => $data['gelombang']]);
-
-        return $user;
     }
 
     public function userIsNull(array $data)
@@ -78,10 +72,10 @@ class RegisterController extends Controller
         // dd($data);
 
         // $this->createVA($va, $trx_id);
-        // $va_bni = $this->createVA($data);
-        // $cek_pendaftar_va_bni = $this->CekPendaftaranVA($data);
+        $va_bni = $this->createVA($data);
+        $cek_pendaftar_va_bni = $this->CekPendaftaranVA($data);
         // dd($cek_pendaftar_va_bni['datetime_expired']);
-        $password = 'password';
+        $password = rand(100000, 999999);
         $user = User::create([
             'username' => $data['nama'],
             'email' => $data['email'],
@@ -101,11 +95,11 @@ class RegisterController extends Controller
 
         $detailPendaftar = DetailPendaftar::create([
             'pendaftar_id' => $pendaftar->id,
-            'kode_bayar' => random_int(100000, 999999), // Menghasilkan angka acak 6 digit
+            'kode_bayar' => $password,
             'tanggal_daftar' => now(),
-            'va_pendaftaran' => random_int(100000, 999999),
-            // 'trx_va' => $va_bni['trx_id'],
-            // 'datetime_expired' => $cek_pendaftar_va_bni['datetime_expired'],
+            'va_pendaftaran' => $va_bni['virtual_account'],
+            'trx_va' => $va_bni['trx_id'],
+            'datetime_expired' => $cek_pendaftar_va_bni['datetime_expired'],
         ]);
 
         $wali = Wali::create([
@@ -123,28 +117,47 @@ class RegisterController extends Controller
             'title' => 'Mail from PMB Poliwangi',
             'body' => 'Silahkan mengikuti tata cara pendaftaran dan masuk kedalam aplikasi. Mohon menjaga privasi akun masing masing',
             'email' => $user->email,
-            'password' => 'password',
+            'password' => $detailPendaftar->kode_bayar,
             'gelombang' => $gelombang->nama_gelombang . " - " . $gelombang->deskripsi,
-            'program_studi' => $program_studi->nama_program_studi,
-            
+            'program_studi' => $program_studi->nama_program_studi
         ];
 
         Mail::to($user->email)->send(new EmailNotification($mailData));
 
         return $user;
     }
-    
 
-  
     public function userIsNotNull($user, array $data)
-    {
-        $cek_pendaftar = Pendaftar::where('user_id', $user->id)->where('gelombang_id', $data['gelombang'])->first();
+{
+    // Cek apakah data pendaftar sudah ada
+    $cek_pendaftar = Pendaftar::where('user_id', $user->id)
+                               ->where('gelombang_id', $data['gelombang'])
+                               ->first();
 
-        if ($cek_pendaftar != null) {
-            redirect('landing');
-        } else {
-            $data_pendaftar = Pendaftar::where('user_id', $user->id)->with('detailPendaftar')->get();
-            // dd($data_pendaftar);
+    if ($cek_pendaftar != null) {
+        return redirect('landing'); // Jika sudah ada pendaftar, redirect
+    } else {
+        // Ambil data pendaftar dengan detailPendaftar
+        $data_pendaftar = Pendaftar::where('user_id', $user->id)
+                                   ->with('detailPendaftar') // Pastikan relasi detailPendaftar dimuat
+                                   ->first();
+
+        // Debugging: Cek apakah data_pendaftar ada dan cek relasi detailPendaftar
+        \Log::debug('Data Pendaftar:', ['data_pendaftar' => $data_pendaftar]);
+
+        if ($data_pendaftar) {
+            // Debugging: Cek apakah detailPendaftar berisi data
+            if ($data_pendaftar->detailPendaftar->isEmpty()) {
+                \Log::debug('Detail Pendaftar kosong');
+                // Jika detailPendaftar kosong, beri kode bayar baru
+                $kode_bayar = rand(100000, 999999);
+            } else {
+                \Log::debug('Detail Pendaftar ditemukan:', ['detail_pendaftar' => $data_pendaftar->detailPendaftar]);
+                // Ambil kode_bayar dari data yang ada
+                $kode_bayar = $data_pendaftar->detailPendaftar->first()->kode_bayar;
+            }
+
+            // Proses lanjutkan dengan data pendaftar baru
             $pendaftar = Pendaftar::create([
                 'user_id' => $user->id,
                 'nama' => $data['nama'],
@@ -156,7 +169,7 @@ class RegisterController extends Controller
             $detailPendaftar = DetailPendaftar::create([
                 'pendaftar_id' => $pendaftar->id,
                 'tanggal_daftar' => now(),
-                'kode_bayar' => $data_pendaftar[0]->detailPendaftar->kode_bayar
+                'kode_bayar' => $kode_bayar,
             ]);
 
             $wali = Wali::create([
@@ -172,56 +185,113 @@ class RegisterController extends Controller
 
             $mailData = [
                 'title' => 'Mail from PMB Poliwangi',
-                'body' => 'Silahkan mengikuti tata cara pendaftaran dan masuk kedalam aplikasi. Mohon menjaga privasi akun masing masing',
+                'body' => 'Silahkan mengikuti tata cara pendaftaran dan masuk kedalam aplikasi. Mohon menjaga privasi akun masing-masing',
                 'email' => $user->email,
-                'password' => $detailPendaftar->password,
+                'password' => $detailPendaftar->kode_bayar,
                 'gelombang' => $gelombang->nama_gelombang . " - " . $gelombang->deskripsi,
                 'program_studi' => $program_studi->nama_program_studi
             ];
 
+            // Kirim email pemberitahuan
             Mail::to($user->email)->send(new EmailNotification($mailData));
+        } else {
+            // Jika tidak ada data pendaftar, beri pesan error
+            \Log::debug('Pendaftar tidak ditemukan');
+            return response()->json(['error' => 'Data pendaftar tidak ditemukan'], 404);
         }
     }
-
-    // Membuat Invoice Xendit
-    public function createInvoice(array $data)
+}
+    public function createVA(array $data)
     {
-        Configuration::setXenditKey("xnd_public_development_kGtMW2a_VlZ43I0Xn0o3kCZ7EEOAT57fpWO8XWwMVVRPhfpVDboTYyrfoEVTtML");
-
+        // Ambil biaya pendaftaran dari tabel GelombangPendaftaran
         $biaya_pendaftaran = GelombangPendaftaran::where('id', $data['gelombang'])->first();
-        $apiInstance = new InvoiceApi();
-        $createInvoiceRequest = new CreateInvoiceRequest([
-            'external_id' => 'inv-' . time(), // External ID yang unik
-            'amount' => $biaya_pendaftaran->nominal_pendaftaran, // Nominal pendaftaran dari gelombang
-            'payer_email' => $data['email'],
-            'description' => 'Pembayaran pendaftaran ' . $data['nama'],
-            'invoice_duration' => 86400 * 2, // Durasi invoice 2 hari
-            'currency' => 'IDR',
-        ]);
-
+    
+        if (!$biaya_pendaftaran) {
+            return ['error' => 'Gelombang pendaftaran tidak ditemukan.'];
+        }
+    
+        $client_id = '21016';
+        $secret_key = '6094ecb0bcb62da963f1b50a876ffe02';
+        $url = 'https://apibeta.bni-ecollection.com/';
+    
+        $data_asli = [
+            'client_id' => $client_id,
+            'trx_id' => mt_rand(),
+            'trx_amount' => $biaya_pendaftaran->nominal_pendaftaran,
+            'billing_type' => 'c',
+            'type' => 'createbilling',
+            'datetime_expired' => date('c', time() + 24 * 3600),
+            'virtual_account' => '',
+            'customer_name' => $data['nama'],
+            'customer_email' => '',
+            'customer_phone' => '',
+        ];
+    
         try {
-            // Buat invoice
-            $result = $apiInstance->createInvoice($createInvoiceRequest);
-            return $result; // Kembalikan hasil invoice
-        } catch (\Xendit\XenditSdkException $e) {
-            return null;
-        }
-    }
-
-    // Endpoint callback Xendit untuk update status pendaftaran
-    public function xenditCallback(Request $request)
-    {
-        // Ambil data dari callback
-        $data = $request->all();
-
-        if ($data['status'] === 'PAID') {
-            // Update status_pendaftaran menjadi 'disetujui' jika pembayaran sukses
-            $detailPendaftar = DetailPendaftar::where('trx_va', $data['external_id'])->first();
-
-            if ($detailPendaftar) {
-                $pendaftar = Pendaftar::find($detailPendaftar->pendaftar_id);
-                $pendaftar->update(['status_pendaftaran' => 'disetujui']);
+            $hashed_string = BniEnc::encrypt($data_asli, $client_id, $secret_key);
+            $response = Http::post($url, ['client_id' => $client_id, 'data' => $hashed_string]);
+            $response_json = json_decode($response, true);
+    
+            // Log response untuk debugging
+            \Log::info('createVA Response', ['response' => $response_json]);
+    
+            if ($response_json['status'] !== '000') {
+                return ['error' => $response_json['message'] ?? 'Failed to create virtual account.'];
             }
+    
+            if (isset($response_json['data']['virtual_account'])) {
+                return $response_json['data'];
+            }
+    
+            return ['error' => 'Virtual account tidak ditemukan dalam respons API.'];
+        } catch (\Exception $e) {
+            \Log::error('createVA Exception', ['exception' => $e->getMessage()]);
+            return ['error' => $e->getMessage()];
         }
     }
+    
+    public function CekPendaftaranVA(array $data)
+    {
+        $va_bni = $this->createVA($data);
+    
+        // Log jika error ada
+        if (isset($va_bni['error'])) {
+            \Log::error('CekPendaftaranVA Error', ['error' => $va_bni['error']]);
+            return $va_bni;
+        }
+    
+        $client_id = '21016';
+        $secret_key = '6094ecb0bcb62da963f1b50a876ffe02';
+        $url = 'https://apibeta.bni-ecollection.com/';
+    
+        $data_asli = [
+            'client_id' => $client_id,
+            'trx_id' => $va_bni['trx_id'] ?? '',
+            'trx_amount' => '',
+            'type' => 'inquirybilling',
+            'virtual_account' => $va_bni['virtual_account'] ?? '',
+            'customer_name' => '',
+            'customer_email' => '',
+            'customer_phone' => '',
+        ];
+    
+        try {
+            $hashed_string = BniEnc::encrypt($data_asli, $client_id, $secret_key);
+            $response = Http::post($url, ['client_id' => $client_id, 'data' => $hashed_string]);
+            $response_json = json_decode($response, true);
+    
+            \Log::info('CekPendaftaranVA Response', ['response' => $response_json]);
+    
+            if ($response_json['status'] !== '000') {
+                return ['error' => 'Gagal memeriksa status pembayaran.'];
+            }
+    
+            return BniEnc::decrypt($response_json['data'], $client_id, $secret_key);
+        } catch (\Exception $e) {
+            \Log::error('CekPendaftaranVA Exception', ['exception' => $e->getMessage()]);
+            return ['error' => $e->getMessage()];
+        }
+    }
+    
+    
 }

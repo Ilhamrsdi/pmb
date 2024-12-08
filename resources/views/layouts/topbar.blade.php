@@ -641,9 +641,10 @@
                   {{ Auth::user()->username}}
               </span>
               
-                <span
-                  class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">{{ Auth::user()->role_id == 1 ? '' : Auth::user()->role->role }}</span>
+              <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">
+                {{ Auth::user()->role_id == 1 ? '' : optional(Auth::user()->role)->role }}
               </span>
+              
             </span>
           </button>
           <div class="dropdown-menu dropdown-menu-end">
