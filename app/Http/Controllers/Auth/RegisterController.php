@@ -1,5 +1,5 @@
 <?php
-// app/Http/Controllers/Auth/RegisterController.php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
@@ -10,35 +10,57 @@ use App\Models\ProgramStudi;
 use App\Mail\EmailNotification;
 use App\Models\DetailPendaftar;
 use App\Http\Controllers\Controller;
-use App\Models\BniEnc;
 use App\Models\GelombangPendaftaran;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Models\BniEnc;
 use App\Models\RefPorgramStudi;
-use App\Services\BNIService;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Register Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles the registration of new users as well as their
+    | validation and creation. By default this controller uses a trait to
+    | provide this functionality without requiring any additional code.
+    |
+    */
+
     use RegistersUsers;
 
+    /**
+     * Where to redirect users after registration.
+     *
+     * @var string
+     */
     protected $redirectTo = RouteServiceProvider::HOME;
-    protected $bniService;
 
-    public function __construct(BNIService $bniService)
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
         $this->middleware('guest');
-        $this->bniService = $bniService;
     }
 
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
+        $validate = Validator::make($data, [
             'nama' => ['required', 'string', 'max:255'],
             'nik' => ['required', 'string', 'max:16'],
             'email' => ['required', 'string', 'email', 'max:255'],
@@ -47,8 +69,16 @@ class RegisterController extends Controller
             'program_studi' => ['required', 'string'],
             'gelombang' => ['required', 'integer'],
         ]);
+
+        return $validate;
     }
 
+    /**
+     * Create a new user instance after a valid registration.
+     *
+     * @param  array  $data
+     * @return \App\Models\User
+     */
     protected function create(array $data)
     {
         if (request()->has('avatar')) {
@@ -61,10 +91,14 @@ class RegisterController extends Controller
         $user = User::where('nik', $data['nik'])->first();
 
         if ($user != NULL) {
-            return $this->userIsNotNull($user, $data);
+            $this->userIsNotNull($user, $data);
         } else {
-            return $this->userIsNull($data);
+            $user = $this->userIsNull($data);
         }
+
+        session(['gelombang_id' => $data['gelombang']]);
+
+        return $user;
     }
 
     public function userIsNull(array $data)
@@ -72,8 +106,8 @@ class RegisterController extends Controller
         // dd($data);
 
         // $this->createVA($va, $trx_id);
-        $va_bni = $this->createVA($data);
-        $cek_pendaftar_va_bni = $this->CekPendaftaranVA($data);
+        // $va_bni = $this->createVA($data);
+        // $cek_pendaftar_va_bni = $this->CekPendaftaranVA($data);
         // dd($cek_pendaftar_va_bni['datetime_expired']);
         $password = rand(100000, 999999);
         $user = User::create([
@@ -97,9 +131,9 @@ class RegisterController extends Controller
             'pendaftar_id' => $pendaftar->id,
             'kode_bayar' => $password,
             'tanggal_daftar' => now(),
-            'va_pendaftaran' => $va_bni['virtual_account'],
-            'trx_va' => $va_bni['trx_id'],
-            'datetime_expired' => $cek_pendaftar_va_bni['datetime_expired'],
+            'va_pendaftaran' => rand(10000000000, 9999999999),
+            'trx_va' => rand(10000000000, 9999999999),
+            'datetime_expired' => 'date_expired',
         ]);
 
         $wali = Wali::create([
@@ -143,16 +177,16 @@ class RegisterController extends Controller
                                    ->first();
 
         // Debugging: Cek apakah data_pendaftar ada dan cek relasi detailPendaftar
-        \Log::debug('Data Pendaftar:', ['data_pendaftar' => $data_pendaftar]);
+        // \Log::debug('Data Pendaftar:', ['data_pendaftar' => $data_pendaftar]);
 
         if ($data_pendaftar) {
             // Debugging: Cek apakah detailPendaftar berisi data
             if ($data_pendaftar->detailPendaftar->isEmpty()) {
-                \Log::debug('Detail Pendaftar kosong');
+                // \Log::debug('Detail Pendaftar kosong');
                 // Jika detailPendaftar kosong, beri kode bayar baru
                 $kode_bayar = rand(100000, 999999);
             } else {
-                \Log::debug('Detail Pendaftar ditemukan:', ['detail_pendaftar' => $data_pendaftar->detailPendaftar]);
+                // \Log::debug('Detail Pendaftar ditemukan:', ['detail_pendaftar' => $data_pendaftar->detailPendaftar]);
                 // Ambil kode_bayar dari data yang ada
                 $kode_bayar = $data_pendaftar->detailPendaftar->first()->kode_bayar;
             }
@@ -196,102 +230,89 @@ class RegisterController extends Controller
             Mail::to($user->email)->send(new EmailNotification($mailData));
         } else {
             // Jika tidak ada data pendaftar, beri pesan error
-            \Log::debug('Pendaftar tidak ditemukan');
+            // \Log::debug('Pendaftar tidak ditemukan');
             return response()->json(['error' => 'Data pendaftar tidak ditemukan'], 404);
         }
     }
 }
-    public function createVA(array $data)
-    {
-        // Ambil biaya pendaftaran dari tabel GelombangPendaftaran
-        $biaya_pendaftaran = GelombangPendaftaran::where('id', $data['gelombang'])->first();
+
     
-        if (!$biaya_pendaftaran) {
-            return ['error' => 'Gelombang pendaftaran tidak ditemukan.'];
-        }
+
+    // public function createVA(array $data)
+    // {
+    //     // FROM BNI
+    //     $biaya_pendataran = GelombangPendaftaran::where('id', $data['gelombang'])->first();
     
-        $client_id = '21016';
-        $secret_key = '6094ecb0bcb62da963f1b50a876ffe02';
-        $url = 'https://apibeta.bni-ecollection.com/';
+    //     $client_id = '21016';
+    //     $secret_key = '6094ecb0bcb62da963f1b50a876ffe02';
+    //     $url = 'https://apibeta.bni-ecollection.com/';
     
-        $data_asli = [
-            'client_id' => $client_id,
-            'trx_id' => mt_rand(),
-            'trx_amount' => $biaya_pendaftaran->nominal_pendaftaran,
-            'billing_type' => 'c',
-            'type' => 'createbilling',
-            'datetime_expired' => date('c', time() + 24 * 3600),
-            'virtual_account' => '',
-            'customer_name' => $data['nama'],
-            'customer_email' => '',
-            'customer_phone' => '',
-        ];
+    //     $data_asli = [
+    //         'client_id' => $client_id,
+    //         'trx_id' => mt_rand(),
+    //         'trx_amount' => $biaya_pendataran->nominal_pendaftaran,
+    //         'billing_type' => 'c',
+    //         'type' => 'createbilling',
+    //         'datetime_expired' => date('c', time() + 24 * 3600),
+    //         'virtual_account' => '',
+    //         'customer_name' => $data['nama'],
+    //         'customer_email' => '',
+    //         'customer_phone' => '',
+    //     ];
     
-        try {
-            $hashed_string = BniEnc::encrypt($data_asli, $client_id, $secret_key);
-            $response = Http::post($url, ['client_id' => $client_id, 'data' => $hashed_string]);
-            $response_json = json_decode($response, true);
+    //     $hashed_string = BniEnc::encrypt($data_asli, $client_id, $secret_key);
     
-            // Log response untuk debugging
-            \Log::info('createVA Response', ['response' => $response_json]);
+    //     $response = Http::post($url, ['client_id' => $client_id, 'data' => $hashed_string]);
+    //     $response_json = json_decode($response, true);
     
-            if ($response_json['status'] !== '000') {
-                return ['error' => $response_json['message'] ?? 'Failed to create virtual account.'];
-            }
+    //     if ($response_json['status'] !== '000') {
+    //         // Menangani error jika status bukan '000'
+    //         return ['error' => 'Failed to create virtual account.'];
+    //     }
     
-            if (isset($response_json['data']['virtual_account'])) {
-                return $response_json['data'];
-            }
+    //     // Pastikan untuk memeriksa apakah key 'virtual_account' ada sebelum mengaksesnya
+    //     if (isset($response_json['data']['virtual_account'])) {
+    //         return $response_json['data'];
+    //     }
     
-            return ['error' => 'Virtual account tidak ditemukan dalam respons API.'];
-        } catch (\Exception $e) {
-            \Log::error('createVA Exception', ['exception' => $e->getMessage()]);
-            return ['error' => $e->getMessage()];
-        }
-    }
+    //     // Jika key 'virtual_account' tidak ditemukan, kembalikan error atau nilai default
+    //     return ['error' => 'Virtual account not found.'];
+    // }
+
+    // public function CekPendaftaranVA(array $data)
+    // {
+    //     $va_bni = $this->createVA($data);
     
-    public function CekPendaftaranVA(array $data)
-    {
-        $va_bni = $this->createVA($data);
+    //     // Periksa apakah terjadi error saat pembuatan VA
+    //     if (isset($va_bni['error'])) {
+    //         // Tangani error jika tidak ada data VA
+    //         return $va_bni;  // Mengembalikan error yang sudah ada
+    //     }
     
-        // Log jika error ada
-        if (isset($va_bni['error'])) {
-            \Log::error('CekPendaftaranVA Error', ['error' => $va_bni['error']]);
-            return $va_bni;
-        }
+    //     $client_id = '21016';
+    //     $secret_key = '6094ecb0bcb62da963f1b50a876ffe02';
+    //     $url = 'https://apibeta.bni-ecollection.com/';
     
-        $client_id = '21016';
-        $secret_key = '6094ecb0bcb62da963f1b50a876ffe02';
-        $url = 'https://apibeta.bni-ecollection.com/';
+    //     $data_asli = [
+    //         'client_id' => $client_id,
+    //         'trx_id' => $va_bni['trx_id'], // Menggunakan trx_id dari VA yang sudah dibuat
+    //         'trx_amount' => '',
+    //         'type' => 'inquirybilling',
+    //         'virtual_account' => $va_bni['virtual_account'], // Menggunakan virtual_account dari VA yang sudah dibuat
+    //         'customer_name' => '',
+    //         'customer_email' => '',
+    //         'customer_phone' => '',
+    //     ];
     
-        $data_asli = [
-            'client_id' => $client_id,
-            'trx_id' => $va_bni['trx_id'] ?? '',
-            'trx_amount' => '',
-            'type' => 'inquirybilling',
-            'virtual_account' => $va_bni['virtual_account'] ?? '',
-            'customer_name' => '',
-            'customer_email' => '',
-            'customer_phone' => '',
-        ];
+    //     $hashed_string = BniEnc::encrypt($data_asli, $client_id, $secret_key);
     
-        try {
-            $hashed_string = BniEnc::encrypt($data_asli, $client_id, $secret_key);
-            $response = Http::post($url, ['client_id' => $client_id, 'data' => $hashed_string]);
-            $response_json = json_decode($response, true);
+    //     $response = Http::post($url, ['client_id' => $client_id, 'data' => $hashed_string]);
+    //     $response_json = json_decode($response, true);
     
-            \Log::info('CekPendaftaranVA Response', ['response' => $response_json]);
+    //     if ($response_json['status'] !== '000') {
+    //         return ['error' => 'Failed to check payment status.'];
+    //     }
     
-            if ($response_json['status'] !== '000') {
-                return ['error' => 'Gagal memeriksa status pembayaran.'];
-            }
-    
-            return BniEnc::decrypt($response_json['data'], $client_id, $secret_key);
-        } catch (\Exception $e) {
-            \Log::error('CekPendaftaranVA Exception', ['exception' => $e->getMessage()]);
-            return ['error' => $e->getMessage()];
-        }
-    }
-    
-    
+    //     return BniEnc::decrypt($response_json['data'], $client_id, $secret_key);
+    // }
 }

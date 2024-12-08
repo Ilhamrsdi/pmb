@@ -54,6 +54,7 @@ use App\Http\Controllers\Panitia\PanitiaController;
 |
 */
 
+
 Route::post('/cek_va_ukt', [App\Http\Controllers\DashboardController::class, 'CekUKT']);
 Route::get('/', [App\Http\Controllers\LandingController::class, 'index']);
 Route::get('/pengumuman/{id}', [App\Http\Controllers\LandingController::class, 'pengumuman']);
