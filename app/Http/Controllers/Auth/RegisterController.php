@@ -15,53 +15,30 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use App\Models\BniEnc;
 use App\Models\RefPorgramStudi;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Carbon;
+use Xendit\Invoice\InvoiceApi;
+use Xendit\Invoice\CreateInvoiceRequest;
+use Xendit\Configuration;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
     use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
     protected $redirectTo = RouteServiceProvider::HOME;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
     protected function validator(array $data)
     {
-        $validate = Validator::make($data, [
+        return Validator::make($data, [
             'nama' => ['required', 'string', 'max:255'],
             'nik' => ['required', 'string', 'max:16'],
             'email' => ['required', 'string', 'email', 'max:255'],
@@ -70,16 +47,10 @@ class RegisterController extends Controller
             'program_studi' => ['required', 'string'],
             'gelombang' => ['required', 'integer'],
         ]);
-
+        
         return $validate;
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
     protected function create(array $data)
     {
         if (request()->has('avatar')) {
@@ -130,11 +101,11 @@ class RegisterController extends Controller
 
         $detailPendaftar = DetailPendaftar::create([
             'pendaftar_id' => $pendaftar->id,
-            'kode_bayar' => $password,
+            'kode_bayar' => random_int(100000, 999999), // Menghasilkan angka acak 6 digit
             'tanggal_daftar' => now(),
-            'va_pendaftaran' => rand(10000000000, 9999999999),
-            'trx_va' => rand(10000000000, 9999999999),
-            'datetime_expired' => Carbon::now()->addHours(24)->toDateTimeString(),
+            'va_pendaftaran' => random_int(100000, 999999),
+            // 'trx_va' => $va_bni['trx_id'],
+            // 'datetime_expired' => $cek_pendaftar_va_bni['datetime_expired'],
         ]);
 
         $wali = Wali::create([
@@ -152,47 +123,28 @@ class RegisterController extends Controller
             'title' => 'Mail from PMB Poliwangi',
             'body' => 'Silahkan mengikuti tata cara pendaftaran dan masuk kedalam aplikasi. Mohon menjaga privasi akun masing masing',
             'email' => $user->email,
-            'password' => $detailPendaftar->kode_bayar,
+            'password' => 'password',
             'gelombang' => $gelombang->nama_gelombang . " - " . $gelombang->deskripsi,
-            'program_studi' => $program_studi->nama_program_studi
+            'program_studi' => $program_studi->nama_program_studi,
+            
         ];
 
         Mail::to($user->email)->send(new EmailNotification($mailData));
 
         return $user;
     }
+    
 
+  
     public function userIsNotNull($user, array $data)
-{
-    // Cek apakah data pendaftar sudah ada
-    $cek_pendaftar = Pendaftar::where('user_id', $user->id)
-                               ->where('gelombang_id', $data['gelombang'])
-                               ->first();
+    {
+        $cek_pendaftar = Pendaftar::where('user_id', $user->id)->where('gelombang_id', $data['gelombang'])->first();
 
-    if ($cek_pendaftar != null) {
-        return redirect('landing'); // Jika sudah ada pendaftar, redirect
-    } else {
-        // Ambil data pendaftar dengan detailPendaftar
-        $data_pendaftar = Pendaftar::where('user_id', $user->id)
-                                   ->with('detailPendaftar') // Pastikan relasi detailPendaftar dimuat
-                                   ->first();
-
-        // Debugging: Cek apakah data_pendaftar ada dan cek relasi detailPendaftar
-        // \Log::debug('Data Pendaftar:', ['data_pendaftar' => $data_pendaftar]);
-
-        if ($data_pendaftar) {
-            // Debugging: Cek apakah detailPendaftar berisi data
-            if ($data_pendaftar->detailPendaftar->isEmpty()) {
-                // \Log::debug('Detail Pendaftar kosong');
-                // Jika detailPendaftar kosong, beri kode bayar baru
-                $kode_bayar = rand(100000, 999999);
-            } else {
-                // \Log::debug('Detail Pendaftar ditemukan:', ['detail_pendaftar' => $data_pendaftar->detailPendaftar]);
-                // Ambil kode_bayar dari data yang ada
-                $kode_bayar = $data_pendaftar->detailPendaftar->first()->kode_bayar;
-            }
-
-            // Proses lanjutkan dengan data pendaftar baru
+        if ($cek_pendaftar != null) {
+            redirect('landing');
+        } else {
+            $data_pendaftar = Pendaftar::where('user_id', $user->id)->with('detailPendaftar')->get();
+            // dd($data_pendaftar);
             $pendaftar = Pendaftar::create([
                 'user_id' => $user->id,
                 'nama' => $data['nama'],
@@ -204,7 +156,7 @@ class RegisterController extends Controller
             $detailPendaftar = DetailPendaftar::create([
                 'pendaftar_id' => $pendaftar->id,
                 'tanggal_daftar' => now(),
-                'kode_bayar' => $kode_bayar,
+                'kode_bayar' => $data_pendaftar[0]->detailPendaftar->kode_bayar
             ]);
 
             $wali = Wali::create([
@@ -220,100 +172,56 @@ class RegisterController extends Controller
 
             $mailData = [
                 'title' => 'Mail from PMB Poliwangi',
-                'body' => 'Silahkan mengikuti tata cara pendaftaran dan masuk kedalam aplikasi. Mohon menjaga privasi akun masing-masing',
+                'body' => 'Silahkan mengikuti tata cara pendaftaran dan masuk kedalam aplikasi. Mohon menjaga privasi akun masing masing',
                 'email' => $user->email,
-                'password' => $detailPendaftar->kode_bayar,
+                'password' => $detailPendaftar->password,
                 'gelombang' => $gelombang->nama_gelombang . " - " . $gelombang->deskripsi,
                 'program_studi' => $program_studi->nama_program_studi
             ];
 
-            // Kirim email pemberitahuan
             Mail::to($user->email)->send(new EmailNotification($mailData));
-        } else {
-            // Jika tidak ada data pendaftar, beri pesan error
-            // \Log::debug('Pendaftar tidak ditemukan');
-            return response()->json(['error' => 'Data pendaftar tidak ditemukan'], 404);
         }
     }
-}
 
-    
+    // Membuat Invoice Xendit
+    public function createInvoice(array $data)
+    {
+        Configuration::setXenditKey("xnd_public_development_kGtMW2a_VlZ43I0Xn0o3kCZ7EEOAT57fpWO8XWwMVVRPhfpVDboTYyrfoEVTtML");
 
-    // public function createVA(array $data)
-    // {
-    //     // FROM BNI
-    //     $biaya_pendataran = GelombangPendaftaran::where('id', $data['gelombang'])->first();
-    
-    //     $client_id = '21016';
-    //     $secret_key = '6094ecb0bcb62da963f1b50a876ffe02';
-    //     $url = 'https://apibeta.bni-ecollection.com/';
-    
-    //     $data_asli = [
-    //         'client_id' => $client_id,
-    //         'trx_id' => mt_rand(),
-    //         'trx_amount' => $biaya_pendataran->nominal_pendaftaran,
-    //         'billing_type' => 'c',
-    //         'type' => 'createbilling',
-    //         'datetime_expired' => date('c', time() + 24 * 3600),
-    //         'virtual_account' => '',
-    //         'customer_name' => $data['nama'],
-    //         'customer_email' => '',
-    //         'customer_phone' => '',
-    //     ];
-    
-    //     $hashed_string = BniEnc::encrypt($data_asli, $client_id, $secret_key);
-    
-    //     $response = Http::post($url, ['client_id' => $client_id, 'data' => $hashed_string]);
-    //     $response_json = json_decode($response, true);
-    
-    //     if ($response_json['status'] !== '000') {
-    //         // Menangani error jika status bukan '000'
-    //         return ['error' => 'Failed to create virtual account.'];
-    //     }
-    
-    //     // Pastikan untuk memeriksa apakah key 'virtual_account' ada sebelum mengaksesnya
-    //     if (isset($response_json['data']['virtual_account'])) {
-    //         return $response_json['data'];
-    //     }
-    
-    //     // Jika key 'virtual_account' tidak ditemukan, kembalikan error atau nilai default
-    //     return ['error' => 'Virtual account not found.'];
-    // }
+        $biaya_pendaftaran = GelombangPendaftaran::where('id', $data['gelombang'])->first();
+        $apiInstance = new InvoiceApi();
+        $createInvoiceRequest = new CreateInvoiceRequest([
+            'external_id' => 'inv-' . time(), // External ID yang unik
+            'amount' => $biaya_pendaftaran->nominal_pendaftaran, // Nominal pendaftaran dari gelombang
+            'payer_email' => $data['email'],
+            'description' => 'Pembayaran pendaftaran ' . $data['nama'],
+            'invoice_duration' => 86400 * 2, // Durasi invoice 2 hari
+            'currency' => 'IDR',
+        ]);
 
-    // public function CekPendaftaranVA(array $data)
-    // {
-    //     $va_bni = $this->createVA($data);
-    
-    //     // Periksa apakah terjadi error saat pembuatan VA
-    //     if (isset($va_bni['error'])) {
-    //         // Tangani error jika tidak ada data VA
-    //         return $va_bni;  // Mengembalikan error yang sudah ada
-    //     }
-    
-    //     $client_id = '21016';
-    //     $secret_key = '6094ecb0bcb62da963f1b50a876ffe02';
-    //     $url = 'https://apibeta.bni-ecollection.com/';
-    
-    //     $data_asli = [
-    //         'client_id' => $client_id,
-    //         'trx_id' => $va_bni['trx_id'], // Menggunakan trx_id dari VA yang sudah dibuat
-    //         'trx_amount' => '',
-    //         'type' => 'inquirybilling',
-    //         'virtual_account' => $va_bni['virtual_account'], // Menggunakan virtual_account dari VA yang sudah dibuat
-    //         'customer_name' => '',
-    //         'customer_email' => '',
-    //         'customer_phone' => '',
-    //     ];
-    
-    //     $hashed_string = BniEnc::encrypt($data_asli, $client_id, $secret_key);
-    
-    //     $response = Http::post($url, ['client_id' => $client_id, 'data' => $hashed_string]);
-    //     $response_json = json_decode($response, true);
-    
-    //     if ($response_json['status'] !== '000') {
-    //         return ['error' => 'Failed to check payment status.'];
-    //     }
-    
-    //     return BniEnc::decrypt($response_json['data'], $client_id, $secret_key);
-    // }
+        try {
+            // Buat invoice
+            $result = $apiInstance->createInvoice($createInvoiceRequest);
+            return $result; // Kembalikan hasil invoice
+        } catch (\Xendit\XenditSdkException $e) {
+            return null;
+        }
+    }
+
+    // Endpoint callback Xendit untuk update status pendaftaran
+    public function xenditCallback(Request $request)
+    {
+        // Ambil data dari callback
+        $data = $request->all();
+
+        if ($data['status'] === 'PAID') {
+            // Update status_pendaftaran menjadi 'disetujui' jika pembayaran sukses
+            $detailPendaftar = DetailPendaftar::where('trx_va', $data['external_id'])->first();
+
+            if ($detailPendaftar) {
+                $pendaftar = Pendaftar::find($detailPendaftar->pendaftar_id);
+                $pendaftar->update(['status_pendaftaran' => 'disetujui']);
+            }
+        }
+    }
 }
