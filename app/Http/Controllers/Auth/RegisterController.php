@@ -19,6 +19,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Models\BniEnc;
 use App\Models\RefPorgramStudi;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Carbon;
 
 class RegisterController extends Controller
 {
@@ -133,7 +134,7 @@ class RegisterController extends Controller
             'tanggal_daftar' => now(),
             'va_pendaftaran' => rand(10000000000, 9999999999),
             'trx_va' => rand(10000000000, 9999999999),
-            'datetime_expired' => 'date_expired',
+            'datetime_expired' => Carbon::now()->addHours(24)->toDateTimeString(),
         ]);
 
         $wali = Wali::create([
