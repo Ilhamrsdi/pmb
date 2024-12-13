@@ -386,14 +386,25 @@
                   <div class="col-lg-6">
                     <div class="mb-4">
                       <label for="gelombang" class="form-label fs-13">Gelombang Pendaftaran</label>
-                      <select class="form-select" aria-label="Default select example" name="gelombang" id="gelombang">
+                      {{-- <select class="form-select" aria-label="Default select example" name="gelombang" id="gelombang">
                         <option value="" selected>Pilih Gelombang Pendaftaran</option>
                         @forelse($gelombang as $h)
                           <option value="{{ $h->id }}">{{ $h->nama_gelombang }}</option>
                         @empty
                           <option value="">Data Gelombang tidak tersedia</option>
                         @endforelse
-                      </select>
+                      </select> --}}
+                      <select class="form-select" aria-label="Default select example" name="gelombang" id="gelombang">
+                        <option selected>Pilih Gelombang Pendaftaran</option>
+                        @forelse($gelombang as $index => $h)
+                            @if(strtolower(trim($h->status)) == 'active') <!-- Pastikan perbandingan string yang tepat -->
+                                <option value="{{ $h->id }}">{{ $h->nama_gelombang }}</option>
+                            @endif
+                        @empty
+                            <option disabled>Tidak ada gelombang aktif</option>
+                        @endforelse
+                    </select>
+                    
                     </div>
                   </div>
                 </div>

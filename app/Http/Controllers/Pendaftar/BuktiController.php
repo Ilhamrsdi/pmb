@@ -20,8 +20,12 @@ class BuktiController extends Controller
 
     public function upload_bukti_pendaftaran(Request $request)
 {
+    $request->validate([
+        'bukti_bayar_pendaftaran' => 'required|file|mimes:jpg,png,jpeg|max:2048', // Maksimal 2MB
+    ]);
+
     $id = $request->id;
-    $file = $request->bukti_bayar_pendaftaran;
+    $file = $request->file('bukti_bayar_pendaftaran'); // Pastikan metode ini dipakai
     $nama = $id . '.' . $file->extension();
     $directory = public_path('assets/file/bukti-pendaftaran/');
 
@@ -39,8 +43,9 @@ class BuktiController extends Controller
     // Pindahkan file yang baru di-upload
     $file->move($directory, $nama);
 
-    return redirect(route('dashboard'));
+    return redirect(route('dashboard'))->with('success', 'Bukti pembayaran berhasil diunggah.');
 }
+
 
 
     public function upload_bukti_ukt(Request $request)

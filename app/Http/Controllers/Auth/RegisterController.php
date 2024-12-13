@@ -125,7 +125,7 @@ class RegisterController extends Controller
             'email' => $user->email,
             'password' => 'password',
             'gelombang' => $gelombang->nama_gelombang . " - " . $gelombang->deskripsi,
-            'program_studi' => $program_studi->nama_program_studi,
+            'program_studi' => $program_studi->name ,
             
         ];
 

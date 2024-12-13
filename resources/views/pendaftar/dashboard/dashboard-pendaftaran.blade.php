@@ -56,7 +56,6 @@
                             <div class="row align-items-end">
                                 <div class="col-sm-12">
                                     <div class="text-center py-5">
-
                                         <div class="mb-4">
                                             <lord-icon src="https://cdn.lordicon.com/kbtmbyzy.json" trigger="loop"
                                                 colors="primary:#0ab39c,secondary:#405189"
@@ -86,53 +85,78 @@
                             <div class="row align-items-end">
                                 <div class="col-12">
                                     <div class="text-end p-5">
-                                        <form action="{{ route('upload-bukti-pendaftaran') }}" method="post"
-                                            enctype="multipart/form-data">
-                                            @csrf
-                                            <input type="hidden" name="id" value="{{ session('pendaftar_id') }}">
-                                            <label for="file-bukti-bayar-pendaftaran"
-                                                class="d-flex justify-content-between align-items-center">Bukti Pendaftaran
-                                                {{-- <a class="btn btn-sm btn-primary" href="{{ asset('assets/file/bukti-pendaftaran' . $pendaftar->'file-'.$berkas ) }}"
-                                download>Download Berkas</a> --}}
-                                                {{-- <a href="{{ 
-                                asset('assets/file/bukti-pendaftaran/' . $dataPendaftar . '.jpg') ?
-                                asset('assets/file/bukti-pendaftaran/' . $dataPendaftar . '.png') ? 
-                                asset('assets/file/bukti-pendaftaran/' . $dataPendaftar . '.jpeg') }}" download>Download Bukti Pendaftaran</a> --}}
-                                                @php
-                                                    $extensions = ['jpg', 'png', 'jpeg']; // Daftar ekstensi yang didukung
-                                                    $filePath = '';
+                                        @php
+                                            // Cek apakah file bukti pembayaran sudah ada
+                                            $uploadedFilePath = '';
+                                            $uploadedExtensions = ['jpg', 'png', 'jpeg']; // Ekstensi file yang didukung
+                                            foreach ($uploadedExtensions as $ext) {
+                                                $possibleUploadedFile =
+                                                    'assets/file/bukti-pendaftaran/' .
+                                                    $dataPendaftar .
+                                                    '.' .
+                                                    $ext;
+                                                if (file_exists(public_path($possibleUploadedFile))) {
+                                                    $uploadedFilePath = asset($possibleUploadedFile);
+                                                    break;
+                                                }
+                                            }
+                                        @endphp
 
-                                                    foreach ($extensions as $ext) {
-                                                        $possiblePath =
-                                                            'assets/file/bukti-pendaftaran/' .
-                                                            $dataPendaftar .
-                                                            '.' .
-                                                            $ext;
-                                                        if (file_exists(public_path($possiblePath))) {
-                                                            $filePath = asset($possiblePath);
-                                                            // $hasUploaded = true;
-                                                            break;
-                                                        }
-                                                    }
-                                                @endphp
+                                        @if ($uploadedFilePath)
+                                            {{-- Tampilkan bukti pembayaran yang sudah diunggah --}}
+                                            <div class="text-center">
+                                                <p>Bukti pembayaran Anda sudah diunggah:</p>
+                                                <img src="{{ $uploadedFilePath }}" alt="Bukti Pembayaran" class="img-fluid rounded mb-3" style="max-width: 100%; height: auto;">
+                                                <p><a href="{{ $uploadedFilePath }}" class="btn btn-primary" download>Download Bukti Pembayaran</a></p>
+                                                <form action="{{ route('upload-bukti-pendaftaran') }}" method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <input type="hidden" name="id" value="{{ session('pendaftar_id') }}">
+                                                
+                                                    <!-- Jika sudah ada file yang diupload -->
+                                                    @if(session('file_uploaded'))
+                                                        <div class="uploaded-file">
+                                                            <p>File yang telah diupload:</p>
+                                                            <img src="{{ asset('storage/' . session('file_uploaded')) }}" alt="Bukti Bayar" style="max-width: 200px;">
+                                                        </div>
+                                                    @endif
+                                                
+                                                    <!-- Form upload file, sembunyikan dengan display: none -->
+                                                    <div id="upload-form" style="display: none;">
+                                                        <label for="file-bukti-bayar-pendaftaran" class="drop-container">
+                                                            <h4 class="drop-title">Drop files here or click to upload.</h4>
+                                                            <input type="file" name="bukti_bayar_pendaftaran" id="file-bukti-bayar-pendaftaran" accept="image/jpg,image/png,image/jpeg" required>
+                                                        </label>
+                                                    </div>
+                                                
+                                                    <!-- Tombol Upload Ulang -->
+                                                    <button type="button" class="btn btn-primary" id="upload-ulang-btn">
+                                                        @if(session('file_uploaded'))
+                                                            Upload Ulang
+                                                        @else
+                                                            Upload
+                                                        @endif
+                                                    </button>
+                                                
+                                                    <!-- Tombol submit, tampilkan jika file diupload ulang -->
+                                                    <button type="submit" class="btn btn-primary" id="submit-btn" style="display: none;">
+                                                        Upload Ulang
+                                                    </button>
+                                                </form>
 
-                                                @if ($filePath)
-                                                <a href="{{ $filePath }}" download>Download Bukti Pendaftaran</a>
-                                                @else
-                                                <p>Silahkan Upload Bukti Pendaftaran</p>
-                                                @endif
-
-
-                                            </label>
-                                            <label for="file-bukti-bayar-pendaftaran" class="drop-container">
-                                                <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
-                                                <h4 class="drop-title">Drop files here or click to upload.</h4>
-                                                <input type="file" name="bukti_bayar_pendaftaran"
-                                                    id="file-bukti-bayar-pendaftaran" accept="image/jpg" required>
-                                            </label>
-
-                                            <button type="submit" class="btn btn-primary">simpan</button>
-                                        </form>
+                                            </div>
+                                        @else
+                                            {{-- Form untuk mengunggah bukti pembayaran --}}
+                                            <form action="{{ route('upload-bukti-pendaftaran') }}" method="post" enctype="multipart/form-data">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{ session('pendaftar_id') }}">
+                                                <label for="file-bukti-bayar-pendaftaran" class="drop-container">
+                                                    <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                                    <h4 class="drop-title">Drop files here or click to upload.</h4>
+                                                    <input type="file" name="bukti_bayar_pendaftaran" id="file-bukti-bayar-pendaftaran" accept="image/jpg, image/png, image/jpeg" required>
+                                                </label>
+                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                            </form>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -140,8 +164,6 @@
                     </div>
                 </div> <!-- end col-->
             </div> <!-- end row-->
-
-
         </div> <!-- end col-->
 
         <div class="col-xl-6">
@@ -200,4 +222,18 @@
 @endsection
 @section('script')
     <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
+
+<script>
+    // Ambil elemen-elemen yang dibutuhkan
+    const uploadForm = document.getElementById('upload-form');
+    const uploadButton = document.getElementById('upload-ulang-btn');
+    const submitButton = document.getElementById('submit-btn');
+
+    // Fungsi untuk menampilkan form upload ketika tombol ditekan
+    uploadButton.addEventListener('click', function() {
+        uploadForm.style.display = 'block'; // Menampilkan form upload
+        submitButton.style.display = 'inline'; // Menampilkan tombol submit
+        uploadButton.style.display = 'none'; // Menyembunyikan tombol upload ulang
+    });
+</script>
 @endsection

@@ -67,9 +67,28 @@
                       <td class="deskripsi">{{ $g->deskripsi }}</td>
                       <td class="nominal text-center">{{ $g->nominal_pendaftaran }}</td>
                       <td class="kuota text-center">{{ $g->kuota_pendaftar }}</td>
-                      <td class="status text-center"><span
-                          class="badge badge-soft-success text-uppercase">{{ $g->status }}</span>
-                      </td>
+                      <td class="status text-center">
+                        @if (strtolower(trim($g->status)) == 'active')
+                            <span class="badge badge-soft-success text-uppercase">{{ $g->status }}</span>
+                        @elseif (strtolower(trim($g->status)) == 'off')
+                            <span class="badge badge-soft-danger text-uppercase">{{ $g->status }}</span>
+                        @endif
+                    </td>
+                    
+                      {{-- <td class="status text-center">
+                        <span class="badge 
+                            @if($g->status == 'active')
+                                badge-soft-success
+                            @elseif($g->status == 'off')
+                                badge-soft-danger
+                            @else
+                                badge-soft-secondary
+                            @endif
+                            text-uppercase">
+                            {{ $g->status }}
+                        </span>
+                    </td> --}}
+                    
                       <td>
                         <div class="d-flex gap-2">
                           <div class="edit" z>

@@ -96,7 +96,7 @@
                                             <td class="customer_name">{{ $row->nama }}</td>
                                             <td class="date">{{ $row->nim }}</td>
                                             <td class="email">{{ $row->gelombangPendaftaran->nama_gelombang }}</td>
-                                            <td class="phone">{{ $row->programStudi?->nama_program_studi }}</td>
+                                            <td class="phone">{{ $row->programStudi?->name }}</td>
                                             <td class="status">
                                                 <span>{{ $row->created_at->format('d-m-Y') }}</span>
                                             </td>

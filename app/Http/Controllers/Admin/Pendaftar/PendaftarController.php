@@ -70,31 +70,32 @@ class PendaftarController extends Controller
      */
     public function updateStatus(Request $request)
     {
-        // return $request->all();
-
+        // Validasi input jika diperlukan
         // $request->validate([
-        //     'status_pendaftaran' => 'required', // Validasi input
-        //     'id' => 'required|exists:pendaftars,id' // Pastikan ID pendaftar ada
+        //     'status_pendaftaran' => 'required',
+        //     'id' => 'required|exists:pendaftars,id'
         // ]);
+    
         try {
-            // Cari pendaftar dan detail pendaftar berdasarkan ID
-            // $pendaftar = Pendaftar::findOrFail($request->id);
+            // Cari detail pendaftar berdasarkan ID
             $detailPendaftar = DetailPendaftar::findOrFail($request->id);
-        
+            
             // Update status pendaftaran
             $detailPendaftar->update([
-                'status_pendaftaran' =>  $request->status_pendaftaran,
+                'status_pendaftaran' => $request->status_pendaftaran,
             ]);
-            // $detailPendaftar->status_pendaftaran = $request->input('status_pendaftaran');
-            // $detailPendaftar->save();
-        
-            // Mengembalikan response JSON
-            return redirect()->back();
+            
+            // Redirect kembali dengan pesan sukses
+            return redirect()->back()->with('success', 'Status pendaftaran berhasil diperbarui.');
         } catch (\Exception $e) {
+            // Log error untuk debugging
             \Log::error('Error updating status: ' . $e->getMessage());
-            return response()->json(['success' => false, 'message' => 'Gagal memperbarui status.' . $e]);
-        }    
+            
+            // Redirect kembali dengan pesan error
+            return redirect()->back()->with('error', 'Gagal memperbarui status. Silakan coba lagi.');
+        }
     }
+    
 
     /**
      * Remove the specified resource from storage.

@@ -99,7 +99,7 @@
                           <td class="customer_name">{{ $row->nama ?? 'Tidak Ada' }}</td>
                           <td class="date">{{ $row->detailPendaftar->tanggal_daftar ?? 'Tidak Ada' }}</td>
                           <td class="email">{{ $row->gelombangPendaftaran?->nama_gelombang ?? 'Tidak Ada' }}</td>
-                          <td class="phone">{{ $row->programStudi?->nama_program_studi ?? 'Tidak Ada' }}</td>
+                          <td class="phone">{{ $row->programStudi?->name ?? 'Tidak Ada' }}</td>
                           <td class="status">
                               @if ($row->detailPendaftar?->status_acc === 'sudah')
                                   <span class="badge badge-soft-success text-uppercase">{{ $row->detailPendaftar->status_acc }}</span>

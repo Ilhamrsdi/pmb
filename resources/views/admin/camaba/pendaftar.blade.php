@@ -40,11 +40,18 @@
       Pendaftar
     @endslot
   @endcomponent
-  @if (Session::has('success'))
+  @if(session('success'))
     <div class="alert alert-success">
-      <strong>Success: </strong>{{ Session::get('success') }}
+        {{ session('success') }}
     </div>
-  @endif
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
         <div class="row">
           <div class="col-lg-12">
             <div id="#customerList">
@@ -160,7 +167,7 @@
                             @endif
                           </td>
                           <td class="email">{{ $row->gelombangPendaftaran->nama_gelombang ?? '-' }}</td>
-                          <td class="phone">{{ $row->programStudi->nama_program_studi ?? '-' }}</td>
+                          <td class="phone">{{ $row->programStudi->name ?? '-' }}</td>
                           <td class="status text-center">
                             @if ($row->detailPendaftar?->status_pendaftaran == 'sudah')
                                 <span class="badge badge-soft-success text-uppercase">{{ $row->detailPendaftar->status_pendaftaran }}</span>

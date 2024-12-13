@@ -36,15 +36,15 @@ class Pendaftar extends Model
         return $this->hasOne(Wali::class);
     }
 
-    public function programStudi()
-    {
-        return $this->belongsTo(ProgramStudi::class, 'program_studi_id');
-    }
-
     // public function programStudi()
     // {
-    //     return $this->belongsTo(RefPorgramStudi::class, 'program_studi_id', 'id');
+    //     return $this->belongsTo(ProgramStudi::class, 'program_studi_id');
     // }
+
+    public function programStudi()
+    {
+        return $this->belongsTo(RefPorgramStudi::class, 'program_studi_id', 'id');
+    }
 
     public function gelombangPendaftaran()
     {

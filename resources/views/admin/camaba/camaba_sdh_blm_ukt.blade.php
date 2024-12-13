@@ -107,7 +107,7 @@
                       <td class="customer_name">{{ $row->nama }}</td>
                       <td class="date">{{ $row->created_at->format('d-m-Y') }}</td>
                       <td class="email">{{ $row->gelombangPendaftaran->nama_gelombang }}</td>
-                      <td class="phone">{{ $row->programStudi?->nama_program_studi }}</td>
+                      <td class="phone">{{ $row->programStudi?->name }}</td>
                       @if ($row->status_ukt == 'sudah')
                         <td class="status"><span class="badge badge-soft-success text-uppercase">SUDAH DIATUR</span>
                         </td>
