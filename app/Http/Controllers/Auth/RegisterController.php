@@ -109,7 +109,7 @@ class RegisterController extends Controller
         // $va_bni = $this->createVA($data);
         // $cek_pendaftar_va_bni = $this->CekPendaftaranVA($data);
         // dd($cek_pendaftar_va_bni['datetime_expired']);
-        $password = rand(100000, 999999);
+        $password = 'password';
         $user = User::create([
             'username' => $data['nama'],
             'email' => $data['email'],

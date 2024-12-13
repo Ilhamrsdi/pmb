@@ -167,16 +167,18 @@
                             @else
                                 {{-- <span class="badge badge-soft-danger text-uppercase">belum</span> --}}
                                 <!-- Button trigger modal -->
-<a  class="badge badge-soft-danger text-uppercase" data-bs-toggle="modal" data-bs-target="#exampleModal-{{$row->detailPendaftar->id}}">
- {{$row->detailPendaftar->status_pendaftaran ?? 'Belum'}}
-</a>
-
+                                <a class="badge badge-soft-danger text-uppercase" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#exampleModal-{{ $row->detailPendaftar->id ?? '' }}">
+                                {{ $row->detailPendaftar->status_pendaftaran ?? 'Belum' }}
+                             </a>
+                             
 <!-- Modal -->
-<div class="modal fade" id="exampleModal-{{$row->detailPendaftar->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal-{{$row->detailPendaftar->id ?? ''}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Update Status Pendaftar {{$row->detailPendaftar->id}}</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Update Status Pendaftar {{$row->detailPendaftar->id ?? ''}}</h5>
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -186,7 +188,7 @@
       <div class="modal-body">
         Apakah  Anda yakin ingin mengubah status pendaftaran?
         <input type="hidden" value="sudah" name="status_pendaftaran">
-        <input type="hidden" value="{{$row->detailPendaftar->id}}" name="id">
+        <input type="hidden" value="{{$row->detailPendaftar->id ?? ''}}" name="id">
         
       </div>
       <div class="modal-footer">
@@ -335,22 +337,26 @@
                 </tr>
                 <tr>
                   <td style="width: 400px;">BUKTI PEMBAYARAN PENDAFTARAN</td>
-                  <td>  @php
+                  <td> 
+                    @php
                     $extensions = ['jpg', 'png', 'jpeg']; // Daftar ekstensi yang didukung
                     $filePath = '';
-
-                    foreach ($extensions as $ext) {
-                        $possiblePath =
-                            'assets/file/bukti-pendaftaran/' .
-                            $row->detailPendaftar->pendaftar_id .
-                            '.' .
-                            $ext;
-                        if (file_exists(public_path($possiblePath))) {
-                            $filePath = asset($possiblePath);
-                            break;
+                
+                    if ($row->detailPendaftar) {
+                        foreach ($extensions as $ext) {
+                            $possiblePath =
+                                'assets/file/bukti-pendaftaran/' .
+                                $row->detailPendaftar->pendaftar_id .
+                                '.' .
+                                $ext;
+                            if (file_exists(public_path($possiblePath))) {
+                                $filePath = asset($possiblePath);
+                                break;
+                            }
                         }
                     }
                 @endphp
+                
 
                 @if ($filePath)
                     <a href="{{ $filePath }}" target=_blank>Download Bukti Pendaftaran</a>
