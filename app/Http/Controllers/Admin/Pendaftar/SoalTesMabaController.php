@@ -24,7 +24,7 @@ class SoalTesMabaController extends Controller
             return redirect()->back()->with('error', 'ID tidak valid.');
         }
     
-        // Mengambil data tes berdasarkan ID
+        // Ambil data tes berdasarkan ID
         $tesMaba = TesMaba::find($id);
         if (!$tesMaba) {
             return redirect()->back()->with('error', 'Tes tidak ditemukan.');
@@ -32,10 +32,11 @@ class SoalTesMabaController extends Controller
     
         // Ambil data soal dengan relasi
         $soals = Soal::where('tes_maba_id', $id)->with('tesMaba')->get();
-        dd($soals); // Tambahkan dump untuk memeriksa data soal
     
+        // Ambil ID pendaftar dari auth
         $pendaftar_id = auth()->user()->id;
     
+        // Return view dengan data tesMaba, soal, dan pendaftar_id
         return view('pendaftar.ujian.soal', compact('tesMaba', 'soals', 'pendaftar_id'));
     }
     

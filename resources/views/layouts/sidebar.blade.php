@@ -209,7 +209,7 @@
               <a class="nav-link menu-link" href="{{ route('dashboard') }}">
                 <i class="las la-tachometer-alt"></i> <span>Dashboard</span>
               </a>
-            </li> <!-- end Dashboard Menu -->
+            </li>
             <?php
             $id = session('pendaftar_id');
             ?>
@@ -218,11 +218,11 @@
                 <i class="las la-user"></i> <span>Kelengkapan Data</span>
               </a>
             </li> <!-- end Kelengkapan Data Menu -->
-            {{-- <li class="nav-item">
-                <a class="nav-link menu-link" href="#">
+            <li class="nav-item">
+                <a class="nav-link menu-link" href="{{ route('pendaftar.ujian.index' , $id)}}">
                   <i class="las la-pen"></i><span>Tes Maba</span>
                 </a>
-              </li> <!-- end Tes Maba Menu --> --}}
+              </li> <!-- end Tes Maba Menu -->
               @elseif (
                 isset($user->pendaftar[0]) &&
                 $user->pendaftar[0]->detailPendaftar?->status_pendaftaran == 'sudah' &&
