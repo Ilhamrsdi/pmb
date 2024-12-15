@@ -9,7 +9,7 @@ class RefPendidikan extends Model
 {
     use HasFactory;
 
-    protected $table = 'education_levels';
+    protected $table = 'ref.education_levels';
 
     public function prodi()
     {

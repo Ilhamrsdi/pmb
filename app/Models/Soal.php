@@ -10,6 +10,7 @@ class Soal extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
     protected $fillable = [
         'tes_maba_id',
         'soal',
@@ -17,7 +18,8 @@ class Soal extends Model
         'jawaban1',        
         'jawaban2',        
         'jawaban3',        
-      ];
+    ];
+
     public function tesMaba()
     {
         return $this->belongsTo(TesMaba::class);

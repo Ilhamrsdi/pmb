@@ -7,6 +7,7 @@ use App\Models\Jawaban;
 use Illuminate\Http\Request;
 use App\Models\Soal;
 use App\Models\TesMaba;
+use Illuminate\Support\Facades\DB;
 
 class SoalTesMabaController extends Controller
 {
@@ -25,16 +26,19 @@ class SoalTesMabaController extends Controller
     
         // Mengambil data tes berdasarkan ID
         $tesMaba = TesMaba::find($id);
-        // if (!$tesMaba) {
-        //     return redirect()->back()->with('error', 'Tes tidak ditemukan.');
-        // }
+        if (!$tesMaba) {
+            return redirect()->back()->with('error', 'Tes tidak ditemukan.');
+        }
     
-        // Ambil data soal
-        $soals = Soal::where('tes_maba_id', $id)->get();
+        // Ambil data soal dengan relasi
+        $soals = Soal::where('tes_maba_id', $id)->with('tesMaba')->get();
+        dd($soals); // Tambahkan dump untuk memeriksa data soal
+    
         $pendaftar_id = auth()->user()->id;
     
         return view('pendaftar.ujian.soal', compact('tesMaba', 'soals', 'pendaftar_id'));
     }
+    
     
     
     

@@ -102,6 +102,7 @@ class RegisterController extends Controller
         $detailPendaftar = DetailPendaftar::create([
             'pendaftar_id' => $pendaftar->id,
             'kode_bayar' => random_int(100000, 999999), // Menghasilkan angka acak 6 digit
+            'kode_pendaftaran' => random_int(100000, 999999), // Menghasilkan angka acak 6
             'tanggal_daftar' => now(),
             'va_pendaftaran' => random_int(100000, 999999),
             // 'trx_va' => $va_bni['trx_id'],
@@ -156,7 +157,8 @@ class RegisterController extends Controller
             $detailPendaftar = DetailPendaftar::create([
                 'pendaftar_id' => $pendaftar->id,
                 'tanggal_daftar' => now(),
-                'kode_bayar' => $data_pendaftar[0]->detailPendaftar->kode_bayar
+                'kode_bayar' => $data_pendaftar[0]->detailPendaftar->kode_bayar,
+                'kode_pendaftaran' => $data_pendaftar[0]->detailPendaftar->kode_pendaftaran
             ]);
 
             $wali = Wali::create([

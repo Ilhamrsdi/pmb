@@ -217,7 +217,7 @@
                           <tbody>
                             <tr>
                               <td style="width: 400px">NIM</td>
-                              <td>{{ $row->nim }}</td>
+                              <td>{{ $row->nim  ?? 'Belum Di Set NIM'}}</td>
                             </tr>
                             <tr>
                               <td style="width: 400px">NAMA PENDAFTAR</td>
@@ -225,12 +225,13 @@
                             </tr>
                             <tr>
                               <td style="width: 400px">PRODI - JURUSAN</td>
-                              <td>{{ $row->programStudi?->jenjang_pendidikan?? 'Tidak Ada'  }}
-                                {{ $row->programStudi?->nama_program_studi?? 'Tidak Ada' }}
-                                -
-                                {{ $row->programStudi?->jurusan?->nama_jurusan?? 'Tidak Ada' }}
+                              <td>
+                                {{ $row->programStudi?->jurusan?->name ?? 'Tidak Ada' }} - 
+                                {{ $row->programStudi?->name ?? 'Tidak Ada' }} -
+                                {{ $row->programStudi?->pendidikan?->name ?? 'Tidak Ada' }}
                               </td>
                             </tr>
+                            
                             <tr>
                               <td style="width: 400px">JENIS KELAMIN</td>
                               <td>{{ $row->jenis_kelamin }}</td>
@@ -251,11 +252,11 @@
                             </tr>
                             <tr>
                               <td style="width: 400px">NIK</td>
-                              <td>{{ $row->nik }}</td>
+                              <td>{{ $row->user->nik }}</td>
                             </tr>
                             <tr>
                               <td style="width: 400px">EMAIL</td>
-                              <td>{{ $row->email }}</td>
+                              <td>{{ $row->user->email }}</td>
                             </tr>
                             <tr>
                               <td style="width: 400px">AGAMA</td>
@@ -263,7 +264,7 @@
                             </tr>
                             <tr>
                               <td style="width: 400px">NEGARA</td>
-                              <td>{{ $row->refNegara?->name }}</td>
+                              <td>{{ $row->negara }}</td>
                             </tr>
                             <tr>
                               <td style="width: 400px">ALAMAT</td>
@@ -338,16 +339,22 @@
                             </tr>
                             <tr>
                               <td style="width: 400px">PENGHASILAN AYAH / WALI</td>
-                              @if ($row->wali?->penghasilan_ayah < 500000)
-                                <td>Kurang Dari Rp. 500.000</td>
-                              @elseif ($row->wali?->penghasilan_ayah < 1000000)
-                                <td>Kurang Dari Rp. 1000.000</td>
-                              @elseif ($row->wali?->penghasilan_ayah < 2000000)
-                                <td>Kurang Dari Rp. 2000.000</td>
-                              @elseif ($row->wali?->penghasilan_ayah < 3000000)
-                                <td>Kurang Dari Rp. 3000.000</td>
+                              @php
+                                  $penghasilan_ayah = $row->wali?->penghasilan_ayah;
+                              @endphp
+                          
+                              @if ($penghasilan_ayah < 500000)
+                                  <td>Kurang Dari Rp. 500.000</td>
+                              @elseif ($penghasilan_ayah < 1000000)
+                                  <td>Kurang Dari Rp. 1000.000</td>
+                              @elseif ($penghasilan_ayah < 2000000)
+                                  <td>Kurang Dari Rp. 2000.000</td>
+                              @elseif ($penghasilan_ayah < 3000000)
+                                  <td>Kurang Dari Rp. 3000.000</td>
+                              @else
+                                  <td>Lebih Dari Rp. 3000.000</td> <!-- Tambahkan else untuk menangani nilai lebih dari Rp. 3000.000 -->
                               @endif
-                            </tr>
+                          </tr>                                           
                           </tbody>
                         </table>
                       </div>

@@ -24,6 +24,7 @@ class RefPorgramStudi extends Model
 
     public function pendidikan()
     {
-        return $this->belongsTo(RefPendidikan::class, 'education_level_id');
+        return $this->belongsTo(RefPendidikan::class, 'education_level_id', 'id');
     }
+    
 }

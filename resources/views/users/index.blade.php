@@ -102,7 +102,7 @@
                           {{$row->username}}
                           </td>
                           <td class="email">{{ $row->email}}</td>
-                          <td class="role">{{ $row->role->role }}</td>
+                          <td class="role">{{ $row->role?->roles }}</td>
                           <td>
                             <div class="d-flex gap-2">
                               <div class="edit">

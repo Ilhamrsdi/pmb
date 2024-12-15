@@ -7,6 +7,7 @@ use App\Models\DetailPendaftar;
 use App\Models\GelombangPendaftaran;
 use App\Models\Pendaftar;
 use App\Models\ProgramStudi;
+use App\Models\RefPorgramStudi;
 use App\Models\Wali;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,8 @@ class CamabaAccController extends Controller
     {
         // $camaba_acc = Pendaftar::with('refNegara', 'detailPendaftar')->get();
         $gelombangPendaftaran = GelombangPendaftaran::all();
-        $programStudi = ProgramStudi::get();
+        $programStudi = RefPorgramStudi::get();
+    
         $query = Pendaftar::query();
     
         // Tentukan kolom yang akan diambil, dan gunakan DISTINCT

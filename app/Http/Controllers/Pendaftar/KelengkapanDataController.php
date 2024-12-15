@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use App\Models\RefPendapatan;
 use App\Models\RefPendidikan;
 use App\Models\SettingBerkas;
-use App\Models\RefTempatTinggal;
+use App\Models\RefJenis_tinggal;
 use App\Http\Controllers\Controller;
 use App\Models\BerkasGelombangTransaksi;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -32,7 +32,7 @@ class KelengkapanDataController extends Controller
     
     // Mengambil data provinsi dari API Fariz
 
-    $authToken = 'Bearer ' . '802|vIEfwFi4JdPpzUwv3urejddukoentneZdubkuklc';
+    $authToken = 'Bearer ' . '856|53bIkZCIwn2olSZHJTeOlrQq26KxpOlWitRrPF2K';
     $responseProvinsi = $client->get('http://backend.sepyankristanto.my.id/api/v1/master/provinces', [
         'headers' => [
             'Authorization' => $authToken,
@@ -53,13 +53,13 @@ class KelengkapanDataController extends Controller
 
     // Form Biodata Diri
     // $kendaraan = RefKendaraan::get();
-    // $tempat_tinggal = RefTempatTinggal::get();
-    $responseTempatTinggal = $client->get('http://backend.sepyankristanto.my.id/api/v1/master/type-of-stays', [
+    // $jenis_tinggal = RefJenis_tinggal::get();
+    $responseJenis_tinggal = $client->get('http://backend.sepyankristanto.my.id/api/v1/master/type-of-stays', [
         'headers' => [
             'Authorization' => $authToken,
         ],
     ]);
-    $tempat_tinggal = json_decode($responseTempatTinggal->getBody(), true)['data'];
+    $jenis_tinggal = json_decode($responseJenis_tinggal->getBody(), true)['data'];
     // $negara = RefCountry::orderBy('name')->get();
     $responseNegara = $client->get('http://backend.sepyankristanto.my.id/api/v1/master/countries', [
         'headers' => [
@@ -128,7 +128,7 @@ $kecamatan = json_decode($responsekecamatan->getBody(), true)['data'];
     // dd($list_berkas);    
     // Kirim data ke view
     return view('pendaftar.kelengkapan-data.kelengkapan-data', compact(
-        'pendaftar', 'kendaraan', 'tempat_tinggal', 'negara', 'provinsi', 
+        'pendaftar', 'kendaraan', 'jenis_tinggal', 'negara', 'provinsi', 
         'kabupaten_kota', 'kecamatan', 'agama', 'ukuran', 
         'pendidikan', 'profesi', 'pendapatan', 'list_berkas', 'kabupatenKotaData'
     ));
@@ -145,6 +145,7 @@ $kecamatan = json_decode($responsekecamatan->getBody(), true)['data'];
             "sekolah"           => $request->sekolah,
             "alamat"            => $request->alamat,
             "jenis_tinggal"     => $request->jenis_tinggal,
+            "jenis_kelamin"     => $request->jenis_kelamin,
             "kendaraan"         => $request->kendaraan,
             "kewarganegaraan"   => $request->kewarganegaraan,
             "negara"            => $request->negara,
@@ -217,30 +218,6 @@ $kecamatan = json_decode($responsekecamatan->getBody(), true)['data'];
 
 //   use Illuminate\Support\Facades\Http; // Pastikan ini di-import
 
-public function region(Request $request)
-{
-    try {
-        $client = new Client();
-        $response = $client->get('https://dev.farizdotid.com/api/daerahindonesia/provinsi');
-        $data = json_decode($response->getBody(), true);
-        // dd($data);
-        return response()->json($data['provinsi']);
-    } catch (\Exception $e) {
-        return response()->json(['message' => 'Error fetching provinces', 'error' => $e->getMessage()], 500);
-    }
-}
-public function getKabupaten($provinsi)
-{
-    try {
-        $client = new Client();
-        $response = $client->get("https://www.emsifa.com/api-wilayah-indonesia/api/regencies.json?province_id={$provinsi}");
-        $kabupaten = json_decode($response->getBody(), true);
-
-        return response()->json($kabupaten);
-    } catch (\Exception $e) {
-        return response()->json(['message' => 'Error fetching kabupaten', 'error' => $e->getMessage()], 500);
-    }
-}
 
 
 

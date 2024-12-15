@@ -54,8 +54,7 @@ use App\Http\Controllers\Panitia\PanitiaController;
 |
 */
 
-
-Route::post('/cek_va_ukt', [App\Http\Controllers\DashboardController::class, 'CekUKT']);
+Route::post('/cek_va_ukt', [DashboardController::class, 'CekUKT']);
 Route::get('/', [App\Http\Controllers\LandingController::class, 'index']);
 Route::get('/pengumuman/{id}', [App\Http\Controllers\LandingController::class, 'pengumuman']);
 Route::post('/cekkode', [App\Http\Controllers\LandingController::class, 'cekkode']);
@@ -65,7 +64,7 @@ Route::get('/cektemplate', function () {
 
 Auth::routes([]);
 
-//Language Translation
+// Language Translation
 Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
 
 Route::group(['prefix' => 'error'], function () {
@@ -85,26 +84,23 @@ Route::get('/optimize', function () {
     return "App optimized";
 });
 
-//Update User Details
+// Update User Details
 Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
 Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
 Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
-    //Pendaftar
+    // Pendaftar
     Route::resource('pendaftar', PendaftarController::class);
     Route::get('/access-logs', [AccessLogController::class, 'index'])->name('access-logs.index');
     Route::delete('/access-logs/{id}', [AccessLogController::class, 'destroy'])->name('access-logs.destroy');
     Route::post('/access-logs/delete-all', [AccessLogController::class, 'deleteAll'])->name('access-logs.delete-all');
- // Route untuk update status pendaftaran
-Route::post('/pendaftar/update-status', [PendaftarController::class, 'updateStatus'])->name('pendaftar.update-status');
-// Route untuk update status pembayaran
-Route::post('/camaba-ukt/update-status', [CamabaSdhBlmUKTController::class, 'updateStatus'])->name('camaba-ukt.update-status');
-
-
-
-
+    
+    // Route untuk update status pendaftaran
+    Route::post('/pendaftar/update-status', [PendaftarController::class, 'updateStatus'])->name('pendaftar.update-status');
+    // Route untuk update status pembayaran
+    Route::post('/camaba-ukt/update-status', [CamabaSdhBlmUKTController::class, 'updateStatus'])->name('camaba-ukt.update-status');
 
     Route::post('pendaftar-excel', [ExcelController::class, 'import'])->name('import.pendaftar');
     Route::post('ukt-excel', [ExcelController::class, 'import_ukt'])->name('import.ukt');
@@ -134,7 +130,7 @@ Route::post('/camaba-ukt/update-status', [CamabaSdhBlmUKTController::class, 'upd
     Route::get('sync/prodi', [ProdiController::class, 'sync'])->name('prodi.sync');
     Route::resource('settingberkas', SettingBerkasController::class);
 
-    //Golongan & UKT
+    // Golongan & UKT
     Route::resource('golongan-ukt', GolonganUKTController::class);
     Route::resource('ukt', UKTController::class);
     Route::get('listPendaftar/{id}', [PendaftarUKTController::class, 'listPendaftar'])->name('listPendaftar.ukt');
@@ -152,34 +148,22 @@ Route::post('/camaba-ukt/update-status', [CamabaSdhBlmUKTController::class, 'upd
 
     // User Management
     Route::resource('users', UserController::class); // Add this line
-    // Menampilkan daftar pendaftar dan melakukan generate NIM massal
-Route::get('/generate-nim', [GenerateNimController::class, 'index'])->name('generate-nim.index');
-Route::post('/generate-nim-massal', [GenerateNimController::class, 'generateNIMMassal'])->name('generate-nim.massal');
 
-    // // Route::get('/', [UserController::class, 'index'])->name('users.index'); // List all users
-    // Route::get('/create', [UserController::class, 'create'])->name('users.create'); // Show create user form
-    // Route::post('/', [UserController::class, 'store'])->name('users.store'); // Store new user
-    // Route::get('/{user}', [UserController::class, 'show'])->name('users.show'); // Show user details
-    // Route::get('/{user}/edit', [UserController::class, 'edit'])->name('users.edit'); // Show edit user form
-    // Route::put('/{user}', [UserController::class, 'update'])->name('users.update'); // Update user
-    // Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.destroy'); // Delete user
+    // Menampilkan daftar pendaftar dan melakukan generate NIM massal
+    Route::get('/generate-nim', [GenerateNimController::class, 'index'])->name('generate-nim.index');
+    Route::post('/generate-nim-massal', [GenerateNimController::class, 'generateNIMMassal'])->name('generate-nim.massal');
 });
 
 Route::middleware([Pendaftar::class, 'auth'])->prefix('pendaftar')->group(function () {
     Route::post('upload/bukti-bayar-pendaftaran',  [BuktiController::class, 'upload_bukti_pendaftaran'])->name('upload-bukti-pendaftaran');
     Route::get('/ujian/{id}', [SoalTesMabaController::class, 'index'])->name('ujian.index');
-    // Route::post('/ujian/store-answers{id}', [SoalTesMabaController::class, 'storeAnswers'])->name('storeAnswers'); // Route untuk menyimpan jawaban ujian
-    // Route::get('/pendaftar/ujian/{id}', [SoalTesMabaController::class, 'index'])->name('pendaftar.ujian.index');
     Route::post('/store-answers', [SoalTesMabaController::class, 'storeAnswers'])->name('storeAnswers');
     Route::post('ujian/result', [SoalTesMabaController::class, 'result'])->name('pendaftar.ujian.result');
     Route::post('upload/bukti-bayar-ukt',  [BuktiController::class, 'upload_bukti_ukt'])->name('upload-bukti-ukt');
-    // Route::get('kelengkapan-data/{id}', [KelengkapanDataController::class, 'edit'])->name('kelengkapan-data.edit');
     Route::get('kelengkapan-data/{id}', [KelengkapanDataController::class, 'edit'])->name('kelengkapan-data.edit');
     Route::put('kelengkapan-data/{id}', [KelengkapanDataController::class, 'update'])->name('kelengkapan-data.update');
     Route::get('bukti/{id}', [BuktiController::class, 'show'])->name('bukti.show');
-    
 });
-
 
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 Route::post('/xendit/callback', [RegisterController::class, 'xenditCallback']);

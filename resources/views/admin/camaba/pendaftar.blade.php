@@ -332,7 +332,7 @@
                 </tr>
                 <tr>
                   <td style="width: 400px">NO. TELP</td>
-                  <td>{{ $row->no_hp }}</td>
+                  <td>{{ $row->no_hp ?? 'Belum di perbarui data' }}</td>
                 </tr>
                 <tr>
                   <td style="width: 400px">ASAL SEKOLAH</td>
@@ -366,7 +366,7 @@
                 
 
                 @if ($filePath)
-                    <a href="{{ $filePath }}" target=_blank>Download Bukti Pendaftaran</a>
+                    <a href="{{ $filePath }}" target=_blank>Melihat Bukti Pendaftaran</a>
                 @else
                     <p>File tidak ditemukan.</p>
                 @endif
@@ -387,7 +387,7 @@
                 </tr>
                 <tr>
                   <td style="width: 400px">NOMINAL PEMBAYARAN UKT</td>
-                  <td>{{ $row->detailPendaftar?->nominal_ukt }}</td>
+                  <td>{{ $row->detailPendaftar?->nominal_ukt ?? 'Belum di set Ukt' }}</td>
                 </tr>
                 <tr>
                   <td style="width: 400px">STATUS UKT</td>

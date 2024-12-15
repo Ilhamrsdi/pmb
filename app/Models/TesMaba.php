@@ -20,12 +20,5 @@ class TesMaba extends Model
     {
         return $this->hasMany(Soal::class);
     }
-    protected $fillable = [
-        'kode_mapel',
-        'nama_mapel',
-              'jumlah_soal',
-              'tanggal_tes',
-              'waktu_tes',
-            
-      ];
 }
+

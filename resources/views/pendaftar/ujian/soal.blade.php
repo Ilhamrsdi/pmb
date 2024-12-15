@@ -34,7 +34,7 @@
 @endsection
 
 @section('script')
-<script>
+{{-- <script>
     let currentQuestion = 0;
     const questions = @json($soals); // Mengambil soal dari database
     const answers = {}; // Menyimpan jawaban sementara
@@ -126,11 +126,10 @@
                 window.location.href = "{{ route('pendaftar.ujian.result', ['pendaftar_id' => $pendaftar_id]) }}";
             },
             error: function(xhr) {
-    console.error(xhr.responseText); // Log error response
-    alert("Terjadi kesalahan saat menyimpan jawaban: " + xhr.responseText);
-}
-
+                console.error(xhr.responseText); // Log error response
+                alert("Terjadi kesalahan saat menyimpan jawaban: " + xhr.responseText);
+            }
         });
     }
-</script>
+</script> --}}
 @endsection

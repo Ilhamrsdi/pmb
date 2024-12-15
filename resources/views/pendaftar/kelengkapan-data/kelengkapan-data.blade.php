@@ -115,6 +115,7 @@
                                                 id="nama" value="{{ $pendaftar->nama }}" name="nama">
 
                                         </div>
+                                        
                                         <!--end col-->
                                         <div class="col-md-6 mb-3">
                                             <label for="nisn" class="form-label">NISN</label>
@@ -130,6 +131,19 @@
                                                 value="{{ $pendaftar->sekolah }}" name="sekolah">
 
                                         </div>
+                                        <div class="col-md-12 mb-3">
+                                            <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                                            <select id="jenis_kelamin" class="form-select" data-choices
+                                                data-choices-sorting="true" name="jenis_kelamin">
+                                                <option selected>Pilih Jenis Kelamin...</option>
+                                                <option value="Laki - Laki"
+                                                    {{ $pendaftar->jenis_kelamin == 'Laki - Laki' ? 'selected' : '' }}>Laki - Laki</option>
+                                                <option value="wna"
+                                                    {{ $pendaftar->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>Perempuan
+                                                </option>
+                                            </select>
+
+                                        </div>
                                         <!--end col-->
                                         <div class="col-md-12 mb-3">
                                             <label for="alamat" class="form-label">Alamat</label>
@@ -143,7 +157,7 @@
                                             <select id="jenis_tinggal" class="form-select" data-choices
                                                 data-choices-sorting="true" name="jenis_tinggal">
                                                 <option selected>Pilih Jenis Tempat Tinggal...</option>
-                                                @foreach ($tempat_tinggal as $item)
+                                                @foreach ($jenis_tinggal as $item)
                                                     <option
                                                         {{ $item['name'] == $pendaftar->jenis_tinggal ? 'selected' : '' }}>
                                                         {{ $item['name'] }}
@@ -662,13 +676,13 @@
 
 
                                                 </label>
-                                                <label for="{{ 'file-' . $berkas->berkas->nama_berkas }}"
+                                                <label for="{{ 'assets/file-' . $berkas->berkas->nama_berkas }}"
                                                     class="drop-container">
                                                     <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
                                                     <h4 class="drop-title">Drop files here or click to upload.</h4>
                                                     <input type="file"
-                                                        name="{{ 'file[' . $berkas->berkas->path . ']' }}"
-                                                        id="{{ 'file-' . $berkas->berkas->nama_berkas }}"
+                                                        name="{{ 'assets/file[' . $berkas->berkas->path . ']' }}"
+                                                        id="{{ 'assets/file-' . $berkas->berkas->nama_berkas }}"
                                                         accept="application/pdf,image/jpg,image/jpeg,image/png" required>
                                                 </label>
                                             </div>
@@ -939,7 +953,7 @@
                     url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
                     type: 'GET',
                     headers: {
-                        'Authorization': '802|vIEfwFi4JdPpzUwv3urejddukoentneZdubkuklc' // Token Anda
+                        'Authorization': '856|53bIkZCIwn2olSZHJTeOlrQq26KxpOlWitRrPF2K' // Token Anda
                     },
                     success: function(response) {
                         // Cek jika data tersedia
@@ -1044,7 +1058,7 @@
                         url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
                         type: 'GET',
                         headers: {
-                            'Authorization': 'Bearer 786|BB3GSA7F3ypyGRLgYCKKrCY0CHzGEByTDBofIrDR' // Token Anda
+                            'Authorization': 'Bearer 856|53bIkZCIwn2olSZHJTeOlrQq26KxpOlWitRrPF2K' // Token Anda
                         },
                         success: function(response) {
                             var kabupatenKotaData = response.data;
@@ -1090,7 +1104,7 @@
                         url: 'http://backend.sepyankristanto.my.id/api/v1/master/sub-districts', // Endpoint untuk mendapatkan kecamatan
                         type: 'GET',
                         headers: {
-                            'Authorization': 'Bearer 786|BB3GSA7F3ypyGRLgYCKKrCY0CHzGEByTDBofIrDR' // Token Anda
+                            'Authorization': 'Bearer 856|53bIkZCIwn2olSZHJTeOlrQq26KxpOlWitRrPF2K' // Token Anda
                         },
                         success: function(response) {
                             var kecamatanData = response.data;
