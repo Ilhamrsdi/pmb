@@ -156,7 +156,7 @@ Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
 
 Route::middleware([Pendaftar::class, 'auth'])->prefix('pendaftar')->group(function () {
     Route::post('upload/bukti-bayar-pendaftaran',  [BuktiController::class, 'upload_bukti_pendaftaran'])->name('upload-bukti-pendaftaran');
-    Route::get('/ujian/{id}', [SoalTesMabaController::class, 'index'])->name('ujian.index');
+    Route::get('/ujian/{id}', [SoalTesMabaController::class, 'index'])->name('pendaftar.ujian.index');
     Route::post('/store-answers', [SoalTesMabaController::class, 'storeAnswers'])->name('storeAnswers');
     Route::post('ujian/result', [SoalTesMabaController::class, 'result'])->name('pendaftar.ujian.result');
     Route::post('upload/bukti-bayar-ukt',  [BuktiController::class, 'upload_bukti_ukt'])->name('upload-bukti-ukt');
