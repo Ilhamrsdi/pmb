@@ -248,7 +248,7 @@ class DashboardController extends Controller
                         return view('pendaftar.dashboard.dashboard-pendaftaran', compact('nomer_va', 'expired_va', 'tata_cara', 'dataPendaftar'));
                     } elseif ($data->detailPendaftar->status_pendaftaran == 'sudah') {
                         if ($data->detailPendaftar->status_acc != null) {
-                            return redirect()->route('ujian.index', $data->id);
+                            return redirect()->route('pendaftar.ujian.index', $data->id);
                         } else {
                             // Redirect ke halaman untuk melengkapi biodata diri
                         }
