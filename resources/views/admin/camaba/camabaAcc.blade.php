@@ -391,17 +391,24 @@
                               <td>{{ $row->wali?->pekerjaan_ibu }}</td>
                             </tr>
                             <tr>
-                              <td style="width: 400px">PENGHASILAN IBU / WALI</td>
-                              @if ($row->wali?->penghasilan_ibu < 500000)
-                                <td>Kurang Dari Rp. 500.000</td>
-                              @elseif ($row->wali?->penghasilan_ibu < 1000000)
-                                <td>Kurang Dari Rp. 1000.000</td>
-                              @elseif ($row->wali?->penghasilan_ibu < 2000000)
-                                <td>Kurang Dari Rp. 2000.000</td>
-                              @elseif ($row->wali?->penghasilan_ibu < 3000000)
-                                <td>Kurang Dari Rp. 3000.000</td>
-                              @endif
-                            </tr>
+                              <tr>
+                                <td style="width: 400px">PENGHASILAN AYAH / WALI</td>
+                                @php
+                                    $penghasilan_ayah = $row->wali?->penghasilan_ibu;
+                                @endphp
+                            
+                                @if ($penghasilan_ayah < 500000)
+                                    <td>Kurang Dari Rp. 500.000</td>
+                                @elseif ($penghasilan_ayah < 1000000)
+                                    <td>Kurang Dari Rp. 1000.000</td>
+                                @elseif ($penghasilan_ayah < 2000000)
+                                    <td>Kurang Dari Rp. 2000.000</td>
+                                @elseif ($penghasilan_ayah < 3000000)
+                                    <td>Kurang Dari Rp. 3000.000</td>
+                                @else
+                                    <td>Lebih Dari Rp. 3000.000</td> <!-- Tambahkan else untuk menangani nilai lebih dari Rp. 3000.000 -->
+                                @endif
+                            </tr>         
                           </tbody>
                         </table>
                       </div>
@@ -518,9 +525,8 @@
                                       onclick="hideKKfunction('{{ $row->id }}')" class="btn-close float-end fs-11"
                                       aria-label="Close"></button>
                                   </div>
-                                  <iframe src="{{ url('file_pendamping/kk/', $row->file_kk) }}" width="950px"
-                                    height="400px">
-                                  </iframe>
+                                  <img src="{{ asset('assets/file/bukti-pendaftaran/' . $row->id . '.jpg') }}"
+                                  alt="Bukti Pendaftaran" width="200px">
                                 </div>
                               </td>
                             </tr>

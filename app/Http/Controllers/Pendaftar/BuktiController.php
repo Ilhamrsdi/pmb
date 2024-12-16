@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class BuktiController extends Controller
 {
+
     // public function upload_bukti_pendaftaran(Request $request)
     // {
     //     $id = $request->id;
@@ -64,4 +65,35 @@ class BuktiController extends Controller
         // dd($pendaftar);
         return view('pendaftar.bukti.show', compact('pendaftar'));
     }
+
+
+
+    public function uploadBerkas(Request $request)
+    {
+        $berkasPath = 'assets/file_pendamping/';
+        $namaBerkas = $request->input('nama_berkas'); // Pastikan 'nama_berkas' sesuai dengan form input
+        $folder = $berkasPath . $namaBerkas; // Contoh: assets/file_pendamping/KK
+    
+        // Validasi file
+        $request->validate([
+            'assets.file_pendamping.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+        ]);
+    
+        if ($request->hasFile('assets.file_pendamping')) {
+            $file = $request->file('assets.file_pendamping');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+    
+            // Simpan file ke folder tujuan
+            $path = $file->storeAs($folder, $fileName, 'public');
+    
+            // Simpan path ke database jika diperlukan
+            // Misalnya: $berkasModel->path = $path; $berkasModel->save();
+    
+            return back()->with('success', 'Berkas berhasil diunggah!');
+        }
+    
+        return back()->with('error', 'Tidak ada file yang diunggah!');
+    }    
+
+
 }

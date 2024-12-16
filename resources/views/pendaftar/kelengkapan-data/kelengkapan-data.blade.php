@@ -632,74 +632,80 @@
                             </div>
                             <!-- end tab pane -->
 
-                            <div class="tab-pane fade" id="pills-berkas" role="tabpanel"
-                                aria-labelledby="pills-berkas-tab">
-                                <div>
-                                    <h5 class="mb-1">Berkas Pendukung</h5>
-                                    <p class="text-muted mb-4">Silakan Unggah Berkas Pendukung yang dibutuhkan</p>
-                                </div>
-
-                                <div>
-
+                            <form action="{{ route('kelengkapan-data.upload-berkas', $pendaftar->id) }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                
+                                <div class="tab-pane fade" id="pills-berkas" role="tabpanel" aria-labelledby="pills-berkas-tab">
+                                    <div>
+                                        <h5 class="mb-1">Berkas Pendukung</h5>
+                                        <p class="text-muted mb-4">Silakan Unggah Berkas Pendukung yang dibutuhkan</p>
+                                    </div>
+                                    
                                     <div class="row">
                                         @foreach ($list_berkas as $berkas)
                                             @php
-                                                $extensions = ['pdf', 'jpg', 'png', 'jpeg', 'webp']; // Daftar ekstensi yang didukung
+                                                $extensions = ['pdf', 'jpg', 'png', 'jpeg', 'webp']; // Ekstensi yang didukung
                                                 $filePath = '';
-
+                                                
                                                 foreach ($extensions as $ext) {
-                                                    $possiblePath =
-                                                        'assets/file/' .
-                                                        $berkas->berkas->path .
-                                                        '/' .
-                                                        $pendaftar->id .
-                                                        '.' .
-                                                        $ext;
+                                                    $possiblePath = 'assets/file/' . $berkas->berkas->path . '/' . $pendaftar->id . '.' . $ext;
                                                     if (file_exists(public_path($possiblePath))) {
                                                         $filePath = asset($possiblePath);
                                                         break;
                                                     }
                                                 }
                                             @endphp
-
-
+                                            
                                             <div class="col-lg-12 mb-3">
-                                                <label for="{{ 'file-' . $berkas->berkas->nama_berkas }}"
-                                                    class="d-flex justify-content-between align-items-center">Upload Berkas
-                                                    {{ Str::upper($berkas->berkas->nama_berkas) }}
+                                                <!-- Label Upload -->
+                                                <label for="{{ 'file_pendamping-' . $berkas->berkas->nama_berkas }}" class="d-flex justify-content-between align-items-center">
+                                                    Upload Berkas {{ Str::upper($berkas->berkas->nama_berkas) }}
+                                                    
+                                                    <!-- Tampilkan Link Download jika berkas sudah ada -->
                                                     @if ($filePath)
-                                                        <a href="{{ $filePath }}" download>Download Berkas</a>
+                                                        <a href="{{ $filePath }}" class="btn btn-sm btn-primary" download>
+                                                            Download Berkas
+                                                        </a>
                                                     @else
-                                                        <p>Upload Berkas</p>
+                                                        <span class="text-muted">Upload Berkas</span>
                                                     @endif
-                                                    {{-- {{ $berkas->berkas->path }} --}}
-
-
                                                 </label>
-                                                <label for="{{ 'assets/file-' . $berkas->berkas->nama_berkas }}"
-                                                    class="drop-container">
+                                                
+                                                <!-- Input File -->
+                                                <div class="drop-container border rounded p-3 text-center">
                                                     <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
                                                     <h4 class="drop-title">Drop files here or click to upload.</h4>
+                                                    
                                                     <input type="file"
-                                                        name="{{ 'assets/file[' . $berkas->berkas->path . ']' }}"
-                                                        id="{{ 'assets/file-' . $berkas->berkas->nama_berkas }}"
-                                                        accept="application/pdf,image/jpg,image/jpeg,image/png" required>
-                                                </label>
+                                                           name="files[{{ $berkas->berkas->path }}]"
+                                                           id="{{ 'file_pendamping-' . $berkas->berkas->nama_berkas }}"
+                                                           accept="application/pdf,image/jpg,image/jpeg,image/png"
+                                                           class="form-control @error('files.' . $berkas->berkas->path) is-invalid @enderror"
+                                                           required>
+                                                </div>
+                                                
+                                                <!-- Error Message -->
+                                                @error('files.' . $berkas->berkas->path)
+                                                    <div class="text-danger small mt-2">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         @endforeach
                                     </div>
-
+                                    
+                                    <!-- Tombol Navigasi -->
                                     <div class="d-flex align-items-start gap-3 mt-4">
-                                        <button type="button" class="btn btn-light btn-label previestab"
-                                            data-previous="pills-atribut-tab"><i
-                                                class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Kembali
-                                            ke Atribut</button>
-                                        <button type="button" class="btn btn-primary btn-label right ms-auto"
-                                            id="btn-submit"><i
-                                                class="ri-save-line label-icon align-middle fs-16 ms-2"></i>Simpan</button>
+                                        <button type="button" class="btn btn-light btn-label previestab" data-previous="pills-atribut-tab">
+                                            <i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Kembali ke Atribut
+                                        </button>
+                                        <button type="submit" class="btn btn-primary btn-label ms-auto" id="btn-submit">
+                                            <i class="ri-save-line label-icon align-middle fs-16 ms-2"></i>Simpan
+                                        </button>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
+                            
+                            
+                            
                             <!-- end tab pane -->
 
                             <div class="tab-pane fade" id="pills-finish" role="tabpanel"
@@ -953,7 +959,7 @@
                     url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
                     type: 'GET',
                     headers: {
-                        'Authorization': '856|53bIkZCIwn2olSZHJTeOlrQq26KxpOlWitRrPF2K' // Token Anda
+                        'Authorization': 'Bearer 859|IIvRek0UNYNaC3bWm9veOWklehVlFSbRGO4SwVKU' // Token Anda
                     },
                     success: function(response) {
                         // Cek jika data tersedia
@@ -1058,7 +1064,7 @@
                         url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
                         type: 'GET',
                         headers: {
-                            'Authorization': 'Bearer 856|53bIkZCIwn2olSZHJTeOlrQq26KxpOlWitRrPF2K' // Token Anda
+                            'Authorization': 'Bearer 859|IIvRek0UNYNaC3bWm9veOWklehVlFSbRGO4SwVKU' // Token Anda
                         },
                         success: function(response) {
                             var kabupatenKotaData = response.data;
@@ -1104,7 +1110,7 @@
                         url: 'http://backend.sepyankristanto.my.id/api/v1/master/sub-districts', // Endpoint untuk mendapatkan kecamatan
                         type: 'GET',
                         headers: {
-                            'Authorization': 'Bearer 856|53bIkZCIwn2olSZHJTeOlrQq26KxpOlWitRrPF2K' // Token Anda
+                            'Authorization': 'Bearer 859|IIvRek0UNYNaC3bWm9veOWklehVlFSbRGO4SwVKU' // Token Anda
                         },
                         success: function(response) {
                             var kecamatanData = response.data;

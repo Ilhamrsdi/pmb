@@ -19,6 +19,7 @@ use App\Http\Controllers\Controller;
 use App\Models\BerkasGelombangTransaksi;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\File; // Tambahkan ini
 use GuzzleHttp\Client;
 
 class KelengkapanDataController extends Controller
@@ -32,7 +33,7 @@ class KelengkapanDataController extends Controller
     
     // Mengambil data provinsi dari API Fariz
 
-    $authToken = 'Bearer ' . '856|53bIkZCIwn2olSZHJTeOlrQq26KxpOlWitRrPF2K';
+    $authToken = 'Bearer ' . '859|IIvRek0UNYNaC3bWm9veOWklehVlFSbRGO4SwVKU';
     $responseProvinsi = $client->get('http://backend.sepyankristanto.my.id/api/v1/master/provinces', [
         'headers' => [
             'Authorization' => $authToken,
@@ -218,6 +219,21 @@ $kecamatan = json_decode($responsekecamatan->getBody(), true)['data'];
 
 //   use Illuminate\Support\Facades\Http; // Pastikan ini di-import
 
+public function uploadBerkasPendukung(Request $request, $id)
+{
+    $request->validate([
+        'files.*' => 'required|file|mimes:pdf,jpg,png,jpeg,webp|max:2048',
+    ]);
+
+    $pendaftar = Pendaftar::findOrFail($id);
+
+    foreach ($request->file('files') as $fileKey => $file) {
+        $path = $pendaftar->id . '/' . $fileKey . '.' . $file->extension();
+        $file->storeAs('assets/file', $path, 'public');
+    }
+
+    return redirect()->route('kelengkapan-data.edit', $id)->with('success', 'Berkas berhasil diunggah.');
+}
 
 
 
