@@ -32,7 +32,8 @@
                   Selamat Anda dinyatakan Lolos Seleksi
                 </div>
                 <div class="flex-shrink-0">
-                  <a class="btn btn-success" href="#">Cetak</a>
+                  <a href="#" onclick="window.print()" class="btn btn-success">Cetak</a>
+
                 </div>
               </div>
 
@@ -94,7 +95,7 @@
                           <tr>
                             <td class="fw-medium column">Program Studi</td>
                             <td class="fw-medium column">:</td>
-                            <td>{{ $pendaftar->programStudi->nama_program_studi }}</td>
+                            <td>{{ $pendaftar->programStudi->name }}</td>
                             <td></td>
                             <td></td>
                           </tr>
@@ -137,4 +138,9 @@
 @endsection
 @section('script')
   <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
+  <script>
+    function printPage() {
+      window.print(); // Fungsi cetak otomatis
+    }
+  </script>
 @endsection

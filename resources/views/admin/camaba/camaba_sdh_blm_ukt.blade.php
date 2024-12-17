@@ -135,7 +135,7 @@
                               <form action="{{ route('camaba-ukt.update-status') }}" method="POST">
                                 @csrf
                                 <div class="modal-body">
-                                  Apakah Anda yakin ingin mengubah status pembayaran?
+                                  Apakah Anda yakin ingin mengubah status pembayaran?<br>
                                   Mohon Cek Kembali Data Anda Sebelum Mengubah Status Pembayaran
 
                                   <input type="hidden" value="sudah" name="status_pembayaran">
@@ -246,7 +246,7 @@
                           <tbody>
                             <tr>
                               <td style="width: 400px">NIM</td>
-                              <td>{{ $row->nim }}</td>
+                              <td>{{ $row->nim ?? 'Belum Di Generate NIM' }}</td>
                             </tr>
                             <tr>
                               <td style="width: 400px">NAMA MAHASISWA</td>
@@ -254,7 +254,7 @@
                             </tr>
                             <tr>
                               <td style="width: 400px">PILIHAN UKT</td>
-                              <td>{{ $row->potongan_ukt }}</td>
+                              <td>{{ $row->potongan_ukt ?? 'Tidak Ada' }}</td>
                             </tr>
                             <tr>
                               <td style="width: 400px">NOMINAL UKT</td>
@@ -262,11 +262,42 @@
                             </tr>
                             <tr>
                               <td style="width: 400px">JURUSAN / PRODI</td>
-                              <td>{{ $row->programStudi?->jurusan?->nama_jurusan }}
-                                -
-                                {{ $row->programStudi?->jenjang_pendidikan }}
-                                {{ $row->programStudi?->nama_program_studi }}
+                              <td>  
+                                {{ $row->programStudi?->jurusan?->name ?? 'Tidak Ada' }} - 
+                                {{ $row->programStudi?->name ?? 'Tidak Ada' }} -
+                                {{ $row->programStudi?->pendidikan?->name ?? 'Tidak Ada' }}
                               </td>
+                            </tr>
+                            <tr>
+                              <td style="width: 400px">BUKTI PEMBAYARAN UKT</td>
+                              <td> 
+                                @php
+                                $extensions = ['jpg', 'png', 'jpeg']; // Daftar ekstensi yang didukung
+                                $filePath = '';
+                            
+                                if ($row->detailPendaftar) {
+                                    foreach ($extensions as $ext) {
+                                        $possiblePath =
+                                            'assets/file/bukti-ukt/' .
+                                            $row->detailPendaftar->pendaftar_id .
+                                            '.' .
+                                            $ext;
+                                        if (file_exists(public_path($possiblePath))) {
+                                            $filePath = asset($possiblePath);
+                                            break;
+                                        }
+                                    }
+                                }
+                            @endphp
+                            
+            
+                            @if ($filePath)
+                                <a href="{{ $filePath }}" target=_blank>Melihat Bukti Pendaftaran</a>
+                            @else
+                                <p>File tidak ditemukan.</p>
+                            @endif
+                           
+            </td>
                             </tr>
                           </tbody>
                         </table>
@@ -281,7 +312,7 @@
                           <tbody>
                             <tr>
                               <td style="width: 400px">NIM</td>
-                              <td>{{ $row->nim }}</td>
+                              <td>{{ $row->nim ?? 'Belum Di Generate NIM' }}</td>
                             </tr>
                             <tr>
                               <td style="width: 400px">NAMA PENDAFTAR</td>
@@ -289,10 +320,10 @@
                             </tr>
                             <tr>
                               <td style="width: 400px">PRODI - JURUSAN</td>
-                              <td>{{ $row->programStudi?->jenjang_pendidikan }}
-                                {{ $row->programStudi?->nama_program_studi }}
-                                -
-                                {{ $row->programStudi?->nama_jurusan }}
+                              <td>
+                                {{ $row->programStudi?->jurusan?->name ?? 'Tidak Ada' }} - 
+                                {{ $row->programStudi?->name ?? 'Tidak Ada' }} -
+                                {{ $row->programStudi?->pendidikan?->name ?? 'Tidak Ada' }}
                               </td>
                             </tr>
                             <tr>
@@ -315,11 +346,11 @@
                             </tr>
                             <tr>
                               <td style="width: 400px">NIK</td>
-                              <td>{{ $row->nik }}</td>
+                              <td>{{ $row->user->nik }}</td>
                             </tr>
                             <tr>
                               <td style="width: 400px">EMAIL</td>
-                              <td>{{ $row->email }}</td>
+                              <td>{{ $row->user->email }}</td>
                             </tr>
                             <tr>
                               <td style="width: 400px">AGAMA</td>
@@ -393,21 +424,23 @@
                               <td>{{ $row->wali?->pekerjaan_ayah }}</td>
                             </tr>
                             <tr>
-                              <td style="width: 400px">PEKERJAAN AYAH / WALI</td>
-                              <td>{{ $row->wali?->pekerjaan_ayah }}</td>
-                            </tr>
-                            <tr>
                               <td style="width: 400px">PENGHASILAN AYAH / WALI</td>
-                              @if ($row->wali?->penghasilan_ayah < 500000)
-                                <td>Kurang Dari Rp. 500.000</td>
-                              @elseif ($row->wali?->penghasilan_ayah < 1000000)
-                                <td>Kurang Dari Rp. 1000.000</td>
-                              @elseif ($row->wali?->penghasilan_ayah < 2000000)
-                                <td>Kurang Dari Rp. 2000.000</td>
-                              @elseif ($row->wali?->penghasilan_ayah < 3000000)
-                                <td>Kurang Dari Rp. 3000.000</td>
+                              @php
+                                  $penghasilan_ayah = $row->wali?->penghasilan_ayah;
+                              @endphp
+                          
+                              @if ($penghasilan_ayah < 500000)
+                                  <td>Kurang Dari Rp. 500.000</td>
+                              @elseif ($penghasilan_ayah < 1000000)
+                                  <td>Kurang Dari Rp. 1000.000</td>
+                              @elseif ($penghasilan_ayah < 2000000)
+                                  <td>Kurang Dari Rp. 2000.000</td>
+                              @elseif ($penghasilan_ayah < 3000000)
+                                  <td>Kurang Dari Rp. 3000.000</td>
+                              @else
+                                  <td>Lebih Dari Rp. 3000.000</td> <!-- Tambahkan else untuk menangani nilai lebih dari Rp. 3000.000 -->
                               @endif
-                            </tr>
+                          </tr>         
                           </tbody>
                         </table>
                       </div>
@@ -420,41 +453,43 @@
                         <table class="table table-striped">
                           <tbody>
                             <tr>
-                              <td style="width: 400px">NIK AYAH / WALI</td>
+                              <td style="width: 400px">NIK IBU / WALI</td>
                               <td>{{ $row->wali?->nik_ibu }}</td>
                             </tr>
                             <tr>
-                              <td style="width: 400px">NAMA AYAH / WALI</td>
+                              <td style="width: 400px">NAMA IBU / WALI</td>
                               <td>{{ $row->wali?->nama_ibu }}</td>
                             </tr>
                             <tr>
-                              <td style="width: 400px">TGL LAHIR AYAH / WALI</td>
+                              <td style="width: 400px">TGL LAHIR IBU / WALI</td>
                               <td>{{ $row->wali?->tanggal_lahir_ibu }}</td>
                             </tr>
                             <tr>
-                              <td style="width: 400px">PENDIDIKAN AYAH / WALI</td>
+                              <td style="width: 400px">PENDIDIKAN IBU / WALI</td>
                               <td>{{ $row->wali?->pendidikan_ibu }}</td>
                             </tr>
                             <tr>
-                              <td style="width: 400px">PEKERJAAN AYAH / WALI</td>
-                              <td>{{ $row->wali?->pekerjaan_ibu }}</td>
-                            </tr>
-                            <tr>
-                              <td style="width: 400px">PEKERJAAN AYAH / WALI</td>
+                              <td style="width: 400px">PEKERJAAN IBU / WALI</td>
                               <td>{{ $row->wali?->pekerjaan_ibu }}</td>
                             </tr>
                             <tr>
                               <td style="width: 400px">PENGHASILAN IBU / WALI</td>
-                              @if ($row->wali?->penghasilan_ibu < 500000)
-                                <td>Kurang Dari Rp. 500.000</td>
-                              @elseif ($row->wali?->penghasilan_ibu < 1000000)
-                                <td>Kurang Dari Rp. 1000.000</td>
-                              @elseif ($row->wali?->penghasilan_ibu < 2000000)
-                                <td>Kurang Dari Rp. 2000.000</td>
-                              @elseif ($row->wali?->penghasilan_ibu < 3000000)
-                                <td>Kurang Dari Rp. 3000.000</td>
+                              @php
+                                  $penghasilan_ayah = $row->wali?->penghasilan_ibu;
+                              @endphp
+                          
+                              @if ($penghasilan_ayah < 500000)
+                                  <td>Kurang Dari Rp. 500.000</td>
+                              @elseif ($penghasilan_ayah < 1000000)
+                                  <td>Kurang Dari Rp. 1000.000</td>
+                              @elseif ($penghasilan_ayah < 2000000)
+                                  <td>Kurang Dari Rp. 2000.000</td>
+                              @elseif ($penghasilan_ayah < 3000000)
+                                  <td>Kurang Dari Rp. 3000.000</td>
+                              @else
+                                  <td>Lebih Dari Rp. 3000.000</td> <!-- Tambahkan else untuk menangani nilai lebih dari Rp. 3000.000 -->
                               @endif
-                            </tr>
+                          </tr>         
                           </tbody>
                         </table>
                       </div>
@@ -476,7 +511,7 @@
                             </tr>
                             <tr>
                               <td style="width: 400px">TANGGAL MASUK KULIAH</td>
-                              <td>{{ $row->detailPendaftar?->tanggal_masuk_kuliah }}</td>
+                              <td>{{ $row->detailPendaftar?->tanggal_masuk_kuliah ?? '-' }}</td>
                             </tr>
                             <tr>
                               <td style="width: 400px">TAHUN MASUK</td>
@@ -520,9 +555,27 @@
                                       onclick="hideKTPfunction('{{ $row->id }}')"
                                       class="btn-close float-end fs-11" aria-label="Close"></button>
                                   </div>
-                                  <iframe src="{{ url('file_pendamping/ktp/', $row->file_ktp) }}" width="950px"
+                                  {{-- <iframe src="{{ url('file_pendamping/ktp/', $row->file_ktp) }}" width="950px"
                                     height="400px">
-                                  </iframe>
+                                  </iframe> --}}
+                                  @php
+                                  $extensions = ['pdf', 'jpg', 'png', 'jpeg', 'webp'];
+                                  $filePath = '';
+                                  
+                                  foreach ($extensions as $ext) {
+                                      $possiblePath = 'assets/file/ktp/' . $row->id . '.' . $ext;
+                                      if (file_exists(public_path($possiblePath))) {
+                                          $filePath = asset($possiblePath);
+                                          break;
+                                      }
+                                  }
+                              @endphp
+                      
+                              @if($filePath)
+                                  <img src="{{ $filePath }}" alt="Kartu Tanda Penduduk" width="400px">
+                              @else
+                                  <p>Berkas tidak tersedia</p>
+                              @endif
                                   {{-- <embed
                                                                         src="{{ url('file_pendamping/ktp/', $row->file_ktp) }}"
                                                                         type="application/pdf" width="950px"
@@ -546,9 +599,27 @@
                                       onclick="hideKKfunction('{{ $row->id }}')" class="btn-close float-end fs-11"
                                       aria-label="Close"></button>
                                   </div>
-                                  <iframe src="{{ url('file_pendamping/kk/', $row->file_kk) }}" width="950px"
+                                  {{-- <iframe src="{{ url('file_pendamping/kk/', $row->file_kk) }}" width="950px"
                                     height="400px">
-                                  </iframe>
+                                  </iframe> --}}
+                                  @php
+                                  $extensions = ['pdf', 'jpg', 'png', 'jpeg', 'webp'];
+                                  $filePath = '';
+                                  
+                                  foreach ($extensions as $ext) {
+                                      $possiblePath = 'assets/file/kk/' . $row->id . '.' . $ext;
+                                      if (file_exists(public_path($possiblePath))) {
+                                          $filePath = asset($possiblePath);
+                                          break;
+                                      }
+                                  }
+                              @endphp
+                      
+                              @if($filePath)
+                                  <img src="{{ $filePath }}" alt="Kartu Keluarga" width="400px">
+                              @else
+                                  <p>Berkas tidak tersedia</p>
+                              @endif
                                 </div>
                               </td>
                             </tr>
@@ -568,9 +639,27 @@
                                       onclick="hideIjazahfunction('{{ $row->id }}')"
                                       class="btn-close float-end fs-11" aria-label="Close"></button>
                                   </div>
-                                  <iframe src="{{ url('file_pendamping/ijazah/', $row->file_ijazah) }}" width="950px"
+                                  {{-- <iframe src="{{ url('file_pendamping/ijazah/', $row->file_ijazah) }}" width="950px"
                                     height="400px">
-                                  </iframe>
+                                  </iframe> --}}
+                                  @php
+                                  $extensions = ['pdf', 'jpg', 'png', 'jpeg', 'webp'];
+                                  $filePath = '';
+                                  
+                                  foreach ($extensions as $ext) {
+                                      $possiblePath = 'assets/file/ijazah/' . $row->id . '.' . $ext;
+                                      if (file_exists(public_path($possiblePath))) {
+                                          $filePath = asset($possiblePath);
+                                          break;
+                                      }
+                                  }
+                              @endphp
+                      
+                              @if($filePath)
+                                  <img src="{{ $filePath }}" alt="Ijazah" width="400px">
+                              @else
+                                  <p>Berkas tidak tersedia</p>
+                              @endif
                                 </div>
                               </td>
                             </tr>
@@ -590,9 +679,27 @@
                                       onclick="hideTranskipfunction('{{ $row->id }}')"
                                       class="btn-close float-end fs-11" aria-label="Close"></button>
                                   </div>
-                                  <iframe src="{{ url('file_pendamping/transkip/', $row->file_transkip) }}"
+                                  {{-- <iframe src="{{ url('file_pendamping/transkip/', $row->file_transkip) }}"
                                     width="950px" height="400px">
-                                  </iframe>
+                                  </iframe> --}}
+                                  @php
+                                  $extensions = ['pdf', 'jpg', 'png', 'jpeg', 'webp'];
+                                  $filePath = '';
+                                  
+                                  foreach ($extensions as $ext) {
+                                      $possiblePath = 'assets/file/transkip/' . $row->id . '.' . $ext;
+                                      if (file_exists(public_path($possiblePath))) {
+                                          $filePath = asset($possiblePath);
+                                          break;
+                                      }
+                                  }
+                              @endphp
+                      
+                              @if($filePath)
+                                  <img src="{{ $filePath }}" alt="Transkip Nilai" width="400px">
+                              @else
+                                  <p>Berkas tidak tersedia</p>
+                              @endif
                                 </div>
                               </td>
                             </tr>
@@ -612,9 +719,27 @@
                                       onclick="hideRaporfunction('{{ $row->id }}')"
                                       class="btn-close float-end fs-11" aria-label="Close"></button>
                                   </div>
-                                  <iframe src="{{ url('file_pendamping/raport/', $row->file_raport) }}" width="950px"
+                                  {{-- <iframe src="{{ url('file_pendamping/raport/', $row->file_raport) }}" width="950px"
                                     height="400px">
-                                  </iframe>
+                                  </iframe> --}}
+                                  @php
+                                  $extensions = ['pdf', 'jpg', 'png', 'jpeg', 'webp'];
+                                  $filePath = '';
+                                  
+                                  foreach ($extensions as $ext) {
+                                      $possiblePath = 'assets/file/raport/' . $row->id . '.' . $ext;
+                                      if (file_exists(public_path($possiblePath))) {
+                                          $filePath = asset($possiblePath);
+                                          break;
+                                      }
+                                  }
+                              @endphp
+                      
+                              @if($filePath)
+                                  <img src="{{ $filePath }}" alt="File Raport" width="400px">
+                              @else
+                                  <p>Berkas tidak tersedia</p>
+                              @endif
                                 </div>
                               </td>
                             </tr>
@@ -634,9 +759,27 @@
                                       onclick="hideFotofunction('{{ $row->id }}')"
                                       class="btn-close float-end fs-11" aria-label="Close"></button>
                                   </div>
-                                  <iframe src="{{ url('file_pendamping/foto/', $row->file_foto) }}" width="950px"
+                                  {{-- <iframe src="{{ url('file_pendamping/foto/', $row->file_foto) }}" width="950px"
                                     height="400px">
-                                  </iframe>
+                                  </iframe> --}}
+                                  @php
+                                  $extensions = ['pdf', 'jpg', 'png', 'jpeg', 'webp'];
+                                  $filePath = '';
+                                  
+                                  foreach ($extensions as $ext) {
+                                      $possiblePath = 'assets/file/foto/' . $row->id . '.' . $ext;
+                                      if (file_exists(public_path($possiblePath))) {
+                                          $filePath = asset($possiblePath);
+                                          break;
+                                      }
+                                  }
+                              @endphp
+                      
+                              @if($filePath)
+                                  <img src="{{ $filePath }}" alt="Foto" width="400px">
+                              @else
+                                  <p>Berkas tidak tersedia</p>
+                              @endif
                                 </div>
                               </td>
                             </tr>

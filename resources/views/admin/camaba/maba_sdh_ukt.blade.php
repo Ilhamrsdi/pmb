@@ -16,7 +16,7 @@
             <strong>Success: </strong>{{ Session::get('success') }}
         </div>
     @endif
-    <a href={{ asset('template_excel_import_pendaftar/Pendaftar_maba.xlsx') }}>
+    <a href="{{ route('camaba.export-excel', request()->all()) }}" class="btn btn-success">
         <button type="button" class="btn btn-primary btn-label btn-sm mb-2"><i
             class="las la-file-excel label-icon align-middle fs-16 me-2"></i>
           EXPORT DATA EXCEL MABA SUDAH BAYAR UKT</button>

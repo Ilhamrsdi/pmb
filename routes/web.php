@@ -28,6 +28,8 @@ use App\Http\Controllers\Pendaftar\BiodataOrangTuaController;
 use App\Http\Controllers\Admin\Berkas\SettingBerkasController;
 use App\Http\Controllers\Admin\Pendaftar\SoalTesMabaController;
 use App\Http\Controllers\AccessLogController;
+use App\Http\Controllers\PdfController;
+
 // Pendaftar Controller
 use App\Http\Controllers\Admin\Pengumuman\PengumumanController;
 use App\Http\Controllers\Admin\Pendaftar\MabaAttributController;
@@ -104,6 +106,7 @@ Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
 
     Route::post('pendaftar-excel', [ExcelController::class, 'import'])->name('import.pendaftar');
     Route::post('ukt-excel', [ExcelController::class, 'import_ukt'])->name('import.ukt');
+    Route::get('camaba/export-excel', [ExcelController::class, 'exportToExcel'])->name('camaba.export-excel');
     Route::resource('camaba-acc', CamabaAccController::class);
     Route::resource('camaba-ukt', CamabaSdhBlmUKTController::class);
     Route::resource('maba-ukt', MabaUKTController::class);
@@ -163,12 +166,12 @@ Route::middleware([Pendaftar::class, 'auth'])->prefix('pendaftar')->group(functi
     Route::post('upload/bukti-bayar-ukt', [BuktiController::class, 'upload_bukti_ukt'])->name('upload-bukti-ukt');
     
     // Route untuk kelengkapan data pendaftar
-    Route::post('upload/berkas', [KelengkapanDataController::class, 'uploadBerkasPendukung'])->name('kelengkapan-data.upload-berkas');
     Route::get('kelengkapan-data/{id}', [KelengkapanDataController::class, 'edit'])->name('kelengkapan-data.edit');
     Route::put('kelengkapan-data/{id}', [KelengkapanDataController::class, 'update'])->name('kelengkapan-data.update');
-    Route::post('upload/berkas', [KelengkapanDataController::class, 'uploadBerkasPendukung'])->name('kelengkapan-data.upload-berkas');
     
     Route::get('bukti/{id}', [BuktiController::class, 'show'])->name('bukti.show');
+    Route::get('/generate-pdf', [PdfController::class, 'generatePDF'])->name('generate-pdf');
+
 });
 
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');

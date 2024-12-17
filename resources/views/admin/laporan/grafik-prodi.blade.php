@@ -8,7 +8,7 @@
       Laporan
     @endslot
     @slot('title')
-      Grafik Provinsi
+      Grafik Program Studi
     @endslot
   @endcomponent
   <div class="row">

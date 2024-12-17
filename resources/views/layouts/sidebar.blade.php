@@ -73,10 +73,10 @@
                   <a href="{{ route('maba-attribut.index') }}" class="nav-link">Daftar Atribut
                     Maba</a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                  <a href="{{ route('tes-maba.index') }}" class="nav-link">Tes
                   Maba</a>
-                </li>
+                </li> --}}
               </ul>
             </div>
           </li>

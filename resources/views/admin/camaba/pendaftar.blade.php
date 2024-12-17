@@ -379,7 +379,12 @@
                 </tr>
                 <tr>
                   <td style="width: 400px">STATUS PENDAFTARAN</td>
-                    <td><span class="badge badge-soft-danger text-uppercase">{{ $row->detailPendaftar->status_pendaftaran ?? 'Belum'}}</span></td>
+                  <td>
+                    <span class="badge badge-soft-{{ $row->detailPendaftar->status_pendaftaran === 'sudah' ? 'success' : 'danger' }} text-uppercase">
+                        {{ $row->detailPendaftar->status_pendaftaran ?? 'Belum' }}
+                    </span>
+                </td>
+                
                 </tr>
                 <tr>
                   <td style="width: 400px">KODE BAYAR UKT</td>
@@ -391,7 +396,13 @@
                 </tr>
                 <tr>
                   <td style="width: 400px">STATUS UKT</td>
-                    <td><span class="badge badge-soft-danger text-uppercase">{{ $row->detailPendaftar?->status_ukt ?? 'Belum'}}</span></td>
+                    {{-- <td><span class="badge badge-soft-danger text-uppercase">{{ $row->detailPendaftar?->status_ukt ?? 'Belum'}}</span></td> --}}
+                    <td>
+                      <span class="badge badge-soft-{{ $row->detailPendaftar->status_ukt === 'sudah' ? 'success' : 'danger' }} text-uppercase">
+                          {{ $row->detailPendaftar->status_ukt ?? 'Belum' }}
+                      </span>
+                  </td>
+                  
                 </tr>
                 <tr>
                   <td style="width: 400px">THN AJAR & GELOMBANG PENDAFTARAN</td>

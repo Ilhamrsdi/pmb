@@ -264,13 +264,20 @@ class DashboardController extends Controller
                             $id_pendaftar = $data->detailPendaftar->id;
                             $nama_pendaftar = $data->nama;
                             $dataPendaftar = $data->detailPendaftar->pendaftar_id;
-                            return view('pendaftar.dashboard.dashboard-ukt', compact('nomer_va', 'expired_va', 'nominal_ukt', 'nama_pendaftar', 'id_pendaftar', 'dataPendaftar', 'tata_cara'));
+                    
+                            // Cek apakah pendaftar sudah memiliki NIM
+                            if ($data->nim) {
+                                return redirect()->route('bukti.show', $data->id); // Arahkan ke halaman show jika sudah punya NIM
+                            } else {
+                                return view('pendaftar.dashboard.dashboard-ukt', compact('nomer_va', 'expired_va', 'nominal_ukt', 'nama_pendaftar', 'id_pendaftar', 'dataPendaftar', 'tata_cara'));
+                            }
                         } else {
                             return redirect(route('bukti.show', $data->id));
                         }
                     } else {
                         return redirect()->route('error.page');
                     }
+                    
                 }
             }
         }

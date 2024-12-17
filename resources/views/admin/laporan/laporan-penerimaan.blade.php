@@ -85,7 +85,7 @@
                       <td class="gelombang">
                           {{ $row->gelombangPendaftaran?->nama_gelombang . ' - Tahun ' . $row->gelombangPendaftaran?->tahun_ajaran }}
                       </td>
-                      <td class="prodi">{{ $row->programStudi?->nama_program_studi }}</td>
+                      <td class="prodi">{{ $row->programStudi?->name }}</td>
                       <td class="status_ukt text-center">
                           <span class="badge text-uppercase {{ optional($row->detailPendaftar)->status_ukt == 'sudah' ? 'badge-soft-success' : 'badge-soft-danger' }}">
                               {{ optional($row->detailPendaftar)->status_ukt ?? 'belum' }}

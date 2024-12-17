@@ -46,7 +46,7 @@ class CamabaSdhBlmUKTController extends Controller
     }
 
     // Filter hanya yang status_pembayaran 'belum'
-    $query->where('detail_pendaftars.status_pembayaran', $request->status_pembayaran); // Nilai status pembayaran 'belum'
+    // $query->where('detail_pendaftars.status_pembayaran', $request->status_pembayaran); // Nilai status pembayaran 'belum'
 
     // Dapatkan hasil query
     $camaba_ukt = $query->get();

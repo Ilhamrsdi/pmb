@@ -192,48 +192,20 @@ $kecamatan = json_decode($responsekecamatan->getBody(), true)['data'];
             'atribut_baju_lapangan' => $request->atribut_baju_lapangan,
         ]);
         // $namas = [];
+     
         if (!empty($request->file)) {
             foreach ($request->file as $key => $value) {
-                $directory = public_path('assets/file/' . $key . '/');
-                $extensions = ['pdf','jpg', 'png', 'jpeg'];
-
-                // Cek dan hapus file lama jika ada
-                foreach ($extensions as $ext) {
-                    $existingFile = $directory . $id . '.' . $ext;
-                    if (file_exists($existingFile)) {
-                        unlink($existingFile); // Menghapus file lama
-                    }
-                }
                 $nama =  $id . '.' . $value->extension();
-                // $namas[]    = $nama;
-                $value->move($directory, $nama);
+                $value->move(public_path('assets/file/' . $key . '/'), $nama);
             }
         }
 
-        // return $namas;
-
-        return redirect()->route('dashboard');
-        // return redirect(route('kelengkapan-data.edit', $id));
-        // return 'testing kelengkapan data';
+        return redirect(route('dashboard', $id));
     }
 
 //   use Illuminate\Support\Facades\Http; // Pastikan ini di-import
 
-public function uploadBerkasPendukung(Request $request, $id)
-{
-    $request->validate([
-        'files.*' => 'required|file|mimes:pdf,jpg,png,jpeg,webp|max:2048',
-    ]);
 
-    $pendaftar = Pendaftar::findOrFail($id);
-
-    foreach ($request->file('files') as $fileKey => $file) {
-        $path = $pendaftar->id . '/' . $fileKey . '.' . $file->extension();
-        $file->storeAs('assets/file', $path, 'public');
-    }
-
-    return redirect()->route('kelengkapan-data.edit', $id)->with('success', 'Berkas berhasil diunggah.');
-}
 
 
 

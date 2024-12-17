@@ -334,10 +334,6 @@
                               <td>{{ $row->wali?->pekerjaan_ayah }}</td>
                             </tr>
                             <tr>
-                              <td style="width: 400px">PEKERJAAN AYAH / WALI</td>
-                              <td>{{ $row->wali?->pekerjaan_ayah }}</td>
-                            </tr>
-                            <tr>
                               <td style="width: 400px">PENGHASILAN AYAH / WALI</td>
                               @php
                                   $penghasilan_ayah = $row->wali?->penghasilan_ayah;
@@ -367,32 +363,28 @@
                         <table class="table table-striped">
                           <tbody>
                             <tr>
-                              <td style="width: 400px">NIK AYAH / WALI</td>
+                              <td style="width: 400px">NIK IBU / WALI</td>
                               <td>{{ $row->wali?->nik_ibu }}</td>
                             </tr>
                             <tr>
-                              <td style="width: 400px">NAMA AYAH / WALI</td>
+                              <td style="width: 400px">NAMA IBU / WALI</td>
                               <td>{{ $row->wali?->nama_ibu }}</td>
                             </tr>
                             <tr>
-                              <td style="width: 400px">TGL LAHIR AYAH / WALI</td>
+                              <td style="width: 400px">TGL LAHIR IBU / WALI</td>
                               <td>{{ $row->wali?->tanggal_lahir_ibu }}</td>
                             </tr>
                             <tr>
-                              <td style="width: 400px">PENDIDIKAN AYAH / WALI</td>
+                              <td style="width: 400px">PENDIDIKAN IBU / WALI</td>
                               <td>{{ $row->wali?->pendidikan_ibu }}</td>
                             </tr>
                             <tr>
-                              <td style="width: 400px">PEKERJAAN AYAH / WALI</td>
-                              <td>{{ $row->wali?->pekerjaan_ibu }}</td>
-                            </tr>
-                            <tr>
-                              <td style="width: 400px">PEKERJAAN AYAH / WALI</td>
+                              <td style="width: 400px">PEKERJAAN IBU / WALI</td>
                               <td>{{ $row->wali?->pekerjaan_ibu }}</td>
                             </tr>
                             <tr>
                               <tr>
-                                <td style="width: 400px">PENGHASILAN AYAH / WALI</td>
+                                <td style="width: 400px">PENGHASILAN IBU / WALI</td>
                                 @php
                                     $penghasilan_ayah = $row->wali?->penghasilan_ibu;
                                 @endphp
@@ -499,13 +491,24 @@
                                       onclick="hideKTPfunction('{{ $row->id }}')"
                                       class="btn-close float-end fs-11" aria-label="Close"></button>
                                   </div>
-                                  <iframe src="{{ url('file_pendamping/ktp/', $row->file_ktp) }}" width="950px"
-                                    height="400px">
-                                  </iframe>
-                                  {{-- <embed
-                                                                        src="{{ url('file_pendamping/ktp/', $row->file_ktp) }}"
-                                                                        type="application/pdf" width="950px"
-                                                                        height="400px"> --}}
+                                  @php
+                                  $extensions = ['pdf', 'jpg', 'png', 'jpeg', 'webp'];
+                                  $filePath = '';
+                                  
+                                  foreach ($extensions as $ext) {
+                                      $possiblePath = 'assets/file/ktp/' . $row->id . '.' . $ext;
+                                      if (file_exists(public_path($possiblePath))) {
+                                          $filePath = asset($possiblePath);
+                                          break;
+                                      }
+                                  }
+                              @endphp
+                      
+                              @if($filePath)
+                                  <img src="{{ $filePath }}" alt="Kartu Tanda Penduduk" width="400px">
+                              @else
+                                  <p>Berkas tidak tersedia</p>
+                              @endif
                                 </div>
                               </td>
                             </tr>
@@ -520,15 +523,30 @@
                             <tr>
                               <td>
                                 <div id="formKK{{ $row->id }}" hidden>
-                                  <div class="card-header">
-                                    <button type="button" id="hideKK{{ $row->id }}"
-                                      onclick="hideKKfunction('{{ $row->id }}')" class="btn-close float-end fs-11"
-                                      aria-label="Close"></button>
-                                  </div>
-                                  <img src="{{ asset('assets/file/bukti-pendaftaran/' . $row->id . '.jpg') }}"
-                                  alt="Bukti Pendaftaran" width="200px">
+                                    <div class="card-header">
+                                        <button type="button" id="hideKK{{ $row->id }}" onclick="hideKKfunction('{{ $row->id }}')" class="btn-close float-end fs-11" aria-label="Close"></button>
+                                    </div>
+                                    @php
+                                        $extensions = ['pdf', 'jpg', 'png', 'jpeg', 'webp'];
+                                        $filePath = '';
+                                        
+                                        foreach ($extensions as $ext) {
+                                            $possiblePath = 'assets/file/kk/' . $row->id . '.' . $ext;
+                                            if (file_exists(public_path($possiblePath))) {
+                                                $filePath = asset($possiblePath);
+                                                break;
+                                            }
+                                        }
+                                    @endphp
+                            
+                                    @if($filePath)
+                                        <img src="{{ $filePath }}" alt="Kartu Keluarga" width="400px">
+                                    @else
+                                        <p>Berkas tidak tersedia</p>
+                                    @endif
                                 </div>
-                              </td>
+                            </td>
+                            
                             </tr>
                             <tr>
                               <td style="width: 400px">FILE IJAZAH</td>
@@ -546,9 +564,24 @@
                                       onclick="hideIjazahfunction('{{ $row->id }}')"
                                       class="btn-close float-end fs-11" aria-label="Close"></button>
                                   </div>
-                                  <iframe src="{{ url('file_pendamping/ijazah/', $row->file_ijazah) }}" width="950px"
-                                    height="400px">
-                                  </iframe>
+                                  @php
+                                  $extensions = ['pdf', 'jpg', 'png', 'jpeg', 'webp'];
+                                  $filePath = '';
+                                  
+                                  foreach ($extensions as $ext) {
+                                      $possiblePath = 'assets/file/ijazah/' . $row->id . '.' . $ext;
+                                      if (file_exists(public_path($possiblePath))) {
+                                          $filePath = asset($possiblePath);
+                                          break;
+                                      }
+                                  }
+                              @endphp
+                      
+                              @if($filePath)
+                                  <img src="{{ $filePath }}" alt="Kartu Keluarga" width="400px" height="950px">
+                              @else
+                                  <p>Berkas tidak tersedia</p>
+                              @endif
                                 </div>
                               </td>
                             </tr>
@@ -568,9 +601,27 @@
                                       onclick="hideTranskipfunction('{{ $row->id }}')"
                                       class="btn-close float-end fs-11" aria-label="Close"></button>
                                   </div>
-                                  <iframe src="{{ url('file_pendamping/transkip/', $row->file_transkip) }}"
+                                  {{-- <iframe src="{{ url('file_pendamping/transkip/', $row->file_transkip) }}"
                                     width="950px" height="400px">
-                                  </iframe>
+                                  </iframe> --}}
+                                  @php
+                                  $extensions = ['pdf', 'jpg', 'png', 'jpeg', 'webp'];
+                                  $filePath = '';
+                                  
+                                  foreach ($extensions as $ext) {
+                                      $possiblePath = 'assets/file/transkrip/' . $row->id . '.' . $ext;
+                                      if (file_exists(public_path($possiblePath))) {
+                                          $filePath = asset($possiblePath);
+                                          break;
+                                      }
+                                  }
+                              @endphp
+                      
+                              @if($filePath)
+                                  <img src="{{ $filePath }}" alt="Transkrip Nilai" width="400px" height="950px">
+                              @else
+                                  <p>Berkas tidak tersedia</p>
+                              @endif
                                 </div>
                               </td>
                             </tr>
@@ -590,9 +641,27 @@
                                       onclick="hideRaporfunction('{{ $row->id }}')"
                                       class="btn-close float-end fs-11" aria-label="Close"></button>
                                   </div>
-                                  <iframe src="{{ url('file_pendamping/raport/', $row->file_raport) }}" width="950px"
+                                  {{-- <iframe src="{{ url('file_pendamping/raport/', $row->file_raport) }}" width="950px"
                                     height="400px">
-                                  </iframe>
+                                  </iframe> --}}
+                                  @php
+                                  $extensions = ['pdf', 'jpg', 'png', 'jpeg', 'webp'];
+                                  $filePath = '';
+                                  
+                                  foreach ($extensions as $ext) {
+                                      $possiblePath = 'assets/file/raport/' . $row->id . '.' . $ext;
+                                      if (file_exists(public_path($possiblePath))) {
+                                          $filePath = asset($possiblePath);
+                                          break;
+                                      }
+                                  }
+                              @endphp
+                      
+                              @if($filePath)
+                                  <img src="{{ $filePath }}" alt="Raport" width="950px" height="450px;">
+                              @else
+                                  <p>Berkas tidak tersedia</p>
+                              @endif
                                 </div>
                               </td>
                             </tr>
@@ -612,9 +681,27 @@
                                       onclick="hideFotofunction('{{ $row->id }}')"
                                       class="btn-close float-end fs-11" aria-label="Close"></button>
                                   </div>
-                                  <iframe src="{{ url('file_pendamping/foto/', $row->file_foto) }}" width="950px"
+                                  {{-- <iframe src="{{ url('file_pendamping/foto/', $row->file_foto) }}" width="950px"
                                     height="400px">
-                                  </iframe>
+                                  </iframe> --}}
+                                  @php
+                                  $extensions = ['pdf', 'jpg', 'png', 'jpeg', 'webp'];
+                                  $filePath = '';
+                                  
+                                  foreach ($extensions as $ext) {
+                                      $possiblePath = 'assets/file/foto/' . $row->id . '.' . $ext;
+                                      if (file_exists(public_path($possiblePath))) {
+                                          $filePath = asset($possiblePath);
+                                          break;
+                                      }
+                                  }
+                              @endphp
+                      
+                              @if($filePath)
+                                  <img src="{{ $filePath }}" alt="Foto" width="950px" height="400px">
+                              @else
+                                  <p>Berkas tidak tersedia</p>
+                              @endif
                                 </div>
                               </td>
                             </tr>

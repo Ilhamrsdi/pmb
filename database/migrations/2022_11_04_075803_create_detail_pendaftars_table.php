@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Carbon;
 return new class extends Migration
 {
     /**
@@ -24,10 +24,10 @@ return new class extends Migration
             $table->integer('potongan_ukt')->nullable();
             $table->string('va_pendaftaran')->nullable();
             $table->string('trx_va')->nullable();
-            $table->timestamp('datetime_expired')->nullable();
+            $table->timestamp('datetime_expired')->nullable()->default(Carbon::now()->addHours(24)); // 24 jam dari sekarang;
             $table->string('va_ukt')->nullable();
             $table->string('trx_va_ukt')->nullable();
-            $table->timestamp('datetime_expired_ukt')->nullable();
+            $table->timestamp('datetime_expired_ukt')->nullable()->default(Carbon::now()->addHours(24)); // 24 jam dari sekarang;
             $table->string('status_pendaftaran')->nullable();
             $table->string('status_pembayaran')->nullable();
             $table->string('status_ukt')->nullable();

@@ -81,6 +81,8 @@ class RegisterController extends Controller
         // $va_bni = $this->createVA($data);
         // $cek_pendaftar_va_bni = $this->CekPendaftaranVA($data);
         // dd($cek_pendaftar_va_bni['datetime_expired']);
+        $trx_va_ukt = Str::random(5);
+        $trx_va = Str::random(5);
         $password = 'password';
         $user = User::create([
             'username' => $data['nama'],
@@ -104,7 +106,10 @@ class RegisterController extends Controller
             'kode_bayar' => random_int(100000, 999999), // Menghasilkan angka acak 6 digit
             'kode_pendaftaran' => random_int(100000, 999999), // Menghasilkan angka acak 6
             'tanggal_daftar' => now(),
-            'va_pendaftaran' => random_int(100000, 999999),
+            'va_pendaftaran' => random_int(100000, 999999999),
+            'trx_va' => $trx_va,
+            'trx_va_ukt' => $trx_va_ukt,
+            'va_ukt' => random_int(100000000,9999999999),
             // 'trx_va' => $va_bni['trx_id'],
             // 'datetime_expired' => $cek_pendaftar_va_bni['datetime_expired'],
         ]);
@@ -159,6 +164,7 @@ class RegisterController extends Controller
                 'tanggal_daftar' => now(),
                 'kode_bayar' => $data_pendaftar[0]->detailPendaftar->kode_bayar,
                 'kode_pendaftaran' => $data_pendaftar[0]->detailPendaftar->kode_pendaftaran
+                
             ]);
 
             $wali = Wali::create([
@@ -186,44 +192,44 @@ class RegisterController extends Controller
     }
 
     // Membuat Invoice Xendit
-    public function createInvoice(array $data)
-    {
-        Configuration::setXenditKey("xnd_public_development_kGtMW2a_VlZ43I0Xn0o3kCZ7EEOAT57fpWO8XWwMVVRPhfpVDboTYyrfoEVTtML");
+    // public function createInvoice(array $data)
+    // {
+    //     Configuration::setXenditKey("xnd_public_development_kGtMW2a_VlZ43I0Xn0o3kCZ7EEOAT57fpWO8XWwMVVRPhfpVDboTYyrfoEVTtML");
 
-        $biaya_pendaftaran = GelombangPendaftaran::where('id', $data['gelombang'])->first();
-        $apiInstance = new InvoiceApi();
-        $createInvoiceRequest = new CreateInvoiceRequest([
-            'external_id' => 'inv-' . time(), // External ID yang unik
-            'amount' => $biaya_pendaftaran->nominal_pendaftaran, // Nominal pendaftaran dari gelombang
-            'payer_email' => $data['email'],
-            'description' => 'Pembayaran pendaftaran ' . $data['nama'],
-            'invoice_duration' => 86400 * 2, // Durasi invoice 2 hari
-            'currency' => 'IDR',
-        ]);
+    //     $biaya_pendaftaran = GelombangPendaftaran::where('id', $data['gelombang'])->first();
+    //     $apiInstance = new InvoiceApi();
+    //     $createInvoiceRequest = new CreateInvoiceRequest([
+    //         'external_id' => 'inv-' . time(), // External ID yang unik
+    //         'amount' => $biaya_pendaftaran->nominal_pendaftaran, // Nominal pendaftaran dari gelombang
+    //         'payer_email' => $data['email'],
+    //         'description' => 'Pembayaran pendaftaran ' . $data['nama'],
+    //         'invoice_duration' => 86400 * 2, // Durasi invoice 2 hari
+    //         'currency' => 'IDR',
+    //     ]);
 
-        try {
-            // Buat invoice
-            $result = $apiInstance->createInvoice($createInvoiceRequest);
-            return $result; // Kembalikan hasil invoice
-        } catch (\Xendit\XenditSdkException $e) {
-            return null;
-        }
-    }
+    //     try {
+    //         // Buat invoice
+    //         $result = $apiInstance->createInvoice($createInvoiceRequest);
+    //         return $result; // Kembalikan hasil invoice
+    //     } catch (\Xendit\XenditSdkException $e) {
+    //         return null;
+    //     }
+    // }
 
     // Endpoint callback Xendit untuk update status pendaftaran
-    public function xenditCallback(Request $request)
-    {
-        // Ambil data dari callback
-        $data = $request->all();
+    // public function xenditCallback(Request $request)
+    // {
+    //     // Ambil data dari callback
+    //     $data = $request->all();
 
-        if ($data['status'] === 'PAID') {
-            // Update status_pendaftaran menjadi 'disetujui' jika pembayaran sukses
-            $detailPendaftar = DetailPendaftar::where('trx_va', $data['external_id'])->first();
+    //     if ($data['status'] === 'PAID') {
+    //         // Update status_pendaftaran menjadi 'disetujui' jika pembayaran sukses
+    //         $detailPendaftar = DetailPendaftar::where('trx_va', $data['external_id'])->first();
 
-            if ($detailPendaftar) {
-                $pendaftar = Pendaftar::find($detailPendaftar->pendaftar_id);
-                $pendaftar->update(['status_pendaftaran' => 'disetujui']);
-            }
-        }
-    }
+    //         if ($detailPendaftar) {
+    //             $pendaftar = Pendaftar::find($detailPendaftar->pendaftar_id);
+    //             $pendaftar->update(['status_pendaftaran' => 'disetujui']);
+    //         }
+    //     }
+    // }
 }
