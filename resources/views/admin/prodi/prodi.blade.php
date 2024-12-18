@@ -77,8 +77,8 @@
                       <td class="jenjang text-center">{{ $g->pendidikan?->name ?? '-'  }}</td>
                       <td class="akreditasi text-center">{{ $g->acreditation ? $g->acreditation : '-' }}</td>
                       <td class="text-center">{{ $g->kuota_diterima }}</td>
-                      <td class="text-center">{{ $g->nomer_urut_nim }}</td>
-                      <td class="text-center">{{ $g->kode_nim}}</td>
+                      <td class="text-center">{{ $g->nim_urut }}</td>
+                      <td class="text-center">{{ $g->kode_belakang_prodi}}</td>
                       <td class="status text-center">
                         {{-- <span
                           class="badge text-uppercase {{ $g->status == 'aktif' ? 'badge-soft-success' : 'badge-soft-danger' }}">

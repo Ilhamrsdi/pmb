@@ -15,15 +15,28 @@ class ProdiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function index()
+    // {
+    //     $prodi = ProgramStudi::get();
+    //     $jurusan = Jurusan::get();
+    //     return view(
+    //         'admin.prodi.prodi',
+    //         compact(['prodi', 'jurusan'])
+    //     );
+    // }
     public function index()
-    {
-        $prodi = RefPorgramStudi::get();
-        $jurusan = Jurusan::get();
-        return view(
-            'admin.prodi.prodi',
-            compact(['prodi', 'jurusan'])
-        );
-    }
+{
+    
+    $prodi = RefPorgramStudi::all()->map(function($item) {
+        $item->kode_belakang_prodi = substr($item->code, -3); // Ambil 3 digit terakhir dari 'code'
+        $item->nim_urut = str_pad($item->kode_belakang_prodi . '01', STR_PAD_LEFT);
+        return $item;
+    });
+
+    $jurusan = Jurusan::all();
+    return view('admin.prodi.prodi', compact('prodi', 'jurusan'));
+}
+
 
     /**
      * Show the form for creating a new resource.
