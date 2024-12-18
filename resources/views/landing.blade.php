@@ -54,6 +54,8 @@
     .demo-img-patten-top img {
       position: relative;
       transition: transform 1.5s ease-in-out;
+      max-width: 100%; /* Ensure images are responsive */
+      height: auto; /* Maintain aspect ratio */
     }
   </style>
     
@@ -242,30 +244,31 @@
           @endforeach
         </div>
       </div>
+      <section class="alurpendaftaran" id="alurpendaftaran">
+        <div class="container">
+          
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="text-center mb-5">
+              <h3 class="mb-3 fw-semibold">Alur Pendaftaran</h3>
+              @if($alurPendaftaran)
+                <p class="text-muted mb-4 ff-secondary">{{ $alurPendaftaran->keterangan }}</p>
+                <img 
+                  src="{{ asset('storage/' . $alurPendaftaran->gambar) }}" 
+                  alt="alur pendaftaran" 
+                  class="img-fluid"
+                >
+              @else
+                <p class="text-muted mb-4 ff-secondary">Gambar atau informasi alur pendaftaran tidak tersedia.</p>
+              @endif
+            </div>
+          </div>
+        </div>
+      </div>  
+      </section>
       <!-- end container -->
     </section>
   <!-- end layanan -->
-  <section class="alurpendaftaran" id="alurpendaftaran">
-    <div class="row justify-content-center">
-      <div class="col-lg-8">
-        <div class="text-center mb-5">
-          <h3 class="mb-3 fw-semibold">Alur Pendaftaran</h3>
-          @if($alurPendaftaran)
-            <p class="text-muted mb-4 ff-secondary">{{ $alurPendaftaran->keterangan }}</p>
-            <img 
-              src="{{ asset('storage/' . $alurPendaftaran->gambar) }}" 
-              alt="alur pendaftaran" 
-              class="img-fluid"
-            >
-          @else
-            <p class="text-muted mb-4 ff-secondary">Gambar atau informasi alur pendaftaran tidak tersedia.</p>
-          @endif
-        </div>
-      </div>
-    </div>  
-  </section>
-  
-
     <!-- start tata_cara -->
     <section class="section" id="tata_cara">
       <div class="container">
