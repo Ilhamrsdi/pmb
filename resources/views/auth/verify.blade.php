@@ -24,7 +24,7 @@
                             <div class="text-center mt-sm-5 mb-4 text-white-50">
                                 <div>
                                     <a href="index" class="d-inline-block auth-logo">
-                                        <img src="{{ URL::asset('assets/images/logo-light.png') }}" alt="" height="20">
+                                        <img src="{{ URL::asset('assets/images/logo-light.png') }}" alt="" height="75">
                                     </a>
                                 </div>
                                 <p class="mt-3 fs-15 fw-medium">Premium Admin & Dashboard Template</p>
