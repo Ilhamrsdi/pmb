@@ -49,6 +49,8 @@
                     <th class="text-center" data-sort="deskripsi">DESKRIPSI</th>
                     <th class="text-center" data-sort="nominal">BIAYA PENDAFTARAN</th>
                     <th class="text-center" data-sort="administrasi">BIAYA ADMINISTRASI</th>
+                    <th class="text-center" data-sort="tanggal_ujian">TANGGAL UJIAN</th>
+                    <th class="text-center" data-sort="tempat_ujian">TEMPAT UJIAN</th>
                     <th class="text-center" data-sort="kuota">KUOTA PENDAFTAR</th>
                     <th class="sort text-center" data-sort="status">STATUS</th>
                     <th class="text-center">AKSI</th>
@@ -68,6 +70,8 @@
                       <td class="deskripsi">{{ $g->deskripsi }}</td>
                       <td class="nominal text-center">{{ $g->biaya_pendaftaran }}</td>
                       <td class="administrasi text-center">{{ $g->biaya_administrasi}}</td>
+                      <td class="tanggal_ujian text-center">{{$g->tanggal_ujian}}</td>
+                      <td class="tempat_ujian text-center">{{$g->tempat_ujian}}</td>
                       <td class="kuota text-center">{{ $g->kuota_pendaftar }}</td>
                       <td class="status text-center">
                         @if (strtolower(trim($g->status)) == 'active')
@@ -192,14 +196,27 @@
               <input required name="deskripsi" type="text" class="form-control" placeholder="deskripsi" />
             </div>
             <div class="mb-3">
-              <label for="id-field" class="form-label">Nominal Pendaftaran</label>
-              <input required name="nominal_pendaftaran" type="number" min="0" class="form-control"
-                placeholder="nominal_pendaftaran" />
+              <label for="id-field" class="form-label">Biaya Pendaftaran</label>
+              <input required name="biaya_pendaftaran" type="number" min="0" class="form-control"
+                placeholder="biaya_pendaftaran" />
+            </div>
+            <div class="mb-3">
+              <label for="id-field" class="form-label">Biaya Administrasi</label>
+              <input required name="biaya_administrasi" type="number" min="0" class="form-control"
+                placeholder="biaya_administrasi" />
+            </div>
+            <div class="mb-3">
+              <label for="id-field" class="form-label">Tanggal Ujian</label>
+              <input required name="tanggal_ujian" type="date" class="form-control" placeholder="tanggal_ujian" />
             </div>
             <div class="mb-3">
               <label for="id-field" class="form-label">Kuota Pendaftar</label>
               <input required name="kuota_pendaftar" type="number" min="0" class="form-control"
                 placeholder="kuota_pendaftar" />
+            </div>
+            <div class="mb-3">
+              <label for="id-field" class="form-label">Tempat Ujian</label>
+              <input required name="tempat_ujian" type="text" class="form-control" placeholder="tempat_ujian" />
             </div>
           </div>
           <div class="modal-footer">

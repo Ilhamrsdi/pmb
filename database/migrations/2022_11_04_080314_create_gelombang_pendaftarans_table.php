@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('biaya_pendaftaran');
             $table->string('biaya_administrasi');
             $table->string('kuota_pendaftar');
+            $table->date('tanggal_ujian');
+            $table->string('tempat_ujian')->default('POLIWANGI');
             $table->timestamps();
         });
     }

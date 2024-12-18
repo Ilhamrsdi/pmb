@@ -87,89 +87,50 @@
                         </div>
 
                         <div class="tab-content">
-                            <div class="tab-pane fade show active" id="pills-bio-diri" role="tabpanel"
-                                aria-labelledby="pills-bi-diri-tab">
+                            <div class="tab-pane fade show active" id="pills-bio-diri" role="tabpanel" aria-labelledby="pills-bi-diri-tab">
                                 <div>
                                     <h5 class="mb-1">Biodata Diri</h5>
-                                    <p class="text-muted mb-4">Isilah Informasi dibawah ini dengan sebenar benarnya</p>
+                                    <p class="text-muted mb-4">Isilah Informasi dibawah ini dengan sebenar-benarnya</p>
                                 </div>
-
+                        
                                 <div>
                                     <div class="row">
+                                        <!-- Form Input Fields -->
                                         <div class="col-md-6 mb-3">
                                             <label for="email" class="form-label">Email Address</label>
-                                            <input type="email" class="form-control" placeholder="example@gamil.com"
-                                                id="email" value={{ $pendaftar->user->email }} disabled>
+                                            <input type="email" class="form-control" placeholder="example@gamil.com" id="email" value="{{ $pendaftar->user->email }}" disabled>
                                         </div>
-                                        <!--end col-->
+                                        <!-- end col -->
                                         <div class="col-md-6 mb-3">
                                             <label for="nik" class="form-label">NIK</label>
-                                            <input type="text" class="form-control" placeholder="example@gamil.com"
-                                                id="nik" value={{ $pendaftar->user->nik }} disabled>
-
+                                            <input type="text" class="form-control" placeholder="example@gamil.com" id="nik" value="{{ $pendaftar->user->nik }}" disabled>
                                         </div>
-                                        <!--end col-->
+                                        <!-- end col -->
+                        
                                         <div class="col-md-6 mb-3">
                                             <label for="nama" class="form-label">Nama</label>
-                                            <input type="text" class="form-control" placeholder="Masukkan Nama"
-                                                id="nama" value="{{ $pendaftar->nama }}" name="nama">
-
+                                            <input type="text" class="form-control" placeholder="Masukkan Nama" id="nama" value="{{ $pendaftar->nama }}" name="nama" required>
                                         </div>
-                                        <!--end col-->
-                                        <div class="col-md-6 mb-3">
-                                            <label for="nisn" class="form-label">NISN</label>
-                                            <input type="text" class="form-control" placeholder="Masukkan NISN"
-                                                id="nisn" value="{{ $pendaftar->nisn }}" name="nisn">
-
-                                        </div>
-                                        <div class="col-md-12 mb-3">
-                                            <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                                            <select id="jenis_kelamin" class="form-select" data-choices
-                                                data-choices-sorting="true" name="jenis_kelamin">
-                                                <option selected>Pilih Jenis Kelamin</option>
-                                                <option value="Laki - Laki"
-                                                    {{ $pendaftar->jenis_kelamin == 'Laki - Laki' ? 'selected' : '' }}>Laki - Laki</option>
-                                                <option value="Perempuan"
-                                                    {{ $pendaftar->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>Perempuan
-                                                </option>
-                                            </select>
-
-                                        </div>
-                                        <!--end col-->
-                                        <div class="col-md-12 mb-3">
-                                            <label for="sekolah" class="form-label">Asal Sekolah</label>
-                                            <input type="text" class="form-control"
-                                                placeholder="Masukkan Asal Sekolah" id="sekolah"
-                                                value="{{ $pendaftar->sekolah }}" name="sekolah">
-
-                                        </div>
-                                        <!--end col-->
-                                        <div class="col-md-12 mb-3">
-                                            <label for="alamat" class="form-label">Alamat</label>
-                                            <input type="text" class="form-control" placeholder="Masukkan Alamat"
-                                                id="alamat" value="{{ $pendaftar->alamat }}" name="alamat">
-
-                                        </div>
-                                        <!--end col-->
+                                        <!-- end col -->
+                        
+                                        <!-- Additional Form Fields -->
+                        
                                         <div class="col-md-6 mb-3">
                                             <label for="jenis_tinggal" class="form-label">Jenis Tempat Tinggal</label>
-                                            <select id="jenis_tinggal" class="form-select" data-choices
-                                                data-choices-sorting="true" name="jenis_tinggal">
+                                            <select id="jenis_tinggal" class="form-select" data-choices data-choices-sorting="true" name="jenis_tinggal">
                                                 <option selected>Pilih Jenis Tempat Tinggal...</option>
                                                 @foreach ($jenis_tinggal as $item)
-                                                    <option
-                                                        {{ $item['name'] == $pendaftar->jenis_tinggal ? 'selected' : '' }}>
+                                                    <option {{ $item['name'] == $pendaftar->jenis_tinggal ? 'selected' : '' }}>
                                                         {{ $item['name'] }}
                                                     </option>
                                                 @endforeach
                                             </select>
-
                                         </div>
-                                        <!--end col-->
+                                        <!-- end col -->
+                        
                                         <div class="col-md-6 mb-3">
                                             <label for="kendaraan" class="form-label">Kendaraan</label>
-                                            <select id="kendaraan" class="form-select" data-choices
-                                                data-choices-sorting="true" name="kendaraan">
+                                            <select id="kendaraan" class="form-select" data-choices data-choices-sorting="true" name="kendaraan">
                                                 <option selected>Pilih Jenis Kendaraan...</option>
                                                 @foreach ($kendaraan as $item)
                                                     <option {{ $item['name'] == $pendaftar->kendaraan ? 'selected' : '' }}>
@@ -177,163 +138,131 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-
                                         </div>
-                                        <!--end col-->
+                                        <!-- end col -->
+                        
                                         <div class="col-md-6 mb-3">
                                             <label for="kewarganegaraan" class="form-label">Kewarganegaraan</label>
-                                            <select id="kewarganegaraan" class="form-select" data-choices
-                                                data-choices-sorting="true" name="kewarganegaraan">
-                                                <option selected>Pilih Kewarganeragaan...</option>
-                                                <option value="wni"
-                                                    {{ $pendaftar->kewarganegaraan == 'wni' ? 'selected' : '' }}>Warga
-                                                    Negara
-                                                    Indonesia</option>
-                                                <option value="wna"
-                                                    {{ $pendaftar->kewarganegaraan == 'wna' ? 'selected' : '' }}>Warga
-                                                    Negara
-                                                    Asing
-                                                </option>
+                                            <select id="kewarganegaraan" class="form-select" data-choices data-choices-sorting="true" name="kewarganegaraan" required>
+                                                <option selected>Pilih Kewarganegaraan...</option>
+                                                <option value="wni" {{ $pendaftar->kewarganegaraan == 'wni' ? 'selected' : '' }}>Warga Negara Indonesia</option>
+                                                <option value="wna" {{ $pendaftar->kewarganegaraan == 'wna' ? 'selected' : '' }}>Warga Negara Asing</option>
                                             </select>
-
                                         </div>
-                                        <!--end col-->
+                                        <!-- end col -->
+                        
                                         <div class="col-md-6 mb-3">
                                             <label for="negara" class="form-label">Negara</label>
-                                            <select id="negara" class="form-select" data-choices
-                                                data-choices-sorting="true" name="negara">
+                                            <select id="negara" class="form-select" data-choices data-choices-sorting="true" name="negara" required>
                                                 <option>Pilih Negara...</option>
                                                 @foreach ($negara as $item)
-                                                    <option value="{{ $item['id'] }}"
-                                                        {{ $item['id'] == $pendaftar->negara ? 'selected' : '' }}>
-                                                        {{ $item['name'] }}</option>
-                                                @endforeach
-                                            </select>
-
-                                        </div>
-                                        <!--end col-->
-                                        <div class="col-md-4 mb-3">
-                                            <label for="provinsi" class="form-label">Provinsi</label>
-                                            <select id="provinsi" class="form-select" data-choices
-                                                data-choices-sorting="true" name="provinsi">
-                                                <option value="">-- Pilih Provinsi --</option>
-                                                @foreach ($provinsi as $item)
-                                                    <option value="{{ $item['id'] }}"
-                                                        {{ $pendaftar->provinsi == $item['id'] ? 'selected' : '' }}>
+                                                    <option value="{{ $item['id'] }}" {{ $item['id'] == $pendaftar->negara ? 'selected' : '' }}>
                                                         {{ $item['name'] }}
                                                     </option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <!--end col-->
+                                        <!-- end col -->
+                        
+                                        <div class="col-md-6 mb-3">
+                                            <label for="provinsi" class="form-label">Provinsi</label>
+                                            <select id="provinsi" class="form-select" data-choices data-choices-sorting="true" name="provinsi" required>
+                                                <option value="">-- Pilih Provinsi --</option>
+                                                @foreach ($provinsi as $item)
+                                                    <option value="{{ $item['id'] }}" {{ $pendaftar->provinsi == $item['id'] ? 'selected' : '' }}>
+                                                        {{ $item['name'] }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <!-- end col -->
+                        
                                         <div class="col-md-4 mb-3" id="select_kabupaten">
                                             <label for="kabupaten" class="form-label">Kabupaten</label>
-                                            <select data-select="kabupaten" id="kabupaten" class="form-select"
-                                                name="kabupaten">
+                                            <select data-select="kabupaten" id="kabupaten" class="form-select" name="kabupaten" required>
                                                 <option value="">-- Pilih Kabupaten/Kota --</option>
                                             </select>
                                         </div>
-
-
-
-
-                                        <!--end col-->
-                                        <div class="col-md-4 mb-3" id=" select_kecamatan">
+                                        <!-- end col -->
+                        
+                                        <div class="col-md-4 mb-3" id="select_kecamatan">
                                             <label for="kecamatan" class="form-label">Kecamatan</label>
-                                            <select id="kecamatan" data-select="kecamatan" class="form-select"
-                                                name="kecamatan">
+                                            <select id="kecamatan" data-select="kecamatan" class="form-select" name="kecamatan" required>
                                                 <option>Pilih Kecamatan...</option>
                                             </select>
-
                                         </div>
-                                        <!--end col-->
-                                        <div class="col-md-3 mb-3">
+                                        <!-- end col -->
+                        
+                                        <div class="col-md-4 mb-3">
                                             <label for="kelurahan_desa" class="form-label">Kelurahan</label>
-                                            <input type="text" class="form-control"
-                                                placeholder="Masukkan Nama Kelurahan atau Desa" id="kelurahan_desa"
-                                                value="{{ $pendaftar->kelurahan_desa }}" name="kelurahan_desa">
-
+                                            <input type="text" class="form-control" placeholder="Masukkan Nama Kelurahan atau Desa" id="kelurahan_desa" value="{{ $pendaftar->kelurahan_desa }}" name="kelurahan_desa">
                                         </div>
-                                        <!--end col-->
-                                        <div class="col-md-3 mb-3">
+                                        <!-- end col -->
+                        
+                                        <div class="col-md-4 mb-3">
                                             <label for="rt" class="form-label">RT</label>
-                                            <input type="text" class="form-control" placeholder="Masukkan Nomor RT"
-                                                id="rt" value="{{ $pendaftar->rt }}" name="rt">
-
+                                            <input type="text" class="form-control" placeholder="Masukkan Nomor RT" id="rt" value="{{ $pendaftar->rt }}" name="rt">
                                         </div>
-                                        <!--end col-->
-                                        <div class="col-md-3 mb-3">
+                                        <!-- end col -->
+                        
+                                        <div class="col-md-4 mb-3">
                                             <label for="rw" class="form-label">RW</label>
-                                            <input type="text" class="form-control" placeholder="Masukan Nomor RW"
-                                                id="rw" value="{{ $pendaftar->rw }}" name="rw">
-
+                                            <input type="text" class="form-control" placeholder="Masukkan Nomor RW" id="rw" value="{{ $pendaftar->rw }}" name="rw">
                                         </div>
-                                        <!--end col-->
-                                        <div class="col-md-3 mb-3">
+                                        <!-- end col -->
+                        
+                                        <div class="col-md-4 mb-3">
                                             <label for="kode_pos" class="form-label">Kode Pos</label>
-                                            <input type="text" class="form-control"
-                                                placeholder="Masukan Nomor Kode Pos" id="kode_pos"
-                                                value="{{ $pendaftar->kode_pos }}" name="kode_pos">
-
+                                            <input type="text" class="form-control" placeholder="Masukkan Nomor Kode Pos" id="kode_pos" value="{{ $pendaftar->kode_pos }}" name="kode_pos">
                                         </div>
-                                        <!--end col-->
+                                        <!-- end col -->
+                        
                                         <div class="col-md-6 mb-3">
-                                            <label for="no_hp" class="form-label">Nomor Hp</label>
-                                            <input type="tel" class="form-control" placeholder="+(62) xxxx xxxx xxx"
-                                                id="no_hp" value="{{ $pendaftar->no_hp }}" name="no_hp">
-
+                                            <label for="no_hp" class="form-label">Nomor HP</label>
+                                            <input type="tel" class="form-control" placeholder="+(62) xxxx xxxx xxx" id="no_hp" value="{{ $pendaftar->no_hp }}" name="no_hp">
                                         </div>
-                                        <!--end col-->
+                                        <!-- end col -->
+                        
                                         <div class="col-md-6 mb-3">
                                             <label for="telepon_rumah" class="form-label">Nomor Telepon Rumah</label>
-                                            <input type="tel" class="form-control" placeholder="+(62) xxxx xxxx xxx"
-                                                id="telepon_rumah" value="{{ $pendaftar->telepon_rumah }}"
-                                                name="telepon_rumah">
-
+                                            <input type="tel" class="form-control" placeholder="+(62) xxxx xxxx xxx" id="telepon_rumah" value="{{ $pendaftar->telepon_rumah }}" name="telepon_rumah">
                                         </div>
-                                        <!--end col-->
+                                        <!-- end col -->
+                        
                                         <div class="col-md-4 mb-3">
                                             <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
-                                            <input type="text" class="form-control"
-                                                placeholder="Masukkan Tempat Lahir" id="tempat_lahir"
-                                                value="{{ $pendaftar->tempat_lahir }}" name="tempat_lahir">
-
+                                            <input type="text" class="form-control" placeholder="Masukkan Tempat Lahir" id="tempat_lahir" value="{{ $pendaftar->tempat_lahir }}" name="tempat_lahir">
                                         </div>
-                                        <!--end col-->
+                                        <!-- end col -->
+                        
                                         <div class="col-md-4 mb-3">
                                             <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
-                                            <input type="date" class="form-control"
-                                                placeholder="Masukkan Tanggal Lahir" id="tanggal_lahir"
-                                                value="{{ $pendaftar->tanggal_lahir }}" name="tanggal_lahir">
-
+                                            <input type="date" class="form-control" placeholder="Masukkan Tanggal Lahir" id="tanggal_lahir" value="{{ $pendaftar->tanggal_lahir }}" name="tanggal_lahir">
                                         </div>
-                                        <!--end col-->
+                                        <!-- end col -->
+                        
                                         <div class="col-md-4 mb-3">
                                             <label for="agama" class="form-label">Agama</label>
-                                            <select id="agama" class="form-select" data-choices
-                                                data-choices-sorting="true" name="agama">
+                                            <select id="agama" class="form-select" data-choices data-choices-sorting="true" name="agama">
                                                 <option selected>Pilih Agama...</option>
                                                 @foreach ($agama as $item)
                                                     <option {{ $item['name'] == $pendaftar->agama ? 'selected' : '' }}>
-                                                        {{ $item['name'] }}</option>
+                                                        {{ $item['name'] }}
+                                                    </option>
                                                 @endforeach
                                             </select>
-
                                         </div>
-                                        <!--end col-->
+                                        <!-- end col -->
+                        
+                                        <!-- End of Form Fields -->
                                     </div>
-
-                                    <div class="d-flex align-items-start gap-3 mt-3">
-                                        <button type="button" class="btn btn-primary btn-label right ms-auto nexttab"
-                                            data-nexttab="pills-bio-orangtua-tab"><i
-                                                class="ri-briefcase-line label-icon align-middle fs-16 ms-2"></i>Lanjut ke
-                                            Biodata Orang
-                                            Tua</button>
-                                    </div>
+                                    <!-- end row -->
+                        
+                                    <button type="submit" class="btn btn-success">Simpan</button>
                                 </div>
                             </div>
                             <!-- end tab pane -->
-
+                            @if($pendaftar->status_pendaftaran == 'sudah')
                             <div class="tab-pane fade" id="pills-bio-orangtua" role="tabpanel"
                                 aria-labelledby="pills-bio-orangtua-tab">
                                 <div>
@@ -382,14 +311,14 @@
                                         <div class="col-md-4 mb-3">
                                             <label for="pendidikan_ayah" class="form-label">Pendidikan Ayah</label>
                                             {{-- <select id="pendidikan_ayah" class="form-select" data-choices data-choices-sorting="true"
-                        name="pendidikan_ayah">
-                        <option selected>Pilih Pendidikan Terakhir...</option>
-                        @foreach ($pendidikan as $item)
-                          <option {{ $item->name == $pendaftar->wali->pendidikan_ayah ? 'selected' : '' }}>
-                            {{ $item->name }}
-                          </option>
-                        @endforeach
-                      </select> --}}
+                                                name="pendidikan_ayah">
+                                                <option selected>Pilih Pendidikan Terakhir...</option>
+                                                @foreach ($pendidikan as $item)
+                                                <option {{ $item->name == $pendaftar->wali->pendidikan_ayah ? 'selected' : '' }}>
+                                                    {{ $item->name }}
+                                                </option>
+                                                @endforeach
+                                            </select> --}}
                                             <input id="pendidikan_ayah" class="form-control" name="pendidikan_ayah"
                                                 value="SMA">
                                         </div>
@@ -397,14 +326,14 @@
                                         <div class="col-md-4 mb-3">
                                             <label for="pekerjaan_ayah" class="form-label">Pekerjaan Ayah</label>
                                             {{-- <select id="pekerjaan_ayah" class="form-select" data-choices data-choices-sorting="true"
-                        name="pekerjaan_ayah">
-                        <option selected>Pilih Pekerjaan...</option>
-                        @foreach ($profesi as $item)
-                          <option {{ $item->name == $pendaftar->wali->pekerjaan_ayah ? 'selected' : '' }}>
-                            {{ $item->name }}
-                          </option>
-                        @endforeach
-                      </select> --}}
+                                            name="pekerjaan_ayah">
+                                            <option selected>Pilih Pekerjaan...</option>
+                                            @foreach ($profesi as $item)
+                                            <option {{ $item->name == $pendaftar->wali->pekerjaan_ayah ? 'selected' : '' }}>
+                                                {{ $item->name }}
+                                            </option>
+                                            @endforeach
+                                        </select> --}}
                                             <input id="pekerjaan_ayah" class="form-control" name="pekerjaan_ayah"
                                                 value="Dagang">
                                         </div>
@@ -412,13 +341,13 @@
                                         <div class="col-md-4 mb-3">
                                             <label for="penghasilan_ayah" class="form-label">Penghasilan Ayah</label>
                                             {{-- <select id="penghasilan_ayah" class="form-select" data-choices data-choices-sorting="true"
-                        name="penghasilan_ayah">
-                        <option selected>Pilih Pendapatan...</option>
-                        @foreach ($pendapatan as $item)
-                          <option {{ $item->name == $pendaftar->wali->penghasilan_ayah ? 'selected' : '' }}>
-                            {{ $item->name }}</option>
-                        @endforeach
-                      </select> --}}
+                                            name="penghasilan_ayah">
+                                            <option selected>Pilih Pendapatan...</option>
+                                            @foreach ($pendapatan as $item)
+                                            <option {{ $item->name == $pendaftar->wali->penghasilan_ayah ? 'selected' : '' }}>
+                                                {{ $item->name }}</option>
+                                            @endforeach
+                                        </select> --}}
                                             <input id="pekerjaan_ayah" class="form-control" name="penghasilan_ayah"
                                                 value="100000000">
                                         </div>
@@ -464,13 +393,13 @@
                                         <div class="col-md-4 mb-3">
                                             <label for="pendidikan_ibu" class="form-label">Pendidikan Ibu</label>
                                             {{-- <select id="pendidikan_ibu" class="form-select" data-choices data-choices-sorting="true"
-                        name="pendidikan_ibu">
-                        <option selected>Pilih Pendidikan Terakhir...</option>
-                        @foreach ($pendidikan as $item)
-                          <option {{ $item->name == $pendaftar->wali->pendidikan_ibu ? 'selected' : '' }}>
-                            {{ $item->name }}</option>
-                        @endforeach
-                      </select> --}}
+                                            name="pendidikan_ibu">
+                                            <option selected>Pilih Pendidikan Terakhir...</option>
+                                            @foreach ($pendidikan as $item)
+                                            <option {{ $item->name == $pendaftar->wali->pendidikan_ibu ? 'selected' : '' }}>
+                                                {{ $item->name }}</option>
+                                            @endforeach
+                                        </select> --}}
                                             <input id="pendidikan_ibu" class="form-control" name="pendidikan_ibu"
                                                 value="SMA">
                                         </div>
@@ -478,28 +407,28 @@
                                         <div class="col-md-4 mb-3">
                                             <label for="pekerjaan_ibu" class="form-label">Pekerjaan Ibu</label>
                                             {{-- <select id="pekerjaan_ibu" class="form-select" data-choices data-choices-sorting="true"
-                        name="pekerjaan_ibu">
-                        <option selected>Pilih Pekerjaan...</option>
-                        @foreach ($profesi as $item)
-                          <option {{ $item->name == $pendaftar->wali->pekerjaan_ibu ? 'selected' : '' }}>
-                            {{ $item->name }}
-                          </option>
-                        @endforeach
-                      </select> --}}
+                                            name="pekerjaan_ibu">
+                                            <option selected>Pilih Pekerjaan...</option>
+                                            @foreach ($profesi as $item)
+                                            <option {{ $item->name == $pendaftar->wali->pekerjaan_ibu ? 'selected' : '' }}>
+                                                {{ $item->name }}
+                                            </option>
+                                            @endforeach
+                                        </select> --}}
                                             <input id="pekerjaan_ibu" class="form-control" name="pekerjaan_ibu"
                                                 value="Dagang">
                                         </div>
                                         <!--end col-->
                                         <div class="col-md-4 mb-3">
                                             <label for="penghasilan_ibu" class="form-label">Penghasilan Ibu</label>
-                                            {{-- <select id="penghasilan_ibu" class="form-select" data-choices data-choices-sorting="true"
-                        name="penghasilan_ibu">
-                        <option selected>Pilih Pendapatan...</option>
-                        @foreach ($pendapatan as $item)
-                          <option {{ $item->name == $pendaftar->wali->penghasilan_ibu ? 'selected' : '' }}>
-                            {{ $item->name }}</option>
-                        @endforeach
-                      </select> --}}
+                                                                        {{-- <select id="penghasilan_ibu" class="form-select" data-choices data-choices-sorting="true"
+                                                    name="penghasilan_ibu">
+                                                    <option selected>Pilih Pendapatan...</option>
+                                                    @foreach ($pendapatan as $item)
+                                                    <option {{ $item->name == $pendaftar->wali->penghasilan_ibu ? 'selected' : '' }}>
+                                                        {{ $item->name }}</option>
+                                                    @endforeach
+                                                </select> --}}
                                             <input id="penghasilan_ibu" class="form-control" name="penghasilan_ibu"
                                                 value="1000000000">
                                         </div>
@@ -519,8 +448,11 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            @else
+                            @endif
                             <!-- end tab pane -->
-
+                            @if($pendaftar->status_pendaftaran =='sudah')
                             <div class="tab-pane fade" id="pills-atribut" role="tabpanel"
                             aria-labelledby="pills-atribut-tab">
                             <div>
@@ -632,8 +564,10 @@
                             </div>
                         </div>
                         
+                            @else
+                            @endif
                             <!-- end tab pane -->
-
+                            @if ($pendaftar->status_pendaftaran == 'sudah')
                             <div class="tab-pane fade" id="pills-berkas" role="tabpanel"
                                 aria-labelledby="pills-berkas-tab">
                                 <div>
@@ -674,6 +608,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <!-- end tab pane -->
 
                             <div class="tab-pane fade" id="pills-finish" role="tabpanel"
@@ -691,6 +626,8 @@
                             </div>
                             <!-- end tab pane -->
                         </div>
+                        @else
+                         @endif
                         <!-- end tab content -->
                     </form>
                 </div>

@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('trx_va_ukt')->nullable();
             $table->timestamp('datetime_expired_ukt')->nullable()->default(Carbon::now()->addHours(24)); // 24 jam dari sekarang;
             $table->string('status_pendaftaran')->nullable();
+            $table->string('status_pembayaran_pendaftaran');
             $table->string('status_pembayaran')->nullable();
             $table->string('status_ukt')->nullable();
             $table->string('status_acc')->nullable();

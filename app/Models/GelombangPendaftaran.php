@@ -17,7 +17,10 @@ class GelombangPendaftaran extends Model
         "tanggal_selesai",
         "status",
         "deskripsi",
-        "nominal_pendaftaran",
+        "biaya_pendaftaran",
+        "biaya_administrasi",
+        "tanggal_ujian",
+        "tempat_ujian",
         "kuota_pendaftar",
     ];
 

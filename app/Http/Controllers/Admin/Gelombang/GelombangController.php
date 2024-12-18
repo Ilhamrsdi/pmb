@@ -52,7 +52,10 @@ class GelombangController extends Controller
             "tanggal_selesai" => $request->tanggal_selesai,
             "status" => $request->status,
             "deskripsi"  => $request->deskripsi,
-            "nominal_pendaftaran"  => $request->nominal_pendaftaran,
+            "biaya_pendaftaran"  => $request->biaya_pendaftaran,
+            "biaya_administrasi" => $request->biaya_administrasi,
+            "tanggal_ujian" => $request->tanggal_ujian,
+            "tempat_ujian" => $request->tempat_ujian,
             "kuota_pendaftar"  => $request->kuota_pendaftar,
         ]);
         // dd($gelombang);

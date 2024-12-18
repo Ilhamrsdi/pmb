@@ -33,7 +33,6 @@
                 </div>
                 <div class="flex-shrink-0">
                   <a href="#" onclick="window.print()" class="btn btn-success">Cetak</a>
-
                 </div>
               </div>
 
@@ -43,6 +42,24 @@
                     <div class="table-responsive">
                       <table class="table table-striped table-nowrap align-middle mb-0">
                         <tbody>
+                          <tr>
+                            <td class="fw-medium column"></td>
+                            <td class="fw-medium column"></td>
+                            <td class="text-center">
+                              {{-- <img src="{{ $pendaftar->foto }}" alt="Foto Peserta" width="100"> <!-- Gambar peserta --> --}}
+                              <img src="{{ asset('assets/images/users/avatar-3.jpg') }}" alt="Avatar" class="img-fluid" width="200">
+
+                            </td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                          <tr>
+                            <td class="fw-medium column">Nomer Ujian</td>
+                            <td class="fw-medium column">:</td>
+                            <td>{{ $pendaftar->kode_pendaftaran ?? '0046864546272285' }} / {{$pendaftar->gelombangPendaftaran->tanggal_ujian}}</td>
+                            <td></td>
+                            <td></td>
+                          </tr>
                           <tr>
                             <td class="fw-medium column">Email</td>
                             <td class="fw-medium column">:</td>
@@ -86,6 +103,11 @@
                             <td></td>
                           </tr>
                           <tr>
+                            <td class="fw-medium column">Tempat Ujian</td>
+                            <td class="fw-mendium column"> : </td>
+                            <td>{{$pendaftar->gelombangPendaftaran->tempat_ujian}}</td>
+                          </tr>
+                          <tr>
                             <td class="fw-medium column">Tahun Ajar Mahasiswa</td>
                             <td class="fw-medium column">:</td>
                             <td>{{ $pendaftar->gelombangPendaftaran->tahun_ajaran }}</td>
@@ -99,14 +121,14 @@
                             <td></td>
                             <td></td>
                           </tr>
-                          <tr>
+                          {{-- <tr>
                             <td class="fw-medium column">UKT</td>
                             <td class="fw-medium column">:</td>
                             <td>{{ $pendaftar->ukt?->nominal_reguler }}</td>
                             <td></td>
                             <td></td>
-                          </tr>
-                          <tr class="text-center">
+                          </tr> --}}
+                          {{-- <tr class="text-center">
                             <td class="fw-medium column">Atribut Kaos</td>
                             <td class="fw-medium column">Atribut Topi</td>
                             <td class="fw-medium column">Atribut Almamater</td>
@@ -119,7 +141,7 @@
                             <td>{{ $pendaftar->atribut?->atribut_almamater }}</td>
                             <td>{{ $pendaftar->atribut?->atribut_jas_lab }}</td>
                             <td>{{ $pendaftar->atribut?->atribut_baju_lapangan }}</td>
-                          </tr>
+                          </tr> --}}
                         </tbody>
                       </table>
                     </div>
@@ -130,10 +152,7 @@
           </div>
         </div> <!-- end col-->
       </div> <!-- end row-->
-
-
     </div> <!-- end col-->
-
   </div> <!-- end row-->
 @endsection
 @section('script')
