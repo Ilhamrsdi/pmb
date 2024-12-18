@@ -85,6 +85,9 @@
               <a class="nav-link" href="#layanan">Layanan</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="#alurpendaftaran">Alur Pendaftaran</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="#tata_cara">Tata Cara</a>
             </li>
             <li class="nav-item">
@@ -241,7 +244,27 @@
       </div>
       <!-- end container -->
     </section>
-    <!-- end layanan -->
+  <!-- end layanan -->
+  <section class="alurpendaftaran" id="alurpendaftaran">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="text-center mb-5">
+          <h3 class="mb-3 fw-semibold">Alur Pendaftaran</h3>
+          @if($alurPendaftaran)
+            <p class="text-muted mb-4 ff-secondary">{{ $alurPendaftaran->keterangan }}</p>
+            <img 
+              src="{{ asset('storage/' . $alurPendaftaran->gambar) }}" 
+              alt="alur pendaftaran" 
+              class="img-fluid"
+            >
+          @else
+            <p class="text-muted mb-4 ff-secondary">Gambar atau informasi alur pendaftaran tidak tersedia.</p>
+          @endif
+        </div>
+      </div>
+    </div>  
+  </section>
+  
 
     <!-- start tata_cara -->
     <section class="section" id="tata_cara">
@@ -256,6 +279,7 @@
             </div>
           </div>
         </div>
+        
         <!-- end row -->
 
         <div class="row g-lg-5 g-4">

@@ -28,7 +28,9 @@ use App\Http\Controllers\Pendaftar\BiodataOrangTuaController;
 use App\Http\Controllers\Admin\Berkas\SettingBerkasController;
 use App\Http\Controllers\Admin\Pendaftar\SoalTesMabaController;
 use App\Http\Controllers\AccessLogController;
+use App\Http\Controllers\Admin\Alur\AlurPendaftaranController;
 use App\Http\Controllers\PdfController;
+
 
 // Pendaftar Controller
 use App\Http\Controllers\Admin\Pengumuman\PengumumanController;
@@ -146,6 +148,14 @@ Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
     Route::get('laporan/grafik-provinsi', [LaporanController::class, 'grafik_provinsi'])->name('grafikProvinsi');
     Route::get('laporan/grafik-prodi', [LaporanController::class, 'grafik_prodi'])->name('grafikProdi');
 
+    // Alur Pendaftaran
+    Route::get('lainnya/alur-pendaftaran', [AlurPendaftaranController::class, 'index'])->name('alurPendaftaran');
+    Route::get('lainnya/alur-pendaftaran/create', [AlurPendaftaranController::class, 'create'])->name('alurPendaftaran.create');
+    Route::post('lainnya/alur-pendaftaran', [AlurPendaftaranController::class, 'store'])->name('alurPendaftaran.store');
+    Route::get('lainnya/alur-pendaftaran/{id}', [AlurPendaftaranController::class, 'show'])->name('alurPendaftaran.show');
+    Route::get('lainnya/alur-pendaftaran/{id}/edit', [AlurPendaftaranController::class, 'edit'])->name('alurPendaftaran.edit');
+    Route::put('lainnya/alur-pendaftaran/{id}', [AlurPendaftaranController::class, 'update'])->name('alurPendaftaran.update');
+    Route::delete('lainnya/alur-pendaftaran/{id}', [AlurPendaftaranController::class, 'destroy'])->name('alurPendaftaran.destroy');
     // Pesan Siaran
     Route::get('pesan-siaran', [PesanSiaranController::class, 'index'])->name('pesanSiaran');
 

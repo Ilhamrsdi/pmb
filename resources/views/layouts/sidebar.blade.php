@@ -148,6 +148,11 @@
           </li>
           @endif
           <li class="nav-item">
+            <a class="nav-link menu-link" href="{{ route('alurPendaftaran') }}">
+              <i class="las la-project-diagram"></i> <span>Alur Pendaftaran</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link menu-link" href="{{ route('golongan-ukt.index') }}">
               <i class="las la-money-bill"></i> <span>Golongan dan UKT</span>
             </a>
@@ -186,7 +191,8 @@
             <a class="nav-link menu-link" href="{{ route('pesanSiaran') }}">
               <i class="las la-comment"></i> <span>Pesan Siaran</span>
             </a>
-          </li> <!-- end Pesan Menu -->
+          </li>
+          <!-- end Pesan Menu -->
           <li class="nav-item">
             <a class="nav-link menu-link" href="{{ route('access-logs.index') }}">
               <i class="las la-history"></i> <span>Logging</span>

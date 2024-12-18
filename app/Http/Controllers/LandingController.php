@@ -10,7 +10,7 @@ use App\Models\Pengumuman;
 use App\Models\RefJurusan;
 use App\Models\RefPorgramStudi;
 use App\Models\TataCara;
-
+use App\Models\AlurPendaftaran;
 class LandingController extends Controller
 {
     /**
@@ -21,11 +21,12 @@ class LandingController extends Controller
     public function index()
     {
         $gelombang = GelombangPendaftaran::get();
+        $alurPendaftaran = AlurPendaftaran::first();
         // Memuat relasi jurusan saat mengambil program studi
         $prodi = RefPorgramStudi::with('jurusan')->get();
         $tata_cara = TataCara::where('jenis', 'pendaftaran')->get();
         $pengumuman = Pengumuman::get()->take(5);
-        return view('landing', compact(['gelombang', 'prodi', 'tata_cara', 'pengumuman']));
+        return view('landing', compact(['gelombang', 'prodi', 'tata_cara', 'pengumuman', 'alurPendaftaran']));
     }
     /**
      * Show the form for creating a new resource.
