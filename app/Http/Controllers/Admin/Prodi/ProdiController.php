@@ -17,7 +17,7 @@ class ProdiController extends Controller
      */
     public function index()
     {
-        $prodi = ProgramStudi::get();
+        $prodi = RefPorgramStudi::get();
         $jurusan = Jurusan::get();
         return view(
             'admin.prodi.prodi',

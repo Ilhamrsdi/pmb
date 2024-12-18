@@ -61,7 +61,7 @@
                     <th class="sort text-center" data-sort="akreditasi">AKREDITASI</th>
                     <th class="text-center">KUOTA DITERIMA</th>
                     <th class="text-center">NO URUT NIM</th>
-                    {{-- <th class="text-center">Kode NIM</th> --}}
+                    <th class="text-center">Kode NIM</th>
                     <th class="sort text-center" data-sort="status">STATUS</th>
                     <th class="text-center">AKSI</th>
                   </tr>
@@ -71,14 +71,14 @@
                   @forelse($prodi as $index => $g)
                     <tr>
                       <th>{{ ++$index }}</th>
-                      <td class="kode text-center">{{ $g->kode_program_studi }}</td>
-                      <td class="nama">{{ $g->nama_program_studi }}</td>
-                      <td class="jurusan">{{ $g->jurusan->nama_jurusan ?? '-' }}</td>
-                      <td class="jenjang text-center">{{ $g->jenjang_pendidikan }}</td>
-                      <td class="akreditasi text-center">{{ $g->akreditasi ? $g->akreditasi : '-' }}</td>
+                      <td class="kode text-center">{{ $g->code }}</td>
+                      <td class="nama">{{ $g->name }}</td>
+                      <td class="jurusan">{{ $g->jurusan->name?? '-' }}</td>
+                      <td class="jenjang text-center">{{ $g->pendidikan?->name ?? '-'  }}</td>
+                      <td class="akreditasi text-center">{{ $g->acreditation ? $g->acreditation : '-' }}</td>
                       <td class="text-center">{{ $g->kuota_diterima }}</td>
                       <td class="text-center">{{ $g->nomer_urut_nim }}</td>
-                      {{-- <td class="text-center">{{ $g->kode_nim}}</td> --}}
+                      <td class="text-center">{{ $g->kode_nim}}</td>
                       <td class="status text-center">
                         {{-- <span
                           class="badge text-uppercase {{ $g->status == 'aktif' ? 'badge-soft-success' : 'badge-soft-danger' }}">
