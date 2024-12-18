@@ -22,7 +22,8 @@ class GelombangSeeder extends Seeder
             'tanggal_selesai' => '2023-05-20',
             'status' => 'Active',
             'deskripsi' => 'Jalur Mandiri',
-            'nominal_pendaftaran' => '200000',
+            'biaya_pendaftaran' => '200000',
+            'biaya_administrasi' => '2000',
             'kuota_pendaftar' => 100
         ]);
         GelombangPendaftaran::create([
@@ -32,7 +33,8 @@ class GelombangSeeder extends Seeder
             'tanggal_selesai' => '2023-05-20',
             'status' => 'Active',
             'deskripsi' => 'Jalur Mandiri',
-            'nominal_pendaftaran' => '200000',
+            'biaya_pendaftaran' => '200000',
+            'biaya_administrasi' => '2000',
             'kuota_pendaftar' => 100
         ]);
         GelombangPendaftaran::create([
@@ -42,7 +44,8 @@ class GelombangSeeder extends Seeder
             'tanggal_selesai' => '2023-05-20',
             'status' => 'Active',
             'deskripsi' => 'jalur Mandiri',
-            'nominal_pendaftaran' => '200000',
+            'biaya_pendaftaran' => '200000',
+            'biaya_administrasi' => '2000',
             'kuota_pendaftar' => 100
         ]);
         GelombangPendaftaran::create([
@@ -52,7 +55,8 @@ class GelombangSeeder extends Seeder
             'tanggal_selesai' => '2023-05-20',
             'status' => 'Active',
             'deskripsi' => 'Jalur Mandiri',
-            'nominal_pendaftaran' => '200000',
+            'biaya_pendaftaran' => '200000',
+            'biaya_administrasi' => '2000',
             'kuota_pendaftar' => 100
         ]);
     }

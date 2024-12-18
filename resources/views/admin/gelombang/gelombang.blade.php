@@ -47,7 +47,8 @@
                     <th class="text-center" data-sort="tanggal_mulai">TANGGAL MULAI</th>
                     <th class="text-center" data-sort="tanggal_selesai">TANGGAL SELESAI</th>
                     <th class="text-center" data-sort="deskripsi">DESKRIPSI</th>
-                    <th class="text-center" data-sort="nominal">NOMINAL PENDAFTARAN</th>
+                    <th class="text-center" data-sort="nominal">BIAYA PENDAFTARAN</th>
+                    <th class="text-center" data-sort="administrasi">BIAYA ADMINISTRASI</th>
                     <th class="text-center" data-sort="kuota">KUOTA PENDAFTAR</th>
                     <th class="sort text-center" data-sort="status">STATUS</th>
                     <th class="text-center">AKSI</th>
@@ -65,7 +66,8 @@
                       <td class="tanggal_selesai text-center">
                         {{ Carbon\Carbon::parse($g->tanggal_selesai)->format('d-m-Y') }}</td>
                       <td class="deskripsi">{{ $g->deskripsi }}</td>
-                      <td class="nominal text-center">{{ $g->nominal_pendaftaran }}</td>
+                      <td class="nominal text-center">{{ $g->biaya_pendaftaran }}</td>
+                      <td class="administrasi text-center">{{ $g->biaya_administrasi}}</td>
                       <td class="kuota text-center">{{ $g->kuota_pendaftar }}</td>
                       <td class="status text-center">
                         @if (strtolower(trim($g->status)) == 'active')

@@ -101,6 +101,10 @@
                       <button class="btn btn-success w-100" type="submit">Masuk</button>
                     </div>
                   </form>
+                  <div class="mt-4 text-center">
+                    <a href="{{ route('password.request') }}" class="text-muted">Lupa Password?</a>
+                  </div>
+                  
 
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ Session::get('error_gelombang') }}</strong>

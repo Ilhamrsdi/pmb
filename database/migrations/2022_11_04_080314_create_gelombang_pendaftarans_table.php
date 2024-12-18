@@ -21,7 +21,8 @@ return new class extends Migration
             $table->date('tanggal_selesai');
             $table->string('status');
             $table->string('deskripsi');
-            $table->string('nominal_pendaftaran');
+            $table->string('biaya_pendaftaran');
+            $table->string('biaya_administrasi');
             $table->string('kuota_pendaftar');
             $table->timestamps();
         });

@@ -59,9 +59,9 @@
                     <th class="sort text-center" data-sort="jurusan">JURUSAN</th>
                     <th class="sort text-center" data-sort="jenjang">JENJANG PENDIDIKAN</th>
                     <th class="sort text-center" data-sort="akreditasi">AKREDITASI</th>
-                    <th class="text-center">KUOTA DITERIMA</th>
-                    <th class="text-center">NO URUT NIM</th>
-                    <th class="text-center">Kode NIM</th>
+                    <th class="sort text-center" data-sort="kuotaditerima">KUOTA DITERIMA</th>
+                    <th class="sort text-center" data-sort="nim_urut">NO URUT NIM</th>
+                    <th class="sort text-center" data-sort="kode_nim">Kode NIM</th>
                     <th class="sort text-center" data-sort="status">STATUS</th>
                     <th class="text-center">AKSI</th>
                   </tr>
@@ -76,9 +76,9 @@
                       <td class="jurusan">{{ $g->jurusan->name?? '-' }}</td>
                       <td class="jenjang text-center">{{ $g->pendidikan?->name ?? '-'  }}</td>
                       <td class="akreditasi text-center">{{ $g->acreditation ? $g->acreditation : '-' }}</td>
-                      <td class="text-center">{{ $g->kuota_diterima }}</td>
-                      <td class="text-center">{{ $g->nim_urut }}</td>
-                      <td class="text-center">{{ $g->kode_belakang_prodi}}</td>
+                      <td class="kuotaditerima text-center">{{ $g->kuota_diterima }}</td>
+                      <td class="nim_urut text-center">{{ $g->nim_urut }}</td>
+                      <td class="kode_nimtext-center">{{ $g->kode_belakang_prodi}}</td>
                       <td class="status text-center">
                         {{-- <span
                           class="badge text-uppercase {{ $g->status == 'aktif' ? 'badge-soft-success' : 'badge-soft-danger' }}">

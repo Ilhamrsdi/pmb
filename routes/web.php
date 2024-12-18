@@ -158,6 +158,7 @@ Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
     Route::delete('lainnya/alur-pendaftaran/{id}', [AlurPendaftaranController::class, 'destroy'])->name('alurPendaftaran.destroy');
     // Pesan Siaran
     Route::get('pesan-siaran', [PesanSiaranController::class, 'index'])->name('pesanSiaran');
+    Route::post('pesan-siaran/kirim', [PesanSiaranController::class, 'kirimPesan'])->name('admin.pesan-siaran.kirim');
 
     // User Management
     Route::resource('users', UserController::class); // Add this line

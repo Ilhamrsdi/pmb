@@ -1,6 +1,6 @@
 @extends('layouts.master-without-nav')
 @section('title')
-@lang('translation.reset-mail')
+@lang('RESET PASSWORD')
 @endsection
 @section('content')
         <div class="auth-page">
@@ -18,16 +18,14 @@
                                                         <div class="mb-4 mb-md-5">
                                                             <a href="/index" class="d-block auth-logo">
                                                                 <img src="{{URL::asset('assets/images/logo-dark.png')}}" alt="" height="22" class="auth-logo-dark me-start">
-                                                                <img src="{{URL::asset('assets/images/logo-light.png')}}" alt="" height="22" class="auth-logo-light me-start">
                                                             </a>
                                                         </div>
                                                         <div class="auth-content my-auto">
                                                             <div class="text-center">
                                                                 <h5 class="mb-0">Reset Password</h5>
-                                                                <p class="text-muted mt-2">Reset Password with Borex.</p>
                                                             </div>
                                                             <div class="alert alert-success text-center my-4 font-size-12" role="alert">
-                                                                Enter your Email and instructions will be sent to you!
+                                                                Masukkan Email Anda dan instruksi akan dikirimkan kepada Anda!
                                                             </div>
                                                             <div class="mt-4">
                                                                 @if (session('status'))
@@ -58,18 +56,17 @@
 
                                                                 </form>
                                                                 <div class="mt-5 text-center">
-                                                                    <p>Remember It ? <a href="{{ url('login') }}"
-                                                                            class="font-weight-medium text-primary"> Sign In here</a> </p>
+                                                                    <p>Sudah Ingat ? <a href="{{ url('login') }}"
+                                                                            class="font-weight-medium text-primary"> Login Disini</a> </p>
                                                                 </div>
-                                                            </div>
-
-                                                            <div class="mt-4 pt-3 text-center">
-                                                                <p class="text-muted mb-0">Remember It ?  <a href="auth-login"
-                                                                    class="text-primary fw-semibold"> Sign In </a> </p>
                                                             </div>
                                                         </div>
                                                         <div class="mt-4 text-center">
-                                                            <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Borex   . Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                                                            <p class="mb-0 text-muted">&copy;
+                                                                <script>
+                                                                  document.write(new Date().getFullYear())
+                                                                </script> Crafted with <i class="mdi mdi-heart text-danger"></i> by PMB Poliwangi
+                                                              </p>
                                                         </div>
                                                     </div>
                                                 </div>

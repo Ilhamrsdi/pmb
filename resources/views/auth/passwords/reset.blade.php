@@ -1,6 +1,6 @@
 @extends('layouts.master-without-nav')
 @section('title')
-    @lang('translation.reset-mail')
+    @lang('Form Reset Password')
 @endsection
 @section('content')
     <div class="auth-page-wrapper pt-5">
@@ -27,7 +27,7 @@
                                     <img src="{{ URL::asset('assets/images/logo-light.png') }}" alt="" height="20">
                                 </a>
                             </div>
-                            <p class="mt-3 fs-15 fw-medium">Premium Admin & Dashboard Template</p>
+                            <p class="mt-3 fs-15 fw-medium">PMB POLIWANGI</p>
                         </div>
                     </div>
                 </div>
@@ -39,9 +39,7 @@
 
                             <div class="card-body p-4">
                                 <div class="text-center mt-2">
-                                    <h5 class="text-primary">Forgot Password?</h5>
-                                    <p class="text-muted">Reset password with velzon</p>
-
+                                    <h5 class="text-primary">Lupa Password?</h5>
                                     <lord-icon src="https://cdn.lordicon.com/rhvddzym.json" trigger="loop"
                                         colors="primary:#0ab39c" class="avatar-xl">
                                     </lord-icon>
@@ -49,7 +47,7 @@
                                 </div>
 
                                 <div class="alert alert-borderless alert-warning text-center mb-2 mx-2" role="alert">
-                                    Enter your email and instructions will be sent to you!
+                                    Masukkan email Anda dan instruksi akan dikirimkan kepada Anda!
                                 </div>
                                 <div class="p-2">
                                     <form class="form-horizontal" method="POST" action="{{ route('password.update') }}">
@@ -76,7 +74,7 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="userpassword">Confirm Password</label>
+                                            <label for="userpassword">Konfirmasi Password</label>
                                             <input id="password-confirm" type="password" name="password_confirmation" class="form-control" placeholder="Enter confirm password">
                                         </div>
 
@@ -91,10 +89,7 @@
                         </div>
                         <!-- end card -->
 
-                        <div class="mt-4 text-center">
-                            <p class="mb-0">Wait, I remember my password... <a href="auth-signin-basic"
-                                    class="fw-semibold text-primary text-decoration-underline"> Click here </a> </p>
-                        </div>
+                   
 
                     </div>
                 </div>
@@ -112,8 +107,7 @@
                         <div class="text-center">
                             <script>
                                 document.write(new Date().getFullYear())
-                            </script> Velzon. Crafted with <i
-                                    class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                              </script> Crafted with <i class="mdi mdi-heart text-danger"></i> by PMB Poliwangi
                         </div>
                     </div>
                 </div>

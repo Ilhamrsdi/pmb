@@ -35,5 +35,14 @@ class UserSeeder extends Seeder
             'avatar' => 'avatar-2.jpg',
             'role_id' => 3
         ]);
+        User::create([
+            'nik' => '456',
+            'username' => 'peserta',
+            'email' => 'peserta1@gmail.com',
+            'password' => Hash::make('password'),
+            'email_verified_at' => '2022-01-02 17:04:5',
+            'avatar' => 'avatar-3.jpg',
+            'role_id' => 2
+            ]);
     }
 }
