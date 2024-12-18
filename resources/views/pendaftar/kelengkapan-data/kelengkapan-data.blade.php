@@ -522,113 +522,116 @@
                             <!-- end tab pane -->
 
                             <div class="tab-pane fade" id="pills-atribut" role="tabpanel"
-                                aria-labelledby="pills-atribut-tab">
-                                <div>
-                                    <h5 class="mb-1">Atribut</h5>
-                                    <p class="text-muted mb-4">Isilah Informasi dibawah ini dengan sebenar benarnya</p>
-                                </div>
-
-                                <div>
-
-                                    <div class="row">
-                                        <div class="col-12 mb-3 ">
-                                            <label for="atribut_kaos" class="form-label">Atribut Kaos</label>
-                                            <div class="row d-flex justify-content-around">
-                                                @foreach ($ukuran as $item)
-                                                    <div class="col-2 form-check card-radio">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="atribut_kaos" id="{{ 'atribut_kaos_' . $item }}"
-                                                            value="{{ $item }}"
-                                                            {{ $pendaftar->atribut->atribut_kaos == $item ? 'checked' : '' }}>
-                                                        <label class="form-check-label"
-                                                            for="{{ 'atribut_kaos_' . $item }}">{{ Str::upper($item) }}</label>
-                                                    </div>
-                                                @endforeach
+                            aria-labelledby="pills-atribut-tab">
+                            <div>
+                                <h5 class="mb-1">Atribut</h5>
+                                <p class="text-muted mb-4">Isilah Informasi dibawah ini dengan sebenar-benarnya</p>
+                            </div>
+                        
+                            <!-- Display the existing images from the table -->
+                            <div class="mb-3">
+                                <label for="gambarAtribut" class="form-label">Contoh Gambar Atribut</label>
+                                <div class="row">
+                                    @php
+                                        $gambarPath = public_path('uploads/atribut-gambars');
+                                        $gambarFiles = File::files($gambarPath);
+                                    @endphp
+                            
+                                    @if(count($gambarFiles) > 0)
+                                        @foreach($gambarFiles as $file)
+                                            <div class="col-md-3 mb-3">
+                                                <a href="{{ asset('uploads/atribut-gambars/' . basename($file)) }}" target="_blank">
+                                                    <img src="{{ asset('uploads/atribut-gambars/' . basename($file)) }}" class="img-fluid" alt="Gambar Atribut" style="max-width: 100%;">
+                                                </a>
+                                                <p class="text-muted mt-2">Ukuran: {{ round(File::size($file) / 1024, 2) }} KB</p>
                                             </div>
-                                        </div>
-
-                                        <div class="col-12 mb-3 ">
-                                            <label for="atribut_topi" class="form-label">Atribut Topi</label>
-                                            <div class="row d-flex justify-content-around">
-                                                @foreach ($ukuran as $item)
-                                                    <div class="col-2 form-check card-radio">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="atribut_topi" id="{{ 'atribut_topi_' . $item }}"
-                                                            value="{{ $item }}"
-                                                            {{ $pendaftar->atribut->atribut_topi == $item ? 'checked' : '' }}>
-                                                        <label class="form-check-label"
-                                                            for="{{ 'atribut_topi_' . $item }}">{{ Str::upper($item) }}</label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 mb-3 ">
-                                            <label for="atribut_almamater" class="form-label">Atribut Almamater</label>
-                                            <div class="row d-flex justify-content-around">
-                                                @foreach ($ukuran as $item)
-                                                    <div class="col-2 form-check card-radio">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="atribut_almamater"
-                                                            id="{{ 'atribut_almamater_' . $item }}"
-                                                            value="{{ $item }}"
-                                                            {{ $pendaftar->atribut->atribut_almamater == $item ? 'checked' : '' }}>
-                                                        <label class="form-check-label"
-                                                            for="{{ 'atribut_almamater_' . $item }}">{{ Str::upper($item) }}</label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 mb-3 ">
-                                            <label for="atribut_jas_lab" class="form-label">Atribut Jas Lab</label>
-                                            <div class="row d-flex justify-content-around">
-                                                @foreach ($ukuran as $item)
-                                                    <div class="col-2 form-check card-radio">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="atribut_jas_lab" id="{{ 'atribut_jas_lab_' . $item }}"
-                                                            value="{{ $item }}"
-                                                            {{ $pendaftar->atribut->atribut_jas_lab == $item ? 'checked' : '' }}>
-                                                        <label class="form-check-label"
-                                                            for="{{ 'atribut_jas_lab_' . $item }}">{{ Str::upper($item) }}</label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 mb-3">
-                                            <label for="atribut_baju_lapangan" class="form-label">Atribut Baju
-                                                Lapangan</label>
-                                            <div class="row d-flex justify-content-around">
-                                                @foreach ($ukuran as $item)
-                                                    <div class="col-2 form-check card-radio">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="atribut_baju_lapangan"
-                                                            id="{{ 'atribut_baju_lapangan_' . $item }}"
-                                                            value="{{ $item }}"
-                                                            {{ $pendaftar->atribut->atribut_baju_lapangan == $item ? 'checked' : '' }}>
-                                                        <label class="form-check-label"
-                                                            for="{{ 'atribut_baju_lapangan_' . $item }}">{{ Str::upper($item) }}</label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex align-items-start gap-3 mt-4">
-                                        <button type="button" class="btn btn-light btn-label previestab"
-                                            data-previous="pills-bio-orangtua-tab"><i
-                                                class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Kembali
-                                            ke Biodata
-                                            Orang Tua</button>
-                                        <button type="button" class="btn btn-primary btn-label right ms-auto nexttab"
-                                            data-nexttab="pills-berkas-tab"><i
-                                                class="ri-file-line label-icon align-middle fs-16 ms-2"></i>Lanjut ke
-                                            Berkas
-                                            Pendukung</button>
-                                    </div>
+                                        @endforeach
+                                    @else
+                                        <p class="text-muted">Tidak ada gambar atribut tersedia.</p>
+                                    @endif
                                 </div>
                             </div>
+                            
+                            
+                        
+                            <div class="mb-3">
+                                <label for="atribut_kaos" class="form-label">Atribut Kaos</label>
+                                <div class="row d-flex justify-content-around">
+                                    @foreach ($ukuran as $item)
+                                        <div class="col-2 form-check card-radio">
+                                            <input class="form-check-input" type="radio" name="atribut_kaos"
+                                                id="{{ 'atribut_kaos_' . $item }}" value="{{ $item }}"
+                                                {{ $pendaftar->atribut->atribut_kaos == $item ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="{{ 'atribut_kaos_' . $item }}">{{ Str::upper($item) }}</label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        
+                            <div class="col-12 mb-3 ">
+                                <label for="atribut_topi" class="form-label">Atribut Topi</label>
+                                <div class="row d-flex justify-content-around">
+                                    @foreach ($ukuran as $item)
+                                        <div class="col-2 form-check card-radio">
+                                            <input class="form-check-input" type="radio" name="atribut_topi"
+                                                id="{{ 'atribut_topi_' . $item }}" value="{{ $item }}"
+                                                {{ $pendaftar->atribut->atribut_topi == $item ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="{{ 'atribut_topi_' . $item }}">{{ Str::upper($item) }}</label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        
+                            <div class="col-12 mb-3 ">
+                                <label for="atribut_almamater" class="form-label">Atribut Almamater</label>
+                                <div class="row d-flex justify-content-around">
+                                    @foreach ($ukuran as $item)
+                                        <div class="col-2 form-check card-radio">
+                                            <input class="form-check-input" type="radio" name="atribut_almamater"
+                                                id="{{ 'atribut_almamater_' . $item }}" value="{{ $item }}"
+                                                {{ $pendaftar->atribut->atribut_almamater == $item ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="{{ 'atribut_almamater_' . $item }}">{{ Str::upper($item) }}</label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        
+                            <div class="col-12 mb-3 ">
+                                <label for="atribut_jas_lab" class="form-label">Atribut Jas Lab</label>
+                                <div class="row d-flex justify-content-around">
+                                    @foreach ($ukuran as $item)
+                                        <div class="col-2 form-check card-radio">
+                                            <input class="form-check-input" type="radio" name="atribut_jas_lab"
+                                                id="{{ 'atribut_jas_lab_' . $item }}" value="{{ $item }}"
+                                                {{ $pendaftar->atribut->atribut_jas_lab == $item ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="{{ 'atribut_jas_lab_' . $item }}">{{ Str::upper($item) }}</label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        
+                            <div class="col-12 mb-3 ">
+                                <label for="atribut_baju_lapangan" class="form-label">Atribut Baju Lapangan</label>
+                                <div class="row d-flex justify-content-around">
+                                    @foreach ($ukuran as $item)
+                                        <div class="col-2 form-check card-radio">
+                                            <input class="form-check-input" type="radio" name="atribut_baju_lapangan"
+                                                id="{{ 'atribut_baju_lapangan_' . $item }}" value="{{ $item }}"
+                                                {{ $pendaftar->atribut->atribut_baju_lapangan == $item ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="{{ 'atribut_baju_lapangan_' . $item }}">{{ Str::upper($item) }}</label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        
+                            <div class="d-flex align-items-start gap-3 mt-4">
+                                <button type="button" class="btn btn-light btn-label previestab" data-previous="pills-bio-orangtua-tab"><i
+                                        class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Kembali ke Biodata Orang Tua</button>
+                                <button type="button" class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="pills-berkas-tab"><i
+                                        class="ri-file-line label-icon align-middle fs-16 ms-2"></i>Lanjut ke Berkas Pendukung</button>
+                            </div>
+                        </div>
+                        
                             <!-- end tab pane -->
 
                             <div class="tab-pane fade" id="pills-berkas" role="tabpanel"
@@ -861,7 +864,7 @@
                         url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
                         type: 'GET',
                         headers: {
-                            'Authorization': 'Bearer 859|IIvRek0UNYNaC3bWm9veOWklehVlFSbRGO4SwVKU' // Token Anda
+                            'Authorization': 'Bearer 862|YCzEMXYliDUTt02b8sgvLDjmf5ZHIvDoAJiTBQto' // Token Anda
                         },
                         success: function(response) {
                             var kabupatenKotaData = response.data;
@@ -907,7 +910,7 @@
                         url: 'http://backend.sepyankristanto.my.id/api/v1/master/sub-districts', // Endpoint untuk mendapatkan kecamatan
                         type: 'GET',
                         headers: {
-                            'Authorization': 'Bearer 859|IIvRek0UNYNaC3bWm9veOWklehVlFSbRGO4SwVKU' // Token Anda
+                            'Authorization': 'Bearer 862|YCzEMXYliDUTt02b8sgvLDjmf5ZHIvDoAJiTBQto' // Token Anda
                         },
                         success: function(response) {
                             var kecamatanData = response.data;

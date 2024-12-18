@@ -73,6 +73,10 @@
                   <a href="{{ route('maba-attribut.index') }}" class="nav-link">Daftar Atribut
                     Maba</a>
                 </li>
+                <li class="nav-item">
+                  <a href="{{ route('atribut-gambars.index') }}" class="nav-link">Preview Gambar Ukuran Attribut
+                    Maba</a>
+                </li>
                 {{-- <li class="nav-item">
                  <a href="{{ route('tes-maba.index') }}" class="nav-link">Tes
                   Maba</a>

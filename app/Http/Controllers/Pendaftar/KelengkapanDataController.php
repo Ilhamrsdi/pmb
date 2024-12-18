@@ -16,6 +16,7 @@ use App\Models\RefPendidikan;
 use App\Models\SettingBerkas;
 use App\Models\RefJenis_tinggal;
 use App\Http\Controllers\Controller;
+use App\Models\AtributGambar;
 use App\Models\BerkasGelombangTransaksi;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Support\Facades\Http;
@@ -33,7 +34,7 @@ class KelengkapanDataController extends Controller
     
     // Mengambil data provinsi dari API Fariz
 
-    $authToken = 'Bearer ' . '859|IIvRek0UNYNaC3bWm9veOWklehVlFSbRGO4SwVKU';
+    $authToken = 'Bearer ' . '862|YCzEMXYliDUTt02b8sgvLDjmf5ZHIvDoAJiTBQto';
     $responseProvinsi = $client->get('http://backend.sepyankristanto.my.id/api/v1/master/provinces', [
         'headers' => [
             'Authorization' => $authToken,
@@ -126,12 +127,15 @@ $kecamatan = json_decode($responsekecamatan->getBody(), true)['data'];
     $list_berkas = BerkasGelombangTransaksi::where('gelombang_id', $pendaftar->gelombang_id)
         ->with('berkas') // Eager load relasi settingBerkas
         ->get();
+    $atributGambars = AtributGambar::all();
+
+    // dd($atributGambars);
     // dd($list_berkas);    
     // Kirim data ke view
     return view('pendaftar.kelengkapan-data.kelengkapan-data', compact(
         'pendaftar', 'kendaraan', 'jenis_tinggal', 'negara', 'provinsi', 
         'kabupaten_kota', 'kecamatan', 'agama', 'ukuran', 
-        'pendidikan', 'profesi', 'pendapatan', 'list_berkas', 'kabupatenKotaData'
+        'pendidikan', 'profesi', 'pendapatan', 'list_berkas', 'kabupatenKotaData', 'atributGambars'
     ));
 }
 

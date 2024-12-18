@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\Berkas\SettingBerkasController;
 use App\Http\Controllers\Admin\Pendaftar\SoalTesMabaController;
 use App\Http\Controllers\AccessLogController;
 use App\Http\Controllers\Admin\Alur\AlurPendaftaranController;
+use App\Http\Controllers\Admin\Atribut_gambar\AtributGambarController;
 use App\Http\Controllers\PdfController;
 
 
@@ -125,6 +126,28 @@ Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
     Route::post('/maba-attribut-almamater/{id}', [MabaAttributController::class, 'updateAlmamater'])->name('maba-attribut.almamater');
     Route::post('/maba-attribut-jas/{id}', [MabaAttributController::class, 'updateJasLab'])->name('maba-attribut.jas');
     Route::post('/maba-attribut-baju-lapangan/{id}', [MabaAttributController::class, 'updateBajuLapangan'])->name('maba-attribut.baju-lapangan');
+
+
+    Route::resource('atribut-gambars', App\Http\Controllers\Admin\Atribut_gambar\AtributGambarController::class);
+
+    // // Route untuk menampilkan daftar atribut gambar
+    // Route::get('/maba-attribut/atribut-gambars', [AtributGambarController::class, 'index'])->name('atribut-gambars.index');
+
+    // // Route untuk menampilkan form tambah atribut gambar
+    // Route::get('atribut-gambars/create', [AtributGambarController::class, 'create'])->name('atribut-gambars.create');
+
+    // // Route untuk menyimpan atribut gambar
+    // Route::post('/maba-attribut/atribut-gambars', [AtributGambarController::class, 'store'])->name('atribut-gambars.store');
+
+    // // Route untuk menampilkan form edit atribut gambar
+    // Route::get('/maba-attribut/atribut-gambars/{atributGambar}/edit', [AtributGambarController::class, 'edit'])->name('atribut-gambars.edit');
+
+    // // Route untuk update atribut gambar
+    // Route::put('/maba-attribut/atribut-gambars/{atributGambar}', [AtributGambarController::class, 'update'])->name('atribut-gambars.update');
+
+    // // Route untuk menghapus atribut gambar
+    // Route::delete('maba-attribut/atribut-gambars/{atributGambar}', [AtributGambarController::class, 'destroy'])->name('atribut-gambars.destroy');
+
 
     Route::resource('gelombang', GelombangController::class);
     Route::post('transaksi_berkas_gelombang', [TransaksiController::class, 'BerkasGelombang'])->name('transaksis.berkas_gelombang');

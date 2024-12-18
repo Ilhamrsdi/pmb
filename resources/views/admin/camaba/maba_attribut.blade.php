@@ -52,11 +52,13 @@
             <div class="card">
                 <div id="customerList">
                     <div class="card-header">
+                        
                         <div class="row g-4">
                             <div class="col-sm-auto">
                                 <h4 class="card-title mt-2">DAFTAR MAHASISWA BARU DAN PILIHAN ATRIBUTNYA (Hanya Menampilkan
                                     Yang Sudah Memilih Attribut)</h4>
                             </div>
+                            
                             <div class="col-sm">
                                 <div class="d-flex justify-content-sm-end">
                                     <div class="search-box ms-2">
@@ -287,6 +289,11 @@
         </div>
         <!-- end col -->
     </div>
+ 
+    
+
+
+
     <!-- end row -->
 @endsection
 @section('script')

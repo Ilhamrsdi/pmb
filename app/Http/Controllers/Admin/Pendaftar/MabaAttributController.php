@@ -140,4 +140,5 @@ class MabaAttributController extends Controller
         }
         return redirect()->back();
     }
+
 }
