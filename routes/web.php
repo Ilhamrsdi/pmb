@@ -32,6 +32,7 @@ use App\Http\Controllers\Admin\Alur\AlurPendaftaranController;
 use App\Http\Controllers\Admin\Atribut_gambar\AtributGambarController;
 use App\Http\Controllers\PdfController;
 
+use App\Http\Controllers\Admin\Prodi_lain\ProdiLainController;
 
 // Pendaftar Controller
 use App\Http\Controllers\Admin\Pengumuman\PengumumanController;
@@ -47,6 +48,7 @@ use App\Http\Controllers\UserController;
 // GenerateNim Controller
 use App\Http\Controllers\GenerateNimController;
 use App\Http\Controllers\Panitia\PanitiaController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -156,6 +158,11 @@ Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
     Route::get('sync/jurusan', [JurusanController::class, 'sync'])->name('jurusan.sync');
     Route::resource('prodi', ProdiController::class);
     Route::get('sync/prodi', [ProdiController::class, 'sync'])->name('prodi.sync');
+
+    Route::resource('prodi-lain', ProdiLainController::class);
+    
+
+
     Route::resource('settingberkas', SettingBerkasController::class);
 
     // Golongan & UKT

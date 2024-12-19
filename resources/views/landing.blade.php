@@ -409,8 +409,23 @@
                     </select>
                     </div>
                   </div>
-                  
                   <div class="col-lg-6">
+                    <div class="mb-4">
+                      <label for="program_studi_lain" class="form-label fs-13">Program Studi (Kampus Lain)</label>
+                      <select class="form-select" aria-label="Default select example" name="program_studi_lain" id="program_studi_lain">
+                        <option value="" selected>Pilih Program Studi</option>
+                        @forelse($prodi_lain as $h)
+                          <option value="{{ $h->id }}">
+                            {{ $h->name }} -  {{ $h->kampus}}
+                          </option>
+                        @empty
+                          <option value="">Data Program Studi Kampus Lain tidak tersedia</option>
+                        @endforelse
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div class="col-lg-12">
                     <div class="mb-4">
                       <label for="gelombang" class="form-label fs-13">Gelombang Pendaftaran</label>
                       {{-- <select class="form-select" aria-label="Default select example" name="gelombang" id="gelombang">
