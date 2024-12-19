@@ -18,13 +18,14 @@ class ProdiLainController
     public function store(Request $request)
     {
 
-        $gelombang = ProdiLain::create([
+        $prodiLain = ProdiLain::create([
             "name" => $request->name,
             "kampus"  => $request->kampus,
             "alamat_kampus" => $request->alamat_kampus,
             "email_kampus"  => $request->email_kampus,
             'telepon_kampus' => $request->telepon_kampus,
             "website_kampus" => $request->website_kampus,
+            "status" => $request->status
         ]);
         // dd($gelombang);
 
@@ -37,21 +38,34 @@ class ProdiLainController
     //     return view('prodi_lain.edit', compact('prodiLain'));
     // }
 
-    // public function update(Request $request, ProdiLain $prodiLain)
-    // {
-    //     // Validasi dan update data
-    //     $request->validate([
-    //         'nama_prodi' => 'required|string|max:255',
-    //     ]);
+    public function update(Request $request, $id)
+    {
+        // Cari data ProdiLain berdasarkan ID
+        $prodiLain = ProdiLain::find($id);
+        
+        if ($prodiLain) {
+            // Update data hanya jika ProdiLain ditemukan
+            $prodiLain->update([
+                "name" => $request->name,
+                "kampus"  => $request->kampus,
+                "alamat_kampus" => $request->alamat_kampus,
+                "email_kampus"  => $request->email_kampus,
+                'telepon_kampus' => $request->telepon_kampus,
+                "website_kampus" => $request->website_kampus,
+                "status" => $request->status
+            ]);
+    
+            return redirect()->route('prodi-lain.index')->with('success', 'Prodi berhasil diperbarui.');
+        } else {
+            return redirect()->route('prodi-lain.index')->with('error', 'Prodi tidak ditemukan.');
+        }
+    }
+    
 
-    //     $prodiLain->update($request->all());
-    //     return redirect()->route('prodi-lain.index')->with('success', 'Prodi berhasil diperbarui.');
-    // }
-
-    // public function destroy(ProdiLain $prodiLain)
-    // {
-    //     // Hapus data
-    //     $prodiLain->delete();
-    //     return redirect()->route('prodi-lain.index')->with('success', 'Prodi berhasil dihapus.');
-    // }
+    public function destroy(ProdiLain $prodiLain)
+    {
+        // Hapus data
+        $prodiLain->delete();
+        return redirect()->route('prodi-lain.index')->with('success', 'Prodi berhasil dihapus.');
+    }
 }

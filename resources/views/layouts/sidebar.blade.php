@@ -124,7 +124,7 @@
                   <a href="{{ route('prodi.index') }}" class="nav-link">Prodi</a>
                 </li>
                 <li class="nav-item">
-                  <a href="{{ route('prodi-lain.index') }}" class="nav-link">Prodi Lain</a>
+                  <a href="{{ route('prodi-lain.index') }}" class="nav-link">Prodi Kampus Lain</a>
                 </li>
               </ul>
             </div>

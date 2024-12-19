@@ -34,12 +34,12 @@ class AtributGambarController
             $file->move(public_path('uploads/atribut-gambars'), $filename);
             
             // Simpan metadata ke database
-            // AtributGambar::create([
-            //     'atribut_id'   => $request->atribut_id,
-            //     'nama_gambar'  => $filename, // Nama file disimpan di database
-            //     'jenis_gambar' => $request->jenis_gambar,
-            //     'ukuran'       => $request->ukuran,
-            // ]);
+            AtributGambar::create([
+                'atribut_id'   => $request->atribut_id,
+                'nama_gambar'  => $filename, // Nama file disimpan di database
+                'jenis_gambar' => $request->jenis_gambar,
+                'ukuran'       => $request->ukuran,
+            ]);
         }
     
         // Redirect kembali dengan pesan sukses

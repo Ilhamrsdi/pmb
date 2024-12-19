@@ -95,5 +95,9 @@ class Pendaftar extends Model
     //     // Logic to get the last 'nomor_urut' from the database
     //     return static::where('kode_prodi', $this->kode_prodi)->max('nomor_urut') ?? 0;
     // }
+    public function prodiLain()
+{
+    return $this->belongsTo(ProdiLain::class, 'prodi_lain_id');
+}
     
 }

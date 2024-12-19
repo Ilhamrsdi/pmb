@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-  @lang('PROGRAM STUDI')
+  @lang('PROGRAM STUDI LAIN')
 @endsection
 @section('content')
   @component('components.breadcrumb')
@@ -8,7 +8,7 @@
       Admin
     @endslot
     @slot('title')
-      Program Studi
+      Program Studi Lain
     @endslot
   @endcomponent
   {{-- <div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; text-align: center; color: white;">
@@ -58,6 +58,7 @@
                     <th class="sort text-center" data-sort="jurusan">NAMA KAMPUS</th>
                     <th class="sort text-center" data-sort="jenjang">ALAMAT KAMPUS</th>
                     <th class="sort text-center" data-sort="kuotaditerima">WEBSITE KAMPUS</th>
+                    <th class="sort text-center" data-sort="status">Status</th>
                     <th class="text-center">AKSI</th>
                   </tr>
                 </thead>
@@ -70,6 +71,17 @@
                       <td class="nama text-center">{{ $g->kampus }}</td>
                       <td class="alamat text-center">{{ $g->alamat_kampus }}</td>
                       <td class="website text-center">{{ $g->website_kampus}}</td>
+                      <td class="status text-center">
+                        @if($g->status === 'aktif')
+                            <span class="badge bg-success">Active</span>
+                        @elseif($g->status === 'off')
+                            <span class="badge bg-danger">Off</span>
+                        @else
+                            {{$g->status}}
+                        @endif
+                    </td>
+                    
+                    
                       <td>
                         <div class="d-flex gap-2">
                           <div class="edit">
@@ -147,6 +159,14 @@
                         <input required name="alamat_kampus" type="text" class="form-control" placeholder="Alamat kampus" />
                     </div>
                     <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select id="status" class="form-select" data-choices data-choices-sorting="true" name="status" required>
+                            <option selected>Status</option>
+                            <option value="aktif">Active</option>
+                            <option value="off">Off</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <label for="telepon_kampus" class="form-label">No Telpon Kampus</label>
                         <input required name="telepon_kampus" type="number" min="0" class="form-control" placeholder="No Telpon Kampus" />
                     </div>
@@ -167,9 +187,9 @@
 </div>
 
   <!-- modal add -->
-  @forelse($prodiLain as $index => $g)
+  @forelse($prodiLain as $index => $prod)
     <!-- modal edit -->
-    <div class="modal fade" id="showModalEdit{{ $g->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="showModalEdit{{ $prod->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
       aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -178,68 +198,48 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
               id="close-modal"></button>
           </div>
-          <form action="{{ route('prodi.update', $g->id) }}" method="post">
+          <form action="{{ route('prodi-lain.update', $prod->id) }}" method="post">
             @csrf
             @method('PUT')
             <div class="modal-body">
-              <div>
-                <label for="jurusan_id-field" class="form-label">Jurusan</label>
-                <select class="form-control" data-trigger required name="jurusan_id" id="jurusan_id-field">
-                  <option value="">- Pilih Jurusan -</option>
-                  @forelse($prodiLain as $index => $h)
-                    <option value="{{ $h->id }}" {{ $h->id == $g->jurusan_id ? 'selected' : '' }}>
-                      {{ $h->nama_jurusan }}</option>
-                  @empty
-                  @endforelse
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="id-field" class="form-label">Kode NIM Prodi</label>
-                <input value="{{ $g->kode_program_studi }}" required name="kode_program_studi" type="text"
-                  class="form-control" placeholder="kode_program_studi" />
-              </div>
               <div class="mb-3">
                 <label for="id-field" class="form-label">Nama Prodi</label>
-                <input value="{{ $g->nama_program_studi }}" required name="nama_program_studi" type="text"
-                  class="form-control" placeholder="nama_program_studi" />
+                <input value="{{ $prod->name }}" required name="name" type="text"
+                  class="form-control" placeholder="Nama Prodi" />
               </div>
-              <div>
-                <label for="jenjang_pendidikan-field" class="form-label">Jenjang Pendidikan</label>
-                <select class="form-control" data-trigger required name="jenjang_pendidikan"
-                  id="jenjang_pendidikan-field">
-                  <option value="">Status</option>
-                  <option value="D3" {{ $g->jenjang_pendidikan == 'D3' ? 'selected' : '' }}>D3
-                  </option>
-                  <option value="D4" {{ $g->jenjang_pendidikan == 'D4' ? 'selected' : '' }}>D4
-                  </option>
-                </select>
-              </div>
-              <!-- <div class="mb-3" >
-                                                                                                                        <label for="id-field" class="form-label">Jenjang Pendidikan</label>
-                                                                                                                        <input required name="jenjang_pendidikan" type="text"  class="form-control" placeholder="jenjang_pendidikan"  />
-                                                                                                                    </div> -->
               <div class="mb-3">
-                <label for="id-field" class="form-label">Akreditasi</label>
-                <input value="{{ $g->akreditasi }}" required name="akreditasi" type="text" class="form-control"
-                  placeholder="akreditasi" />
+                <label for="id-field" class="form-label">Nama Kampus</label>
+                <input value="{{ $prod->kampus }}" required name="kampus" type="text"
+                  class="form-control" placeholder="Nama Kampus" />
+              </div>
+              <div class="mb-3">
+                <label for="id-field" class="form-label">Alamat Kampus</label>
+                <input value="{{ $prod->alamat_kampus }}" required name="alamat_kampus" type="text" class="form-control"
+                  placeholder="Alamat Kampus" />
+              </div>
+              
+              <div class="mb-3">
+                <label for="id-field" class="form-label">Email Kampus</label>
+                <input value="{{ $prod->email_kampus }}" required name="email_kampus" type="text" class="form-control"
+                  placeholder="email_kampus" />
+              </div>
+              <div class="mb-3">
+                <label for="id-field" class="form-label">Telepon Kampus</label>
+                <input value="{{ $prod->telepon_kampus }}" required name="telepon_kampus" type="number" min="0"
+                  class="form-control" placeholder="Telepon Kampus" />
+              </div>
+              <div class="mb-3">
+                <label for="id-field" class="form-label">Website Kampus</label>
+                <input value="{{ $prod->website_kampus }}" required name="website_kampus" type="text" min="0"
+                  class="form-control" placeholder="Website Kampus" />
               </div>
               <div>
                 <label for="status-field" class="form-label">Status</label>
                 <select class="form-control" data-trigger required name="status" id="status-field">
                   <option value="">Status</option>
-                  <option value="Active" {{ $g->status == 'Active' ? 'selected' : '' }}>Active</option>
-                  <option value="Block" {{ $g->status == 'Block' ? 'selected' : '' }}>Block</option>
+                  <option value="aktif" {{ $prod->status == 'aktif' ? 'selected' : '' }}>Active</option>
+                  <option value="off" {{ $g->status == 'off' ? 'selected' : '' }}>Off</option>
                 </select>
-              </div>
-              <div class="mb-3">
-                <label for="id-field" class="form-label">Kode NIM</label>
-                <input value="{{ $g->kode_nim }}" required name="kode_nim" type="text" class="form-control"
-                  placeholder="kode_nim" />
-              </div>
-              <div class="mb-3">
-                <label for="id-field" class="form-label">Nomor Urut NIM</label>
-                <input value="{{ $g->nomer_urut_nim }}" required name="nomer_urut_nim" type="number" min="0"
-                  class="form-control" placeholder="nomer_urut_nim" />
               </div>
             </div>
             <div class="modal-footer">
@@ -258,7 +258,7 @@
 
   <!-- modal delete -->
   @forelse($prodiLain as $index => $g)
-    <form action="{{ route('prodi.destroy', $g->id) }}" method="post">
+    <form action="{{ route('prodi-lain.destroy', $g->id) }}" method="post">
       @csrf
       @method('DELETE')
       <div class="modal fade zoomIn" id="deleteRecordModal{{ $g->id }}" tabindex="-1" aria-hidden="true">
@@ -276,7 +276,7 @@
                 <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
                   <h4>Are you Sure ?</h4>
                   <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove
-                    {{ $g->nama_program_studi }} ?</p>
+                    {{ $g->name }} - {{$g->kampus}}</p>
                 </div>
               </div>
               <div class="d-flex gap-2 justify-content-center mt-4 mb-2">

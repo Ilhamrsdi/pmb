@@ -20,6 +20,7 @@ class CreateProdiLainTable extends Migration
             $table->string('email_kampus')->nullable(); // Email Resmi Kampus
             $table->bigInteger('telepon_kampus')->nullable();  // Nomor Telepon Kampus
             $table->string('website_kampus')->nullable(); // Website Resmi Kampus
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

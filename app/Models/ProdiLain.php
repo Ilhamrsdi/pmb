@@ -10,7 +10,7 @@ class ProdiLain extends Model
     use HasFactory;
 
     protected $table = 'prodi_lain'; // pastikan nama tabel
-    protected $fillable = ['name', 'kampus', 'alamat_kampus', 'telepon_kampus', 'email_kampus', 'website_kampus'];
+    protected $fillable = ['name', 'kampus', 'alamat_kampus', 'telepon_kampus', 'email_kampus', 'website_kampus', 'status'];
 
 
     // Relasi ke model Pendaftar
