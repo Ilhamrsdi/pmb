@@ -65,6 +65,19 @@ class BuktiController extends Controller
         // dd($pendaftar);
         return view('pendaftar.bukti.show', compact('pendaftar'));
     }
+    public function buktiPendaftaran($id)
+    {
+        $pendaftar = Pendaftar::where('id', $id)->with('user', 'detailPendaftar', 'programStudi', 'gelombangPendaftaran')->first();
+        // dd($pendaftar);
+        return view('pendaftar.bukti.bukti-pendaftaran', compact('pendaftar'));
+    }
+
+    
+    public function kartuUjian($id)
+{
+    $pendaftar = Pendaftar::findOrFail($id); // Pastikan model `Pendaftar` sudah ada
+    return view('pendaftar.bukti.kartu-ujian', compact('pendaftar'));
+}
 
 
 

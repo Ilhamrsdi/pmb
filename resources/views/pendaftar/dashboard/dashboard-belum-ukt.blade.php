@@ -21,7 +21,7 @@
               <div class="alert alert-warning border-0 rounded-0 m-0 d-flex align-items-center" role="alert">
                 <i data-feather="alert-triangle" class="text-warning me-2 icon-sm"></i>
                 <div class="flex-grow-1 text-truncate">
-                  Anda belum mendapatkan nominal UKT
+                  Anda belum mendapatkan Kartu Ujian
                 </div>
               </div>
 
@@ -38,7 +38,7 @@
                         $pendaftar = Pendaftar::where('user_id', auth()->user()->id)->first();
                       @endphp
                       <a href="{{ route('kelengkapan-data.edit', ['id' => $pendaftar->id]) }}" class="text-decoration-none">
-                        Silakan melengkapi data diri dan berkas pendukung
+                        Silakan melengkapi data diri
                       </a>
                   </div>
                 </div>

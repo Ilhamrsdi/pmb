@@ -211,6 +211,8 @@ Route::middleware([Pendaftar::class, 'auth'])->prefix('pendaftar')->group(functi
     Route::put('kelengkapan-data/{id}', [KelengkapanDataController::class, 'update'])->name('kelengkapan-data.update');
     
     Route::get('bukti/{id}', [BuktiController::class, 'show'])->name('bukti.show');
+    Route::get('bukti/bukt-pendaftaran/{id}', [BuktiController::class, 'buktiPendaftaran'])->name('bukti.bukti-pendaftaran');
+    Route::get('bukti/kartu-ujian/{id}', [BuktiController::class, 'kartuUjian'])->name('bukti.kartu-ujian');
     Route::get('/generate-pdf', [PdfController::class, 'generatePDF'])->name('generate-pdf');
 
 });

@@ -56,6 +56,7 @@
                                             class="ri-user-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle me-2"></i>
                                         Biodata Diri</button>
                                 </li>
+                                @if($pendaftar->status_acc == 'sudah')
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link fs-15 p-3" id="pills-bio-orangtua-tab" data-bs-toggle="pill"
                                         data-bs-target="#pills-bio-orangtua" type="button" role="tab"
@@ -63,6 +64,9 @@
                                             class="ri-briefcase-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle me-2"></i>
                                         Biodata Orang Tua</button>
                                 </li>
+                                @else
+                                @endif
+                                @if($pendaftar->status_acc == 'sudah')
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link fs-15 p-3" id="pills-atribut-tab" data-bs-toggle="pill"
                                         data-bs-target="#pills-atribut" type="button" role="tab"
@@ -70,6 +74,8 @@
                                             class="ri-shirt-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle me-2"></i>
                                         Atribut</button>
                                 </li>
+                                @else
+                                @endif
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link fs-15 p-3" id="pills-berkas-tab" data-bs-toggle="pill"
                                         data-bs-target="#pills-berkas" type="button" role="tab"
@@ -90,7 +96,7 @@
                             <div class="tab-pane fade show active" id="pills-bio-diri" role="tabpanel" aria-labelledby="pills-bi-diri-tab">
                                 <div>
                                     <h5 class="mb-1">Biodata Diri</h5>
-                                    <p class="text-muted mb-4">Isilah Informasi dibawah ini dengan sebenar-benarnya</p>
+                                    <p class="text-muted mb-4">Isilah Informasi dibawah ini dengan sebenar-benarnya. Sesuai indentitas diri anda</p>
                                 </div>
                         
                                 <div>
@@ -109,6 +115,7 @@
                         
                                         <div class="col-md-6 mb-3">
                                             <label for="nama" class="form-label">Nama</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <input type="text" class="form-control" placeholder="Masukkan Nama" id="nama" value="{{ $pendaftar->nama }}" name="nama" required>
                                         </div>
                                         <!-- end col -->
@@ -117,6 +124,7 @@
                         
                                         <div class="col-md-6 mb-3">
                                             <label for="jenis_tinggal" class="form-label">Jenis Tempat Tinggal</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <select id="jenis_tinggal" class="form-select" data-choices data-choices-sorting="true" name="jenis_tinggal">
                                                 <option selected>Pilih Jenis Tempat Tinggal...</option>
                                                 @foreach ($jenis_tinggal as $item)
@@ -125,11 +133,13 @@
                                                     </option>
                                                 @endforeach
                                             </select>
+                                           
                                         </div>
                                         <!-- end col -->
                         
                                         <div class="col-md-6 mb-3">
                                             <label for="kendaraan" class="form-label">Kendaraan</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <select id="kendaraan" class="form-select" data-choices data-choices-sorting="true" name="kendaraan">
                                                 <option selected>Pilih Jenis Kendaraan...</option>
                                                 @foreach ($kendaraan as $item)
@@ -143,6 +153,7 @@
                         
                                         <div class="col-md-6 mb-3">
                                             <label for="kewarganegaraan" class="form-label">Kewarganegaraan</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <select id="kewarganegaraan" class="form-select" data-choices data-choices-sorting="true" name="kewarganegaraan" required>
                                                 <option selected>Pilih Kewarganegaraan...</option>
                                                 <option value="wni" {{ $pendaftar->kewarganegaraan == 'wni' ? 'selected' : '' }}>Warga Negara Indonesia</option>
@@ -166,6 +177,7 @@
                         
                                         <div class="col-md-6 mb-3">
                                             <label for="provinsi" class="form-label">Provinsi</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <select id="provinsi" class="form-select" data-choices data-choices-sorting="true" name="provinsi" required>
                                                 <option value="">-- Pilih Provinsi --</option>
                                                 @foreach ($provinsi as $item)
@@ -178,15 +190,20 @@
                                         <!-- end col -->
                         
                                         <div class="col-md-4 mb-3" id="select_kabupaten">
-                                            <label for="kabupaten" class="form-label">Kabupaten</label>
+                                            <label for="kabupaten" class="form-label">
+                                                Kabupaten
+                                                <span class="text-danger" title="Field ini wajib diisi">*</span>
+                                            </label>
                                             <select data-select="kabupaten" id="kabupaten" class="form-select" name="kabupaten" required>
                                                 <option value="">-- Pilih Kabupaten/Kota --</option>
                                             </select>
                                         </div>
+                                        
                                         <!-- end col -->
                         
                                         <div class="col-md-4 mb-3" id="select_kecamatan">
                                             <label for="kecamatan" class="form-label">Kecamatan</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <select id="kecamatan" data-select="kecamatan" class="form-select" name="kecamatan" required>
                                                 <option>Pilih Kecamatan...</option>
                                             </select>
@@ -195,54 +212,63 @@
                         
                                         <div class="col-md-4 mb-3">
                                             <label for="kelurahan_desa" class="form-label">Kelurahan</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <input type="text" class="form-control" placeholder="Masukkan Nama Kelurahan atau Desa" id="kelurahan_desa" value="{{ $pendaftar->kelurahan_desa }}" name="kelurahan_desa">
                                         </div>
                                         <!-- end col -->
                         
                                         <div class="col-md-4 mb-3">
                                             <label for="rt" class="form-label">RT</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <input type="text" class="form-control" placeholder="Masukkan Nomor RT" id="rt" value="{{ $pendaftar->rt }}" name="rt">
                                         </div>
                                         <!-- end col -->
                         
                                         <div class="col-md-4 mb-3">
                                             <label for="rw" class="form-label">RW</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <input type="text" class="form-control" placeholder="Masukkan Nomor RW" id="rw" value="{{ $pendaftar->rw }}" name="rw">
                                         </div>
                                         <!-- end col -->
                         
                                         <div class="col-md-4 mb-3">
                                             <label for="kode_pos" class="form-label">Kode Pos</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <input type="text" class="form-control" placeholder="Masukkan Nomor Kode Pos" id="kode_pos" value="{{ $pendaftar->kode_pos }}" name="kode_pos">
                                         </div>
                                         <!-- end col -->
                         
                                         <div class="col-md-6 mb-3">
                                             <label for="no_hp" class="form-label">Nomor HP</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <input type="tel" class="form-control" placeholder="+(62) xxxx xxxx xxx" id="no_hp" value="{{ $pendaftar->no_hp }}" name="no_hp">
                                         </div>
                                         <!-- end col -->
                         
                                         <div class="col-md-6 mb-3">
                                             <label for="telepon_rumah" class="form-label">Nomor Telepon Rumah</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <input type="tel" class="form-control" placeholder="+(62) xxxx xxxx xxx" id="telepon_rumah" value="{{ $pendaftar->telepon_rumah }}" name="telepon_rumah">
                                         </div>
                                         <!-- end col -->
                         
                                         <div class="col-md-4 mb-3">
                                             <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <input type="text" class="form-control" placeholder="Masukkan Tempat Lahir" id="tempat_lahir" value="{{ $pendaftar->tempat_lahir }}" name="tempat_lahir">
                                         </div>
                                         <!-- end col -->
                         
                                         <div class="col-md-4 mb-3">
                                             <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <input type="date" class="form-control" placeholder="Masukkan Tanggal Lahir" id="tanggal_lahir" value="{{ $pendaftar->tanggal_lahir }}" name="tanggal_lahir">
                                         </div>
                                         <!-- end col -->
                         
                                         <div class="col-md-4 mb-3">
                                             <label for="agama" class="form-label">Agama</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <select id="agama" class="form-select" data-choices data-choices-sorting="true" name="agama">
                                                 <option selected>Pilih Agama...</option>
                                                 @foreach ($agama as $item)
@@ -257,8 +283,12 @@
                                         <!-- End of Form Fields -->
                                     </div>
                                     <!-- end row -->
-                        
-                                    <button type="submit" class="btn btn-success">Simpan</button>
+                                    <div class="d-flex align-items-start gap-3 mt-4">
+                                       
+                                        <button type="button" class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="pills-berkas-tab"><i
+                                                class="ri-file-line label-icon align-middle fs-16 ms-2"></i>Lanjut ke Berkas Pendukung</button>
+                                    </div>
+                                
                                 </div>
                             </div>
                             <!-- end tab pane -->
@@ -557,8 +587,6 @@
                             </div>
                         
                             <div class="d-flex align-items-start gap-3 mt-4">
-                                <button type="button" class="btn btn-light btn-label previestab" data-previous="pills-bio-orangtua-tab"><i
-                                        class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Kembali ke Biodata Orang Tua</button>
                                 <button type="button" class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="pills-berkas-tab"><i
                                         class="ri-file-line label-icon align-middle fs-16 ms-2"></i>Lanjut ke Berkas Pendukung</button>
                             </div>
@@ -567,7 +595,7 @@
                             @else
                             @endif
                             <!-- end tab pane -->
-                            @if ($pendaftar->status_pendaftaran == 'sudah')
+
                             <div class="tab-pane fade" id="pills-berkas" role="tabpanel"
                                 aria-labelledby="pills-berkas-tab">
                                 <div>
@@ -598,10 +626,8 @@
                                       </div>
 
                                     <div class="d-flex align-items-start gap-3 mt-4">
-                                        <button type="button" class="btn btn-light btn-label previestab"
-                                            data-previous="pills-atribut-tab"><i
-                                                class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Kembali
-                                            ke Atribut</button>
+                                        <button type="button" class="btn btn-light btn-label previestab" data-previous="pills-bio-diri-tab"><i
+                                            class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Kembali ke Biodata Diri</button>
                                         <button type="button" class="btn btn-primary btn-label right ms-auto"
                                             id="btn-submit"><i
                                                 class="ri-save-line label-icon align-middle fs-16 ms-2"></i>Simpan</button>
@@ -626,8 +652,6 @@
                             </div>
                             <!-- end tab pane -->
                         </div>
-                        @else
-                         @endif
                         <!-- end tab content -->
                     </form>
                 </div>
