@@ -37,4 +37,9 @@ class GelombangPendaftaran extends Model
     {
         return $this->hasMany(BerkasGelombangTransaksi::class, 'berkas_id');
     }
+    public function prodiLain()
+    {
+        return $this->belongsToMany(ProdiLain::class, 'gelombang_prodi_lain', 'gelombang_id', 'prodi_lain_id');
+    }
+
 }

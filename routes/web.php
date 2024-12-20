@@ -153,6 +153,9 @@ Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
 
     Route::resource('gelombang', GelombangController::class);
     Route::post('transaksi_berkas_gelombang', [TransaksiController::class, 'BerkasGelombang'])->name('transaksis.berkas_gelombang');
+    Route::post('/gelombang/{id}/set-prodi-lain', [GelombangController::class, 'setProdiLain'])->name('gelombang.setProdiLain');
+
+
 
     Route::resource('jurusan', JurusanController::class);
     Route::get('sync/jurusan', [JurusanController::class, 'sync'])->name('jurusan.sync');

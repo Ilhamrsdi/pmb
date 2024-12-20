@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\GelombangPendaftaran;
 use App\Models\SettingBerkas;
 use App\Models\BerkasGelombangTransaksi;
+use App\Models\ProdiLain;
 
 class GelombangController extends Controller
 
@@ -17,15 +18,31 @@ class GelombangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function index()
+    // {
+    //     $gelombang = GelombangPendaftaran::with('berkas')->orderBy('id', 'asc')->get();
+    //     $berkas = SettingBerkas::where('hapus', 0)->get();
+    //     $prodiLain = ProdiLain::all();
+    //     $selectedProdiLain = $gelombang->prodiLain()->pluck('prodi_lain_id')->toArray();
+
+    //     return view(
+    //         'admin.gelombang.gelombang',
+    //         compact('gelombang', 'berkas', 'prodiLain', 'selectedProdiLain')
+    //     );
+    // }
     public function index()
     {
-        $gelombang = GelombangPendaftaran::with('berkas')->orderBy('id', 'asc')->get();
+        $gelombang = GelombangPendaftaran::with('prodiLain')->orderBy('id', 'asc')->get();
         $berkas = SettingBerkas::where('hapus', 0)->get();
-        return view(
-            'admin.gelombang.gelombang',
-            compact('gelombang', 'berkas')
-        );
+        $prodiLain = ProdiLain::all();
+        $selectedProdiLain = $gelombang->mapWithKeys(function ($item) {
+            return [$item->id => $item->prodiLain->pluck('id')->toArray()];
+        });
+    
+        return view('admin.gelombang.gelombang', compact('gelombang', 'berkas', 'prodiLain', 'selectedProdiLain'));
     }
+    
+
 
     /**
      * Show the form for creating a new resource.
@@ -127,4 +144,17 @@ class GelombangController extends Controller
 
         // dd($gelombang);
     }
+    public function setProdiLain(Request $request, $id)
+    {
+        $gelombang = GelombangPendaftaran::findOrFail($id);
+    
+        // Update pivot table prodi_lain-gelombang
+        $gelombang->prodiLain()->sync($request->input('prodi_lain_id', []));
+    
+        return redirect()->back()->with('success', 'Prodi Lain berhasil diperbarui!');
+    }
+    
+    
+    
+    
 }

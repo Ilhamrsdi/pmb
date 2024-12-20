@@ -110,6 +110,13 @@
                               data-bs-target="#SetRecordModal{{ $g->id }}">Set
                               Berkas</button>
                           </div>
+                          <div class="prodi">
+                              <button type="button" class="btn  btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#setProdiLainModal">
+                                Set Prodi Lain
+                            </button>
+                            
+                          </div>
+                         
                         </div>
                       </td>
                     @empty
@@ -223,12 +230,50 @@
             <div class="hstack gap-2 justify-content-end">
               <button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button>
               <button type="submit" class="btn btn-success" id="add-btn">Tambah Gelombang</button>
+              
+            
             </div>
           </div>
         </form>
       </div>
     </div>
   </div>
+ <!-- Modal -->
+<div class="modal fade" id="setProdiLainModal" tabindex="-1" aria-labelledby="setProdiLainModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="setProdiLainModalLabel">Tambah Prodi Lain untuk Gelombang</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              @foreach($gelombang as $item)
+                  <form action="{{ route('gelombang.setProdiLain', $item->id) }}" method="POST">
+                      @csrf
+                      <div class="mb-3">
+                          <label for="prodi_lain_{{ $item->id }}" class="form-label">Prodi Lain untuk Gelombang {{ $item->nama_gelombang }}</label>
+                          <select name="prodi_lain_id[{{ $item->id }}][]" class="form-control" multiple>
+                              @foreach($prodiLain as $prodi)
+                                  <option value="{{ $prodi->id }}"
+                                      @if(in_array($prodi->id, $selectedProdiLain[$item->id] ?? [])) selected @endif>
+                                      {{ $prodi->name }}
+                                  </option>
+                              @endforeach
+                          </select>
+                      </div>
+                  @endforeach
+
+                  <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary">Simpan</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+
   <!-- modal edit -->
   @forelse($gelombang as $index => $g)
     <!-- modal edit -->
