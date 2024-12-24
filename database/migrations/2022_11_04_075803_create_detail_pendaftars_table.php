@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string('status_ukt')->nullable();
             $table->string('status_acc')->nullable();
             $table->string('status_mahasiswa')->nullable();
+            $table->string('status_kipk')->nullable()->fefaul('Reguler');
             $table->timestamps();
         });
     }

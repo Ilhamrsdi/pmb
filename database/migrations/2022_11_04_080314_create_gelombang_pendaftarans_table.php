@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('kuota_pendaftar');
             $table->date('tanggal_ujian');
             $table->string('tempat_ujian')->default('POLIWANGI');
+            $table->json('program_studi_1ids')->nullable();
+            $table->json('program_studi_2ids')->nullable();
             $table->timestamps();
         });
     }

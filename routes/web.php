@@ -47,6 +47,7 @@ use App\Http\Controllers\Pendaftar\KelengkapanDataController;
 use App\Http\Controllers\UserController;
 // GenerateNim Controller
 use App\Http\Controllers\GenerateNimController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\Panitia\PanitiaController;
 
 
@@ -63,6 +64,11 @@ use App\Http\Controllers\Panitia\PanitiaController;
 
 Route::post('/cek_va_ukt', [DashboardController::class, 'CekUKT']);
 Route::get('/', [App\Http\Controllers\LandingController::class, 'index']);
+Route::get('/get-prodi', [LandingController::class, 'getProdiByGelombang'])->name('get-prodi');
+Route::get('/get-program-studi-2', [LandingController::class, 'getProgramStudi2']);
+
+
+
 Route::get('/pengumuman/{id}', [App\Http\Controllers\LandingController::class, 'pengumuman']);
 Route::post('/cekkode', [App\Http\Controllers\LandingController::class, 'cekkode']);
 Route::get('/cektemplate', function () {
@@ -154,6 +160,7 @@ Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
     Route::resource('gelombang', GelombangController::class);
     Route::post('transaksi_berkas_gelombang', [TransaksiController::class, 'BerkasGelombang'])->name('transaksis.berkas_gelombang');
     Route::post('/gelombang/{id}/set-prodi-lain', [GelombangController::class, 'setProdiLain'])->name('gelombang.setProdiLain');
+    Route::post('transaksi_prodi_gelombang', [TransaksiController::class, 'ProdiLain'])->name('transaksis.prodi_lain');
 
 
 

@@ -393,64 +393,59 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <div class="mb-4">
-                      <label for="program_studi" class="form-label fs-13">Program Studi</label>
-                      <select class="form-select" aria-label="Default select example" name="program_studi" id="program_studi">
-                        <option value="" selected>Pilih Program Studi</option>
-                        @forelse($prodi as $h)
-                            <option value="{{ $h->id }}">
-                                {{ $h->jurusan->name ?? '-' }} - {{ $h->name }}
-                            </option>
-                        @empty
-                            <option value="">Data Program Studi tidak tersedia</option>
-                        @endforelse
-                    </select>
-                    </div>
+                <div class="col-lg-12">
+                  <div class="mb-4">
+                      <label for="gelombang" class="form-label fs-13">Gelombang Pendaftaran</label>
+                      <select class="form-select" aria-label="Default select example" name="gelombang" id="gelombang">
+                          <option value="" selected>Pilih Gelombang Pendaftaran</option>
+                          @forelse($gelombang as $h)
+                              @if(strtolower(trim($h->status)) == 'active') <!-- Pastikan hanya menampilkan gelombang aktif -->
+                                  <option value="{{ $h->id }}">{{ $h->nama_gelombang }}</option>
+                              @endif
+                          @empty
+                              <option disabled>Tidak ada gelombang aktif</option>
+                          @endforelse
+                      </select>
                   </div>
+              </div>
+              
+              
+              <div class="row">
+                  {{-- <div class="col-lg-6">
+                      <div class="mb-4">
+                          <label for="program_studi_1" class="form-label fs-13">Pilihan Program Studi 1</label>
+                          <select id="prodi" name="prodi">
+                            <option value="">Pilih Program Studi</option>
+                            <!-- Data akan dimuat secara dinamis -->
+                        </select>
+                      </div>
+                  </div> --}}
                   <div class="col-lg-6">
                     <div class="mb-4">
-                      <label for="program_studi_lain" class="form-label fs-13">Program Studi (Kampus Lain)</label>
-                      <select class="form-select" aria-label="Default select example" name="program_studi_lain" id="program_studi_lain">
-                        <option value="" selected>Pilih Program Studi</option>
-                        @forelse($prodi_lain as $h)
-                          <option value="{{ $h->id }}">
-                            {{ $h->name }} -  {{ $h->kampus}}
-                          </option>
-                        @empty
-                          <option value="">Data Program Studi Kampus Lain tidak tersedia</option>
-                        @endforelse
+                      <label for="program_studi" class="form-label fs-13">Pilihan Program Studi 1</label>
+                      <select class="form-select" placeholder="Masukkan " aria-label="Default select example"
+                        name="program_studi" id="prodi">
+                        <option selected>Pilih Program Studi</option>
                       </select>
                     </div>
                   </div>
-                  
-                  <div class="col-lg-12">
+
+                  <div class="col-lg-6">
                     <div class="mb-4">
-                      <label for="gelombang" class="form-label fs-13">Gelombang Pendaftaran</label>
-                      {{-- <select class="form-select" aria-label="Default select example" name="gelombang" id="gelombang">
-                        <option value="" selected>Pilih Gelombang Pendaftaran</option>
-                        @forelse($gelombang as $h)
-                          <option value="{{ $h->id }}">{{ $h->nama_gelombang }}</option>
-                        @empty
-                          <option value="">Data Gelombang tidak tersedia</option>
-                        @endforelse
-                      </select> --}}
-                      <select class="form-select" aria-label="Default select example" name="gelombang" id="gelombang">
-                        <option selected>Pilih Gelombang Pendaftaran</option>
-                        @forelse($gelombang as $index => $h)
-                            @if(strtolower(trim($h->status)) == 'active') <!-- Pastikan perbandingan string yang tepat -->
-                                <option value="{{ $h->id }}">{{ $h->nama_gelombang }}</option>
-                            @endif
-                        @empty
-                            <option disabled>Tidak ada gelombang aktif</option>
-                        @endforelse
-                    </select>
-                    
+                        <label for="programStudi2" class="form-label fs-13">Pilihan Program Studi 2</label>
+                        <select class="form-select" aria-label="Default select example" name="program_studi_lain[]" id="programStudi2">
+                            <option value="" selected>Pilih Program Studi</option>
+                        </select>
                     </div>
-                  </div>
                 </div>
                 
+                
+                
+                
+                
+                
+              </div>
+              
                 <div class="row">
                   <div class="col-lg-12 text-end">
                     <a data-bs-toggle="modal" data-bs-target="#forgetcode" class="btn btn-warning">Lupa Kode Virtual Account
@@ -998,6 +993,55 @@ function copyCode() {
     window.addEventListener("scroll", changeActiveLink);
   });
 </script>
+
+<script>
+document.getElementById('gelombang').addEventListener('change', function() {
+    const gelombangId = this.value;
+
+    fetch(`/get-prodi?gelombang_id=${gelombangId}`)
+        .then(response => response.json())
+        .then(data => {
+            const prodiDropdown = document.getElementById('prodi');
+            prodiDropdown.innerHTML = '<option value="">Pilih Program Studi</option>';
+
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            data.forEach(prodi => {
+                prodiDropdown.innerHTML += `<option value="${prodi.id}">${prodi.name}</option>`;
+            });
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+
+</script>
+<script>
+document.getElementById('gelombang').addEventListener('change', function() {
+    const gelombangId = this.value;
+
+    fetch(`/get-program-studi-2?gelombang_id=${gelombangId}`)
+        .then(response => response.json())
+        .then(data => {
+            const programStudi2Dropdown = document.getElementById('programStudi2');
+            programStudi2Dropdown.innerHTML = '<option value="">Pilih Program Studi</option>';
+
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            data.forEach(programStudi2 => {
+              programStudi2Dropdown.innerHTML += `<option value="${programStudi2.id}">${programStudi2.name}</option>`;
+            });
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+</script>
+
 
 
 </body>

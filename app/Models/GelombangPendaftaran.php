@@ -22,6 +22,8 @@ class GelombangPendaftaran extends Model
         "tanggal_ujian",
         "tempat_ujian",
         "kuota_pendaftar",
+        'program_studi_1ids',
+        'program_studi_2ids',
     ];
 
     public function pendaftar()
@@ -41,5 +43,12 @@ class GelombangPendaftaran extends Model
     {
         return $this->belongsToMany(ProdiLain::class, 'gelombang_prodi_lain', 'gelombang_id', 'prodi_lain_id');
     }
+
+  // Relasi ke Program Studi
+  public function programStudi()
+  {
+      return $this->belongsToMany(RefPorgramStudi::class, 'gelombang_program_studi', 'gelombang_id', 'program_studi_id');
+  }
+  
 
 }

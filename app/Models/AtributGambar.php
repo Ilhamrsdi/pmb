@@ -9,6 +9,6 @@ class AtributGambar extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['atribut_id', 'nama_gambar', 'jenis_gambar', 'ukuran'];
+    protected $fillable = ['atribut_id', 'gambar', 'jenis_gambar', 'ukuran'];
 }
 

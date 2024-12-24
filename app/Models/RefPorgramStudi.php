@@ -11,6 +11,7 @@ class RefPorgramStudi extends Model
 
     public $table = 'ref.study_programs';
     public $keyType = 'string';
+    public $incrementing = false;  
 
     public function pendaftar()
     {
@@ -27,4 +28,8 @@ class RefPorgramStudi extends Model
         return $this->belongsTo(RefPendidikan::class, 'education_level_id', 'id');
     }
     
+    public function gelombang()
+    {
+        return $this->belongsToMany(GelombangPendaftaran::class, 'gelombang_program_studi', 'program_studi_id', 'gelombang_id');
+    }
 }

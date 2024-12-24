@@ -18,7 +18,7 @@ class AtributGambarController
         // Validasi input
         $request->validate([
             'jenis_gambar' => 'required|string|max:255',
-            'nama_gambar'  => 'required|file|mimes:jpg,jpeg,png,gif|max:2048',
+            'gambar'  => 'required|file|mimes:jpg,jpeg,png,gif|max:2048',
             'ukuran'       => 'nullable|string|max:255',
         ]);
     
@@ -36,7 +36,7 @@ class AtributGambarController
             // Simpan metadata ke database
             AtributGambar::create([
                 'atribut_id'   => $request->atribut_id,
-                'nama_gambar'  => $filename, // Nama file disimpan di database
+                'gambar'  => $filename, // Nama file disimpan di database
                 'jenis_gambar' => $request->jenis_gambar,
                 'ukuran'       => $request->ukuran,
             ]);
@@ -87,9 +87,9 @@ class AtributGambarController
 
         $atributGambar = AtributGambar::find($id);
 
-        if ($request->hasFile('nama_gambar')) {
-            $path = $request->file('nama_gambar')->store('atribut-gambars', 'public');
-            $atributGambar->nama_gambar = $path;
+        if ($request->hasFile('gambar')) {
+            $path = $request->file('gambar')->store('atribut-gambars', 'public');
+            $atributGambar->gambar = $path;
         }
 
         $atributGambar->jenis_gambar = $request->jenis_gambar;

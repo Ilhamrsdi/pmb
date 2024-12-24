@@ -98,6 +98,7 @@ class RegisterController extends Controller
             'nama' => $data['nama'],
             'sekolah' => $data['sekolah'],
             'program_studi_id' => $data['program_studi'],
+            'prodi_lain_id' => $data['prodi_lain'],
             'gelombang_id' => $data['gelombang'],
         ]);
 
@@ -132,6 +133,7 @@ class RegisterController extends Controller
             'password' => 'password',
             'gelombang' => $gelombang->nama_gelombang . " - " . $gelombang->deskripsi,
             'program_studi' => $program_studi->name ,
+            'prodi_lain' => $program_studi->prodi_lain->name ,
             
         ];
 

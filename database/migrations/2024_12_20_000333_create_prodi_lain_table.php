@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,7 +14,7 @@ class CreateProdiLainTable extends Migration
     public function up()
     {
         Schema::create('prodi_lain', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary(); // Ganti id menjadi UUID
             $table->string('name'); // Nama Program Studi
             $table->string('kampus'); // Nama Kampus
             $table->string('alamat_kampus')->nullable(); // Alamat Kampus

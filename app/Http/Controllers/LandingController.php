@@ -66,4 +66,65 @@ class LandingController extends Controller
     public function cekVa(Request $request){
         return view('pendaftar.cekva.index');
     }
+    
+    public function getProdiByGelombang(Request $request)
+{
+    $gelombangId = $request->input('gelombang_id');
+
+    // Cari gelombang berdasarkan ID
+    $gelombangId = $request->input('gelombang_id');
+    \Log::info('Gelombang ID:', [$gelombangId]);
+
+    $gelombang = GelombangPendaftaran::find($gelombangId);
+    if (!$gelombang) {
+        return response()->json(['error' => 'Gelombang tidak ditemukan'], 404);
+    }
+
+    \Log::info('Data Gelombang:', [$gelombang]);
+
+    $programStudiIds = json_decode($gelombang->program_studi_1ids);
+    \Log::info('Program Studi IDs:', [$programStudiIds]);
+
+    if (empty($programStudiIds)) {
+        return response()->json(['error' => 'Tidak ada program studi pada gelombang ini'], 404);
+    }
+
+    $prodi = RefPorgramStudi::whereIn('id', $programStudiIds)->get();
+    \Log::info('Program Studi:', [$prodi]);
+
+    return response()->json($prodi);
+}
+public function getProgramStudi2(Request $request)
+{
+    $gelombangId = $request->input('gelombang_id');
+
+    // Validasi apakah gelombang ID ada di database
+    $gelombang = GelombangPendaftaran::find($gelombangId);
+    if (!$gelombang) {
+        return response()->json(['error' => 'Gelombang tidak ditemukan'], 404);
+    }
+
+    // Ambil data program_studi_2_ids dan decode JSON
+    $programStudi2Ids = json_decode($gelombang->program_studi_2ids);
+
+    // Validasi apakah hasil decode adalah array yang valid
+    if (!is_array($programStudi2Ids) || empty($programStudi2Ids)) {
+        return response()->json(['error' => 'Tidak ada program studi 2 pada gelombang ini'], 404);
+    }
+
+    // Ambil data program studi berdasarkan ID dari tabel RefProgramStudi atau tabel terkait lainnya
+    $programStudi2 = RefPorgramStudi::whereIn('id', $programStudi2Ids)->get(['id', 'name']);
+
+    // Jika tidak ada program studi ditemukan
+    if ($programStudi2->isEmpty()) {
+        return response()->json(['error' => 'Program studi 2 tidak ditemukan'], 404);
+    }
+
+    // Kembalikan data program studi dalam bentuk JSON
+    return response()->json($programStudi2);
+}
+
+
+
+
 }

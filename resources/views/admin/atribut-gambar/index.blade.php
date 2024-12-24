@@ -43,7 +43,7 @@
                   <tr>
                     <th>NO</th>
                     <th class="sort text-center" data-sort="jenis_gambar">JENIS GAMBAR</th>
-                    <th class="text-center" data-sort="nama_gambar">GAMBAR</th>
+                    <th class="text-center" data-sort="gambar">GAMBAR</th>
                     <th class="text-center" data-sort="ukuran">UKURAN</th>
                     <th class="text-center" data-sort="aksi">AKSI</th>
                   </tr>
@@ -54,8 +54,8 @@
                     <tr>
                       <th>{{ ++$index }}</th>
                       <td class="jenis_gambar">{{ $g->jenis_gambar }}</td>
-                      <td class="nama_gambar text-center">
-                        <a href="{{ asset('uploads/atribut-gambars/' . $gambar->nama_gambar) }}" target="_blank">
+                      <td class="gambar text-center">
+                        <a href="{{ asset('uploads/atribut-gambars/' . $gambar->gambar) }}" target="_blank">
                             Lihat Gambar
                         </a>
                       </td>
@@ -133,7 +133,7 @@
             </div>
             <div class="mb-3">
               <label for="id-field" class="form-label">File Gambar</label>
-              <input required name="nama_gambar" type="file" class="form-control" placeholder="file_gambar" />
+              <input required name="gambar" type="file" class="form-control" placeholder="file_gambar" />
             </div>
             <div class="mb-3">
               <label for="id-field" class="form-label">Ukuruan</label>
@@ -176,8 +176,8 @@
               <div class="mb-3">
                 <label for="id-field" class="form-label">File Gambar</label>
                 <div class="input-group">
-                    <input type="file" name="nama_gambar" class="form-control" />
-                    <a href="{{ asset('storage/' . $g->nama_gambar) }}" target="_blank" class="btn btn-outline-secondary">Lihat Gambar</a>
+                    <input type="file" name="gambar" class="form-control" />
+                    <a href="{{ asset('storage/' . $g->gambar) }}" target="_blank" class="btn btn-outline-secondary">Lihat Gambar</a>
                 </div>
             </div>
             

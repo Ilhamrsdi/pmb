@@ -44,6 +44,9 @@
                     <th>NO</th>
                     <th class="sort text-center" data-sort="nama">NAMA GELOMBANG</th>
                     <th class="text-center" data-sort="tahun">TAHUN</th>
+                    <th class="text-center" data-sort="prodi1">Program Studi 1</th>
+                    <th class="text-center" data-sort="prodi2">Program Studi 2</th>
+
                     <th class="text-center" data-sort="tanggal_mulai">TANGGAL MULAI</th>
                     <th class="text-center" data-sort="tanggal_selesai">TANGGAL SELESAI</th>
                     <th class="text-center" data-sort="deskripsi">DESKRIPSI</th>
@@ -63,8 +66,65 @@
                       <th>{{ ++$index }}</th>
                       <td class="nama">{{ $g->nama_gelombang }}</td>
                       <td class="tahun text-center">{{ $g->tahun_ajaran }}</td>
-                      <td class="tanggal_mulai text-center">{{ Carbon\Carbon::parse($g->tanggal_mulai)->format('d-m-Y') }}
-                      </td>
+                     <td class="prodi1 text-center">
+    @if($g->program_studi_1ids)
+        @php
+            $programStudi1Ids = json_decode($g->program_studi_1ids);
+        @endphp
+        @foreach($programStudi1Ids as $id)
+            @php
+                $prodi = \App\Models\RefPorgramStudi::find($id); // Cari namanya berdasarkan ID
+            @endphp
+            {{ $prodi->name ?? 'N/A' }},
+        @endforeach
+    @else
+        N/A
+    @endif
+</td>
+
+<td class="prodi2 text-center">
+  @if($g->program_studi_2ids || $g->program_studi_lain_ids)
+      @php
+          // Mengonversi JSON menjadi array
+          $programStudi2Ids = json_decode($g->program_studi_2ids, true);
+          $programStudiLainIds = json_decode($g->program_studi_lain_ids, true);
+      @endphp
+
+      @if(!empty($programStudi2Ids))
+          @php
+              // Filter hanya ID yang valid UUID
+              $validIds = array_filter($programStudi2Ids, function($id) {
+                  return Ramsey\Uuid\Guid\Guid::isValid($id);  // Pastikan hanya UUID yang valid
+              });
+
+              // Ambil data Program Studi yang ID-nya valid
+              $prodis = \App\Models\RefPorgramStudi::whereIn('id', $validIds)->get();
+          @endphp
+
+          @foreach($prodis as $prodi)
+              {{ $prodi->name }},
+          @endforeach
+      @endif
+
+      @if(!empty($programStudiLainIds))
+          @foreach($programStudiLainIds as $id)
+              @php
+                  $prodiLain = \App\Models\ProdiLain::find($id); // Model ProdiLain
+              @endphp
+              {{ $prodiLain->name ?? 'N/A' }},
+          @endforeach
+      @endif
+
+  @else
+      N/A
+  @endif
+</td>
+
+
+
+
+                    
+                      <td class="tanggal_mulai text-center">{{ Carbon\Carbon::parse($g->tanggal_mulai)->format('d-m-Y') }}</td>
                       <td class="tanggal_selesai text-center">
                         {{ Carbon\Carbon::parse($g->tanggal_selesai)->format('d-m-Y') }}</td>
                       <td class="deskripsi">{{ $g->deskripsi }}</td>
@@ -97,7 +157,7 @@
                     
                       <td>
                         <div class="d-flex gap-2">
-                          <div class="edit" z>
+                          <div class="edit" >
                             <button class="btn btn-sm btn-success edit-item-btn" data-bs-toggle="modal"
                               data-bs-target="#showModalEdit{{ $g->id }}">Edit</button>
                           </div>
@@ -110,13 +170,6 @@
                               data-bs-target="#SetRecordModal{{ $g->id }}">Set
                               Berkas</button>
                           </div>
-                          <div class="prodi">
-                              <button type="button" class="btn  btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#setProdiLainModal">
-                                Set Prodi Lain
-                            </button>
-                            
-                          </div>
-                         
                         </div>
                       </td>
                     @empty
@@ -163,116 +216,164 @@
   <!-- modal add -->
   <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header bg-light p-3">
-          <h5 class="modal-title" id="exampleModalLabel"></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
-        </div>
-        <form action="{{ route('gelombang.store') }}" method="post">
-          @csrf
-          <div class="modal-body">
-
-            <div class="mb-3">
-              <label for="id-field" class="form-label">Nama Gelombang</label>
-              <input required name="nama_gelombang" type="text" class="form-control"
-                placeholder="nama_gelombang" />
+        <div class="modal-content">
+            <div class="modal-header bg-light p-3">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
             </div>
-            <div class="mb-3">
-              <label for="id-field" class="form-label">Tahun Ajaran</label>
-              <input required name="tahun_ajaran" type="text" class="form-control" placeholder="tahun_ajaran" />
-            </div>
-            <div class="mb-3">
-              <label for="id-field" class="form-label">Tanggal Mulai</label>
-              <input required name="tanggal_mulai" type="date" class="form-control" placeholder="tanggal_mulai" />
-            </div>
-            <div class="mb-3">
-              <label for="id-field" class="form-label">Tanggal Selesai</label>
-              <input required name="tanggal_selesai" type="date" class="form-control"
-                placeholder="tanggal_selesai" />
-            </div>
-            <div class="mb-3">
-              <label for="status-field" class="form-label">Status</label>
-              <select class="form-control" data-trigger required name="status" id="status-field">
-                <option value="">Status</option>
-                <option value="Active">Active</option>
-                <option value="Block">Block</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label for="id-field" class="form-label">Deskripsi</label>
-              <input required name="deskripsi" type="text" class="form-control" placeholder="deskripsi" />
-            </div>
-            <div class="mb-3">
-              <label for="id-field" class="form-label">Biaya Pendaftaran</label>
-              <input required name="biaya_pendaftaran" type="number" min="0" class="form-control"
-                placeholder="biaya_pendaftaran" />
-            </div>
-            <div class="mb-3">
-              <label for="id-field" class="form-label">Biaya Administrasi</label>
-              <input required name="biaya_administrasi" type="number" min="0" class="form-control"
-                placeholder="biaya_administrasi" />
-            </div>
-            <div class="mb-3">
-              <label for="id-field" class="form-label">Tanggal Ujian</label>
-              <input required name="tanggal_ujian" type="date" class="form-control" placeholder="tanggal_ujian" />
-            </div>
-            <div class="mb-3">
-              <label for="id-field" class="form-label">Kuota Pendaftar</label>
-              <input required name="kuota_pendaftar" type="number" min="0" class="form-control"
-                placeholder="kuota_pendaftar" />
-            </div>
-            <div class="mb-3">
-              <label for="id-field" class="form-label">Tempat Ujian</label>
-              <input required name="tempat_ujian" type="text" class="form-control" placeholder="tempat_ujian" />
-            </div>
-          </div>
-          <div class="modal-footer">
-            <div class="hstack gap-2 justify-content-end">
-              <button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button>
-              <button type="submit" class="btn btn-success" id="add-btn">Tambah Gelombang</button>
-              
-            
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
- <!-- Modal -->
-<div class="modal fade" id="setProdiLainModal" tabindex="-1" aria-labelledby="setProdiLainModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="setProdiLainModalLabel">Tambah Prodi Lain untuk Gelombang</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              @foreach($gelombang as $item)
-                  <form action="{{ route('gelombang.setProdiLain', $item->id) }}" method="POST">
-                      @csrf
+            <form action="{{ route('gelombang.store') }}" method="post">
+                @csrf
+                <div class="modal-body">
+                    <!-- Nama Gelombang -->
+                    <div class="mb-3">
+                        <label for="id-field" class="form-label">Nama Gelombang</label>
+                        <input required name="nama_gelombang" type="text" class="form-control" placeholder="nama_gelombang" />
+                    </div>
+                    
+                      <!-- Program Studi -->
                       <div class="mb-3">
-                          <label for="prodi_lain_{{ $item->id }}" class="form-label">Prodi Lain untuk Gelombang {{ $item->nama_gelombang }}</label>
-                          <select name="prodi_lain_id[{{ $item->id }}][]" class="form-control" multiple>
-                              @foreach($prodiLain as $prodi)
-                                  <option value="{{ $prodi->id }}"
-                                      @if(in_array($prodi->id, $selectedProdiLain[$item->id] ?? [])) selected @endif>
-                                      {{ $prodi->name }}
-                                  </option>
-                              @endforeach
-                          </select>
+                        <label for="program-studi-1" class="form-label">Pilihan Program Studi Ke 1</label>
+                        <div>
+                            <input type="checkbox" id="select-all-prodi-1" class="form-check-input">
+                            <label for="select-all-prodi-1" class="form-check-label">Select All</label>
+                        </div>
+                        <div class="row mt-2" id="program-studi-1-container">
+                            @foreach($programStudis as $prodi)
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input type="checkbox" name="program_studi_1[]" value="{{ $prodi->id }}" class="form-check-input prodi-1-checkbox" id="program-studi-1-{{ $prodi->id }}">
+                                    <label class="form-check-label" for="program-studi-1-{{ $prodi->id }}">
+                                        <b>[UTAMA]</b> {{ $prodi->name }}
+                                    </label>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    
+                    
+
+                   
+                    <div class="mb-3">
+                      <label for="program-studi-2" class="form-label">Pilihan Program Studi Ke 2</label>
+                      <div>
+                          <input type="checkbox" id="select-all-prodi-2" class="form-check-input">
+                          <label for="select-all-prodi-2" class="form-check-label">Select All</label>
                       </div>
-                  @endforeach
-
-                  <div class="modal-footer">
-                      <button type="submit" class="btn btn-primary">Simpan</button>
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                      <div class="row mt-2" id="program-studi-2-container">
+                          <!-- Program Studi Utama -->
+                          @foreach($programStudis as $prodi)
+                          <div class="col-md-6">
+                              <div class="form-check">
+                                  <input type="checkbox" name="program_studi_2[]" value="{{ $prodi->id }}" class="form-check-input prodi-2-checkbox" id="program-studi-2-{{ $prodi->id }}">
+                                  <label class="form-check-label" for="program-studi-2-{{ $prodi->id }}">
+                                      <b>[UTAMA]</b> {{ $prodi->name }}
+                                  </label>
+                              </div>
+                          </div>
+                          @endforeach
+                  
+                          <!-- Program Studi Lain -->
+                          @foreach($prodiLain as $prodi)
+                          <div class="col-md-6">
+                              <div class="form-check">
+                                  <input type="checkbox" name="program_studi_2[]" value="{{ $prodi->id }}" class="form-check-input prodi-2-checkbox" id="program-studi-2-{{ $prodi->id }}">
+                                  <label class="form-check-label" for="program-studi-2-{{ $prodi->id }}">
+                                      {{ $prodi->name }} - {{$prodi->kampus}}
+                                  </label>
+                              </div>
+                          </div>
+                          @endforeach
+                      </div>
                   </div>
-              </form>
-          </div>
-      </div>
-  </div>
-</div>
+                  
+                    
+            
+                    
+                    
+                   
+                    
+                    
+                    
+                    
+                    
 
+
+                    <!-- Tahun Ajaran -->
+                    <div class="mb-3">
+                        <label for="id-field" class="form-label">Tahun Ajaran</label>
+                        <input required name="tahun_ajaran" type="text" class="form-control" placeholder="tahun_ajaran" />
+                    </div>
+                    
+                    <!-- Tanggal Mulai -->
+                    <div class="mb-3">
+                        <label for="id-field" class="form-label">Tanggal Mulai</label>
+                        <input required name="tanggal_mulai" type="date" class="form-control" placeholder="tanggal_mulai" />
+                    </div>
+                    
+                    <!-- Tanggal Selesai -->
+                    <div class="mb-3">
+                        <label for="id-field" class="form-label">Tanggal Selesai</label>
+                        <input required name="tanggal_selesai" type="date" class="form-control" placeholder="tanggal_selesai" />
+                    </div>
+                    
+                    <!-- Status -->
+                    <div class="mb-3">
+                        <label for="status-field" class="form-label">Status</label>
+                        <select class="form-control" data-trigger required name="status" id="status-field">
+                            <option value="">Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Block">Block</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Deskripsi -->
+                    <div class="mb-3">
+                        <label for="id-field" class="form-label">Deskripsi</label>
+                        <input required name="deskripsi" type="text" class="form-control" placeholder="deskripsi" />
+                    </div>
+                    
+                    <!-- Biaya Pendaftaran -->
+                    <div class="mb-3">
+                        <label for="id-field" class="form-label">Biaya Pendaftaran</label>
+                        <input required name="biaya_pendaftaran" type="number" min="0" class="form-control" placeholder="biaya_pendaftaran" />
+                    </div>
+                    
+                    <!-- Biaya Administrasi -->
+                    <div class="mb-3">
+                        <label for="id-field" class="form-label">Biaya Administrasi</label>
+                        <input required name="biaya_administrasi" type="number" min="0" class="form-control" placeholder="biaya_administrasi" />
+                    </div>
+                    
+                    <!-- Tanggal Ujian -->
+                    <div class="mb-3">
+                        <label for="id-field" class="form-label">Tanggal Ujian</label>
+                        <input required name="tanggal_ujian" type="date" class="form-control" placeholder="tanggal_ujian" />
+                    </div>
+                    
+                    <!-- Kuota Pendaftar -->
+                    <div class="mb-3">
+                        <label for="id-field" class="form-label">Kuota Pendaftar</label>
+                        <input required name="kuota_pendaftar" type="number" min="0" class="form-control" placeholder="kuota_pendaftar" />
+                    </div>
+                    
+                    <!-- Tempat Ujian -->
+                    <div class="mb-3">
+                        <label for="id-field" class="form-label">Tempat Ujian</label>
+                        <input required name="tempat_ujian" type="text" class="form-control" placeholder="tempat_ujian" />
+                    </div>
+                  
+                </div>
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-success" id="add-btn">Tambah Gelombang</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
   <!-- modal edit -->
   @forelse($gelombang as $index => $g)
@@ -627,4 +728,58 @@
   </script>
 
   <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
+  <script>
+    document.getElementById('select-all').addEventListener('click', function() {
+var checkboxes = document.querySelectorAll('input[name="program_studi[]"]');
+checkboxes.forEach(function(checkbox) {
+checkbox.checked = document.getElementById('select-all').checked;
+});
+});
+
+
+        </script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      // Pilihan Program Studi Ke 1
+      const selectAllProdi1 = document.getElementById('select-all-prodi-1');
+      const prodi1Checkboxes = document.querySelectorAll('.prodi-1-checkbox');
+
+      selectAllProdi1.addEventListener('change', function () {
+          prodi1Checkboxes.forEach(checkbox => {
+              checkbox.checked = selectAllProdi1.checked;
+          });
+      });
+
+      prodi1Checkboxes.forEach(checkbox => {
+          checkbox.addEventListener('change', function () {
+              if (!this.checked) {
+                  selectAllProdi1.checked = false;
+              } else if ([...prodi1Checkboxes].every(cb => cb.checked)) {
+                  selectAllProdi1.checked = true;
+              }
+          });
+      });
+
+      // Pilihan Program Studi Ke 2
+      const selectAllProdi2 = document.getElementById('select-all-prodi-2');
+      const prodi2Checkboxes = document.querySelectorAll('.prodi-2-checkbox');
+
+      selectAllProdi2.addEventListener('change', function () {
+          prodi2Checkboxes.forEach(checkbox => {
+              checkbox.checked = selectAllProdi2.checked;
+          });
+      });
+
+      prodi2Checkboxes.forEach(checkbox => {
+          checkbox.addEventListener('change', function () {
+              if (!this.checked) {
+                  selectAllProdi2.checked = false;
+              } else if ([...prodi2Checkboxes].every(cb => cb.checked)) {
+                  selectAllProdi2.checked = true;
+              }
+          });
+      });
+  });
+</script>
+</script>
 @endsection
