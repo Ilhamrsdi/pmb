@@ -236,7 +236,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light p-3">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <h5 class="modal-title" id="exampleModalLabel">Form Tambah Gelombang Pendaftaran</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
             </div>
             <form action="{{ route('gelombang.store') }}" method="post">
@@ -274,8 +274,10 @@
                    
                     <div class="mb-3">
                       <label for="program_studi_2" class="form-label">Program Studi Ke 2</label>
-                      <input type="checkbox" id="select-all-prodi-2" class="form-check-input">
-                      <label for="select-all-prodi-2" class="form-check-label">Select All</label>
+                      <div class="mt-3">
+                        <input type="checkbox" id="select-all-prodi-2" class="form-check-input">
+                        <label for="select-all-prodi-2" class="form-check-label">Select All</label>
+                    </div>
                       <div class="row mt-2" id="program-studi-2-container">
                           @foreach($programStudis as $prodi)
                               <div class="col-md-6">
@@ -286,7 +288,9 @@
                               </div>
                           @endforeach
                       </div>
+                    
                   </div>
+                  
 
                   <!-- Program Studi Lain -->
                   <div class="mb-3">

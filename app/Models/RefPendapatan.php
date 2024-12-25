@@ -9,5 +9,5 @@ class RefPendapatan extends Model
 {
     use HasFactory;
 
-    protected $table = 'incomes';
+    protected $table = 'ref.incomes';
 }

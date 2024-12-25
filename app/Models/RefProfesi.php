@@ -9,5 +9,5 @@ class RefProfesi extends Model
 {
     use HasFactory;
 
-    protected $table = 'professions';
+    protected $table = 'ref.professions';
 }

@@ -32,7 +32,7 @@
                   Selamat Anda dinyatakan Lolos Seleksi
                 </div>
                 <div class="flex-shrink-0">
-                    <a class="btn btn-success" href="{{ route('bukti.kartu-ujian', ['id' => $pendaftar->id]) }}">Cetak</a>
+                    <a class="btn btn-success" href="{{ route('bukti.kartu-ujian', ['id' => $pendaftar->id]) }}">Cetak Kartu Ujian</a>
                 </div>
                 
               </div>

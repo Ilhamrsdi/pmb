@@ -83,6 +83,34 @@ class PendaftarController extends Controller
             // Update status pendaftaran
             $detailPendaftar->update([
                 'status_pendaftaran' => $request->status_pendaftaran,
+                'status_pembayaran_pendaftaran' => $request->status_pembayaran_pendaftaran
+            ]);
+            
+            // Redirect kembali dengan pesan sukses
+            return redirect()->back()->with('success', 'Status pendaftaran berhasil diperbarui.');
+        } catch (\Exception $e) {
+            // Log error untuk debugging
+            \Log::error('Error updating status: ' . $e->getMessage());
+            
+            // Redirect kembali dengan pesan error
+            return redirect()->back()->with('error', 'Gagal memperbarui status. Silakan coba lagi.');
+        }
+    }
+    public function updateStatusPendaftar(Request $request)
+    {
+        // Validasi input jika diperlukan
+        // $request->validate([
+        //     'status_pendaftaran' => 'required',
+        //     'id' => 'required|exists:pendaftars,id'
+        // ]);
+    
+        try {
+            // Cari detail pendaftar berdasarkan ID
+            $detailPendaftar = DetailPendaftar::findOrFail($request->id);
+            
+            // Update status pendaftaran
+            $detailPendaftar->update([
+                'status_pendaftaran' => $request->status_pendaftaran,
             ]);
             
             // Redirect kembali dengan pesan sukses

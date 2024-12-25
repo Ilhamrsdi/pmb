@@ -34,7 +34,7 @@ class KelengkapanDataController extends Controller
     
     // Mengambil data provinsi dari API Fariz
 
-    $authToken = 'Bearer ' . '862|YCzEMXYliDUTt02b8sgvLDjmf5ZHIvDoAJiTBQto';
+    $authToken = 'Bearer ' . '868|NYbbpNJBxmhrV60nNieVQCawhZojP21qkHBTdtzj';
     $responseProvinsi = $client->get('http://backend.sepyankristanto.my.id/api/v1/master/provinces', [
         'headers' => [
             'Authorization' => $authToken,
@@ -113,13 +113,13 @@ $kecamatan = json_decode($responsekecamatan->getBody(), true)['data'];
     $ukuran = ['s', 'm', 'l', 'xl', 'xxl'];
 
     // Form Biodata Orang Tua
-    // $pendidikan = RefPendidikan::get();
-    $responsePendidikan = $client->get('http://backend.sepyankristanto.my.id/api/v1/master/religions', [
-        'headers' => [
-            'Authorization' => $authToken,
-        ],
-    ]);
-    $pendidikan = json_decode($responsePendidikan->getBody(), true)['data'];
+    $pendidikan = RefPendidikan::get();
+    // $responsePendidikan = $client->get('http://backend.sepyankristanto.my.id/api/v1/master/religions', [
+    //     'headers' => [
+    //         'Authorization' => $authToken,
+    //     ],
+    // ]);
+    // $pendidikan = json_decode($responsePendidikan->getBody(), true)['data'];
     $profesi = RefProfesi::get();
     $pendapatan = RefPendapatan::get();
 
@@ -207,6 +207,70 @@ $kecamatan = json_decode($responsekecamatan->getBody(), true)['data'];
         return redirect(route('dashboard', $id));
     }
 
+    public function index(Request $request, $id){
+         // Update Data Pendaftar
+        $pendaftar = Pendaftar::where('id', $id)->update([
+            "nama"              => $request->nama,
+            "nisn"              => $request->nisn,
+            "sekolah"           => $request->sekolah,
+            "alamat"            => $request->alamat,
+            "jenis_tinggal"     => $request->jenis_tinggal,
+            "jenis_kelamin"     => $request->jenis_kelamin,
+            "kendaraan"         => $request->kendaraan,
+            "kewarganegaraan"   => $request->kewarganegaraan,
+            "negara"            => $request->negara,
+            "provinsi"          => $request->provinsi ?? 'jatim',
+            "kabupaten"         => $request->kabupaten ?? 'banyuwangi',
+            "kecamatan"         => $request->kecamatan ?? 'banyuwangi',
+            "kelurahan_desa"    => $request->kelurahan_desa,
+            "rt"                => $request->rt,
+            "rw"                => $request->rw,
+            "kode_pos"          => $request->kode_pos,
+            "no_hp"             => $request->no_hp,
+            "telepon_rumah"     => $request->telepon_rumah,
+            "tempat_lahir"      => $request->tempat_lahir,
+            "tanggal_lahir"     => $request->tanggal_lahir,
+            "agama"             => $request->agama,
+        ]);
+        // return $request->all();
+
+        // Update Data Orang Tua
+        $wali = Wali::where('pendaftar_id', $id)->update([
+            "nik_ayah"            => $request->nik_ayah,
+            "status_ayah"         => $request->status_ayah,
+            "nama_ayah"           => $request->nama_ayah,
+            "tanggal_lahir_ayah"  => $request->tanggal_lahir_ayah,
+            "pendidikan_ayah"     => $request->pendidikan_ayah,
+            "pekerjaan_ayah"      => $request->pekerjaan_ayah,
+            "penghasilan_ayah"    => $request->penghasilan_ayah,
+            "nik_ibu"             => $request->nik_ibu,
+            "status_ibu"          => $request->status_ibu,
+            "nama_ibu"            => $request->nama_ibu,
+            "tanggal_lahir_ibu"   => $request->tanggal_lahir_ibu,
+            "pendidikan_ibu"      => $request->pendidikan_ibu,
+            "pekerjaan_ibu"       => $request->pekerjaan_ibu,
+            "penghasilan_ibu"     => $request->penghasilan_ibu
+        ]);
+
+        // Update Data Atribut
+        $atribut = Atribut::where('pendaftar_id', $id)->update([
+            'atribut_kaos' => $request->atribut_kaos,
+            'atribut_topi' => $request->atribut_topi,
+            'atribut_almamater' => $request->atribut_almamater,
+            'atribut_jas_lab' => $request->atribut_jas_lab,
+            'atribut_baju_lapangan' => $request->atribut_baju_lapangan,
+        ]);
+        // $namas = [];
+     
+        if (!empty($request->file)) {
+            foreach ($request->file as $key => $value) {
+                $nama =  $id . '.' . $value->extension();
+                $value->move(public_path('assets/file/' . $key . '/'), $nama);
+            }
+        }
+
+        return redirect(route('dashboard', $id)); 
+    }
 //   use Illuminate\Support\Facades\Http; // Pastikan ini di-import
 
 

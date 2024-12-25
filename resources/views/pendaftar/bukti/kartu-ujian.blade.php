@@ -52,7 +52,7 @@
 
             <div style="margin-top: -50px">
                 <h2 class="text-center fw-bold">KARTU TANDA PESERTA</h2>
-                <h5 class="text-center fw-bold">MANDIRI UTBK POLITEKNIK NEGERI SE-INDONESIA (KONSORSIUM) {{$pendaftar->gelombangPendaftaran->tahun_ajaran}}</h5>
+                <h5 class="text-center fw-bold">{{$pendaftar->gelombangPendaftaran->nama_gelombang}} {{$pendaftar->gelombangPendaftaran->tahun_ajaran}}</h5>
             </div>
 
             <div class="row mt-4">

@@ -112,6 +112,7 @@ Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
     
     // Route untuk update status pendaftaran
     Route::post('/pendaftar/update-status', [PendaftarController::class, 'updateStatus'])->name('pendaftar.update-status');
+    Route::post('/pendaftar/update-status-pendaftar', [PendaftarController::class, 'updateStatusPendaftar'])->name('pendaftar.update-status-pendaftar');
     // Route untuk update status pembayaran
     Route::post('/camaba-ukt/update-status', [CamabaSdhBlmUKTController::class, 'updateStatus'])->name('camaba-ukt.update-status');
 
@@ -219,6 +220,7 @@ Route::middleware([Pendaftar::class, 'auth'])->prefix('pendaftar')->group(functi
     // Route untuk kelengkapan data pendaftar
     Route::get('kelengkapan-data/{id}', [KelengkapanDataController::class, 'edit'])->name('kelengkapan-data.edit');
     Route::put('kelengkapan-data/{id}', [KelengkapanDataController::class, 'update'])->name('kelengkapan-data.update');
+    Route::get('kelengkapan-data-lanjutan/{id}', [KelengkapanDataController::class, 'index'])->name('kelengkapan-data.index');
     
     Route::get('bukti/{id}', [BuktiController::class, 'show'])->name('bukti.show');
     Route::get('bukti/bukt-pendaftaran/{id}', [BuktiController::class, 'buktiPendaftaran'])->name('bukti.bukti-pendaftaran');

@@ -241,12 +241,12 @@ class DashboardController extends Controller
                 return redirect('login')->with('error_gelombang', 'Anda tidak terdaftar di gelombang yang dipilih');
             } else {
                 if ($data->detailPendaftar) {
-                    if ($data->detailPendaftar->status_pendaftaran == null) {
+                    if ($data->detailPendaftar->status_pembayaran_pendaftaran == null) {
                         $dataPendaftar = $data->detailPendaftar->pendaftar_id;
                         $nomer_va = $data->detailPendaftar->va_pendaftaran;
                         $expired_va = $data->detailPendaftar->datetime_expired;
                         return view('pendaftar.dashboard.dashboard-pendaftaran', compact('nomer_va', 'expired_va', 'tata_cara', 'dataPendaftar'));
-                    } elseif ($data->detailPendaftar->status_pendaftaran == 'sudah') {
+                    } elseif ($data->detailPendaftar->status_pembayaran_pendaftaran == 'sudah') {
                         if ($data->detailPendaftar->status_acc != null) {
                             return redirect()->route('bukti.bukti-pendaftaran', $data->id);
                         } else {

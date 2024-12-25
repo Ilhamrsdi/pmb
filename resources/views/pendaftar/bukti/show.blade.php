@@ -32,7 +32,7 @@
                   Selamat Anda dinyatakan Lolos Seleksi
                 </div>
                 <div class="flex-shrink-0">
-                  <a class="btn btn-success" href="#">Cetak</a>
+                  <a class="btn btn-success" href="#">Cetak Kartu</a>
                 </div>
               </div>
 
