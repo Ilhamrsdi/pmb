@@ -29,9 +29,14 @@ class ProdiLain extends Model
     {
         return $this->hasMany(Pendaftar::class, 'prodi_lain_id');
     }
-    public function gelombangs()
+//     public function gelombangs()
+// {
+//     return $this->belongsToMany(GelombangPendaftaran::class, 'gelombang_prodi_lain', 'prodi_lain_id', 'gelombang_id');
+// }
+public function gelombangPendaftaran()
 {
-    return $this->belongsToMany(GelombangPendaftaran::class, 'gelombang_prodi_lain', 'prodi_lain_id', 'gelombang_id');
+    return $this->hasMany(GelombangPendaftaran::class, 'prodi_lain_id');
 }
+
 
 }

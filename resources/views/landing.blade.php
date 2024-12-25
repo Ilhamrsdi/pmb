@@ -410,41 +410,35 @@
               </div>
               
               
-              <div class="row">
-                  {{-- <div class="col-lg-6">
-                      <div class="mb-4">
-                          <label for="program_studi_1" class="form-label fs-13">Pilihan Program Studi 1</label>
-                          <select id="prodi" name="prodi">
-                            <option value="">Pilih Program Studi</option>
-                            <!-- Data akan dimuat secara dinamis -->
-                        </select>
-                      </div>
-                  </div> --}}
-                  <div class="col-lg-6">
-                    <div class="mb-4">
-                      <label for="program_studi" class="form-label fs-13">Pilihan Program Studi 1</label>
-                      <select class="form-select" placeholder="Masukkan " aria-label="Default select example"
-                        name="program_studi" id="prodi">
-                        <option selected>Pilih Program Studi</option>
-                      </select>
-                    </div>
-                  </div>
+           <div class="row">
+    <div class="col-lg-4">
+        <div class="mb-4">
+            <label for="program_studi" class="form-label fs-12">Pilihan Program Studi 1</label>
+            <select class="form-select" placeholder="Masukkan" aria-label="Default select example" name="program_studi" id="prodi">
+                <option selected>Pilih Program Studi</option>
+            </select>
+        </div>
+    </div>
 
-                  <div class="col-lg-6">
-                    <div class="mb-4">
-                        <label for="programStudi2" class="form-label fs-13">Pilihan Program Studi 2</label>
-                        <select class="form-select" aria-label="Default select example" name="program_studi_lain[]" id="programStudi2">
-                            <option value="" selected>Pilih Program Studi</option>
-                        </select>
-                    </div>
-                </div>
-                
-                
-                
-                
-                
-                
-              </div>
+    <div class="col-lg-4">
+        <div class="mb-4">
+            <label for="programStudi2" class="form-label fs-12">Pilihan Program Studi 2</label>
+            <select class="form-select" aria-label="Default select example" name="program_studi_lain[]" id="programStudi2">
+                <option value="" selected>Pilih Program Studi</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="mb-4">
+            <label for="programStudi3" class="form-label fs-12">Pilihan Program Studi Lain</label>
+            <select id="prodiLain" class="form-control mt-2">
+                <option value="">Pilih Program Studi Lain</option>
+            </select>
+        </div>
+    </div>
+</div>
+
               
                 <div class="row">
                   <div class="col-lg-12 text-end">
@@ -1019,26 +1013,37 @@ document.getElementById('gelombang').addEventListener('change', function() {
 
 </script>
 <script>
-document.getElementById('gelombang').addEventListener('change', function() {
+document.getElementById('gelombang').addEventListener('change', function () {
     const gelombangId = this.value;
 
     fetch(`/get-program-studi-2?gelombang_id=${gelombangId}`)
         .then(response => response.json())
         .then(data => {
             const programStudi2Dropdown = document.getElementById('programStudi2');
+            const prodiLainDropdown = document.getElementById('prodiLain');
+
+            // Reset dropdown options
             programStudi2Dropdown.innerHTML = '<option value="">Pilih Program Studi</option>';
+            prodiLainDropdown.innerHTML = '<option value="">Pilih Program Studi Lain</option>';
 
             if (data.error) {
                 alert(data.error);
                 return;
             }
 
-            data.forEach(programStudi2 => {
-              programStudi2Dropdown.innerHTML += `<option value="${programStudi2.id}">${programStudi2.name}</option>`;
+            // Populate Program Studi 2
+            data.program_studi_2.forEach(programStudi2 => {
+                programStudi2Dropdown.innerHTML += `<option value="${programStudi2.id}">${programStudi2.name}</option>`;
+            });
+
+            // Populate Prodi Lain
+            data.prodi_lain.forEach(prodiLain => {
+                prodiLainDropdown.innerHTML += `<option value="${prodiLain.id}">${prodiLain.name} - ${prodiLain.kampus}</option>`;
             });
         })
         .catch(error => console.error('Error:', error));
 });
+
 
 </script>
 

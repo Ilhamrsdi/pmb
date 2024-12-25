@@ -114,6 +114,9 @@ public function getProgramStudi2(Request $request)
 
     // Ambil data program studi berdasarkan ID dari tabel RefProgramStudi atau tabel terkait lainnya
     $programStudi2 = RefPorgramStudi::whereIn('id', $programStudi2Ids)->get(['id', 'name']);
+    
+    // Ambil semua Prodi Lain
+    $prodiLain = ProdiLain::all(['id', 'name', 'kampus']);
 
     // Jika tidak ada program studi ditemukan
     if ($programStudi2->isEmpty()) {
@@ -121,7 +124,10 @@ public function getProgramStudi2(Request $request)
     }
 
     // Kembalikan data program studi dalam bentuk JSON
-    return response()->json($programStudi2);
+    return response()->json([
+        'program_studi_2' => $programStudi2,
+        'prodi_lain' => $prodiLain
+    ]);
 }
 
 

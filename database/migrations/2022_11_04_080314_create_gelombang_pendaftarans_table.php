@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('tempat_ujian')->default('POLIWANGI');
             $table->json('program_studi_1ids')->nullable();
             $table->json('program_studi_2ids')->nullable();
+            $table->uuid('prodi_lain_id')->nullable();
             $table->timestamps();
         });
     }

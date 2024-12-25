@@ -11,6 +11,31 @@
       Gelombang Pendaftaran
     @endslot
   @endcomponent
+  @if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
+@if (session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
+{{-- Menampilkan error dari validasi --}}
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
   <div class="row">
     <div class="col-lg-12">
       <div class="card">
@@ -46,7 +71,6 @@
                     <th class="text-center" data-sort="tahun">TAHUN</th>
                     <th class="text-center" data-sort="prodi1">Program Studi 1</th>
                     <th class="text-center" data-sort="prodi2">Program Studi 2</th>
-
                     <th class="text-center" data-sort="tanggal_mulai">TANGGAL MULAI</th>
                     <th class="text-center" data-sort="tanggal_selesai">TANGGAL SELESAI</th>
                     <th class="text-center" data-sort="deskripsi">DESKRIPSI</th>
@@ -83,38 +107,32 @@
 </td>
 
 <td class="prodi2 text-center">
-  @if($g->program_studi_2ids || $g->program_studi_lain_ids)
-      @php
-          // Mengonversi JSON menjadi array
-          $programStudi2Ids = json_decode($g->program_studi_2ids, true);
-          $programStudiLainIds = json_decode($g->program_studi_lain_ids, true);
-      @endphp
+  @php
+      // Decode JSON dari kolom program_studi_2ids dan program_studi_lain_ids
+      $programStudi2Ids = json_decode($g->program_studi_2ids, true);
+      $programStudiLainIds = json_decode($g->program_studi_lain_ids, true);
+  @endphp
 
+  @if(!empty($programStudi2Ids) || !empty($programStudiLainIds))
+      {{-- Menampilkan program studi utama --}}
       @if(!empty($programStudi2Ids))
-          @php
-              // Filter hanya ID yang valid UUID
-              $validIds = array_filter($programStudi2Ids, function($id) {
-                  return Ramsey\Uuid\Guid\Guid::isValid($id);  // Pastikan hanya UUID yang valid
-              });
-
-              // Ambil data Program Studi yang ID-nya valid
-              $prodis = \App\Models\RefPorgramStudi::whereIn('id', $validIds)->get();
-          @endphp
-
-          @foreach($prodis as $prodi)
-              {{ $prodi->name }},
+          @foreach($programStudi2Ids as $id)
+              @php
+                  $prodi = \App\Models\RefPorgramStudi::find($id);
+              @endphp
+              {{ $prodi->name ?? 'N/A' }},
           @endforeach
       @endif
 
+      {{-- Menampilkan program studi lain --}}
       @if(!empty($programStudiLainIds))
           @foreach($programStudiLainIds as $id)
               @php
-                  $prodiLain = \App\Models\ProdiLain::find($id); // Model ProdiLain
+                  $prodiLain = \App\Models\ProdiLain::find($id);
               @endphp
-              {{ $prodiLain->name ?? 'N/A' }},
+              {{ $prodiLain->name ?? 'N/A' }} ({{ $prodiLain->kampus ?? 'N/A' }}),
           @endforeach
       @endif
-
   @else
       N/A
   @endif
@@ -255,38 +273,37 @@
 
                    
                     <div class="mb-3">
-                      <label for="program-studi-2" class="form-label">Pilihan Program Studi Ke 2</label>
-                      <div>
-                          <input type="checkbox" id="select-all-prodi-2" class="form-check-input">
-                          <label for="select-all-prodi-2" class="form-check-label">Select All</label>
-                      </div>
+                      <label for="program_studi_2" class="form-label">Program Studi Ke 2</label>
+                      <input type="checkbox" id="select-all-prodi-2" class="form-check-input">
+                      <label for="select-all-prodi-2" class="form-check-label">Select All</label>
                       <div class="row mt-2" id="program-studi-2-container">
-                          <!-- Program Studi Utama -->
                           @foreach($programStudis as $prodi)
-                          <div class="col-md-6">
-                              <div class="form-check">
-                                  <input type="checkbox" name="program_studi_2[]" value="{{ $prodi->id }}" class="form-check-input prodi-2-checkbox" id="program-studi-2-{{ $prodi->id }}">
-                                  <label class="form-check-label" for="program-studi-2-{{ $prodi->id }}">
-                                      <b>[UTAMA]</b> {{ $prodi->name }}
-                                  </label>
+                              <div class="col-md-6">
+                                  <div class="form-check">
+                                      <input type="checkbox" name="program_studi_2[]" value="{{ $prodi->id }}" class="form-check-input prodi-2-checkbox">
+                                      <label class="form-check-label">{{ $prodi->name }}</label>
+                                  </div>
                               </div>
-                          </div>
-                          @endforeach
-                  
-                          <!-- Program Studi Lain -->
-                          @foreach($prodiLain as $prodi)
-                          <div class="col-md-6">
-                              <div class="form-check">
-                                  <input type="checkbox" name="program_studi_2[]" value="{{ $prodi->id }}" class="form-check-input prodi-2-checkbox" id="program-studi-2-{{ $prodi->id }}">
-                                  <label class="form-check-label" for="program-studi-2-{{ $prodi->id }}">
-                                      {{ $prodi->name }} - {{$prodi->kampus}}
-                                  </label>
-                              </div>
-                          </div>
                           @endforeach
                       </div>
                   </div>
-                  
+
+                  <!-- Program Studi Lain -->
+                  <div class="mb-3">
+                    <label for="prodi_lain" class="form-label">Program Studi Lain</label>
+                    <div class="row mt-2">
+                        @foreach($prodiLain as $prodi)
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input type="radio" name="prodi_lain_id" value="{{ $prodi->id }}" class="form-check-input" required>
+                                    <label class="form-check-label">{{ $prodi->name }} - {{ $prodi->kampus }}</label>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                
+
                     
             
                     

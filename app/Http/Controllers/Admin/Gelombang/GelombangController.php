@@ -79,29 +79,38 @@ $programStudi2 = ProdiLain::whereIn('id', $validProgramStudi2Ids)->get();
         $request->validate([
             'program_studi_1' => 'required|array',
             'program_studi_2' => 'required|array',
+            'prodi_lain_id' => 'nullable|uuid|exists:prodi_lain,id',
         ]);
-        
     
-        $gelombang = GelombangPendaftaran::create([
-            'nama_gelombang' => $request->nama_gelombang,
-            'tahun_ajaran' => $request->tahun_ajaran,
-            'tanggal_mulai' => $request->tanggal_mulai,
-            'tanggal_selesai' => $request->tanggal_selesai,
-            'status' => $request->status,
-            'deskripsi' => $request->deskripsi,
-            'biaya_pendaftaran' => $request->biaya_pendaftaran,
-            'biaya_administrasi' => $request->biaya_administrasi,
-            'tanggal_ujian' => $request->tanggal_ujian,
-            'tempat_ujian' => $request->tempat_ujian,
-            'kuota_pendaftar' => $request->kuota_pendaftar,
-            "program_studi_1ids" => json_encode($request->program_studi_1),
-            "program_studi_2ids" => json_encode($request->program_studi_2),
-        ]);
-        
-        // dd($request->all());
-
-        return redirect()->route('gelombang.index');
+        try {
+            $gelombang = GelombangPendaftaran::create([
+                'nama_gelombang' => $request->nama_gelombang,
+                'tahun_ajaran' => $request->tahun_ajaran,
+                'tanggal_mulai' => $request->tanggal_mulai,
+                'tanggal_selesai' => $request->tanggal_selesai,
+                'status' => $request->status,
+                'deskripsi' => $request->deskripsi,
+                'biaya_pendaftaran' => $request->biaya_pendaftaran,
+                'biaya_administrasi' => $request->biaya_administrasi,
+                'tanggal_ujian' => $request->tanggal_ujian,
+                'tempat_ujian' => $request->tempat_ujian,
+                'kuota_pendaftar' => $request->kuota_pendaftar,
+                'program_studi_1ids' => json_encode($request->program_studi_1),
+                'program_studi_2ids' => json_encode($request->program_studi_2),
+                'prodi_lain_id' => $request->prodi_lain_id
+            ]);
+    
+            // Set flash session jika sukses
+            session()->flash('success', 'Gelombang pendaftaran berhasil ditambahkan.');
+            return redirect()->route('gelombang.index');
+        } catch (\Exception $e) {
+            // Set flash session jika gagal
+            session()->flash('error', 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.');
+            return redirect()->back()->withInput();
+        }
     }
+    
+    
     
     
 
