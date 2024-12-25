@@ -118,6 +118,15 @@
                                             <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <input type="text" class="form-control" placeholder="Masukkan Nama" id="nama" value="{{ $pendaftar->nama }}" name="nama" required>
                                         </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
+                                            <select id="jenis_kelamin" class="form-select" data-choices data-choices-sorting="true" name="jenis_kelamin" required>
+                                                <option selected>Pilih Jenis Kelamin...</option>
+                                                <option value="Laki-laki" {{ $pendaftar->jenis_kelamin == 'Laki-laki' ? 'selected' : '' }}>Laki - Laki</option>
+                                                <option value="Perempuan" {{ $pendaftar->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                                            </select>
+                                        </div>
                                         <!-- end col -->
                         
                                         <!-- Additional Form Fields -->
@@ -175,6 +184,7 @@
                                         </div>
                                         <!-- end col -->
                         
+                                        
                                         <div class="col-md-6 mb-3">
                                             <label for="provinsi" class="form-label">Provinsi</label>
                                             <span class="text-danger" title="Field ini wajib diisi">*</span>
@@ -189,7 +199,7 @@
                                         </div>
                                         <!-- end col -->
                         
-                                        <div class="col-md-4 mb-3" id="select_kabupaten">
+                                        <div class="col-md-6 mb-3" id="select_kabupaten">
                                             <label for="kabupaten" class="form-label">
                                                 Kabupaten
                                                 <span class="text-danger" title="Field ini wajib diisi">*</span>
@@ -237,7 +247,11 @@
                                             <input type="text" class="form-control" placeholder="Masukkan Nomor Kode Pos" id="kode_pos" value="{{ $pendaftar->kode_pos }}" name="kode_pos">
                                         </div>
                                         <!-- end col -->
-                        
+                                        <div class="col-md-4 mb-3">
+                                            <label for="alamat" class="form-label">Alamat</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
+                                            <input type="text" class="form-control" placeholder="Masukkan Alamat Lengkap" id="alamat" value="{{ $pendaftar->alamat }}" name="alamat">
+                                        </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="no_hp" class="form-label">Nomor HP</label>
                                             <span class="text-danger" title="Field ini wajib diisi">*</span>
