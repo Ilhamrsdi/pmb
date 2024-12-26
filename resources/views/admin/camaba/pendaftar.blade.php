@@ -142,7 +142,7 @@
                         <th data-sort="date">TGL DAFTAR</th>
                         <th data-sort="email">GELOMBANG</th>
                         <th data-sort="phone">PROGRAM STUDI</th>
-                        <th data-sort="status">STATUS PEMBAYARAN PENDAFTARAN</th>
+                        <th data-sort="status">STATUS KELENGKAPAN DATA PENDAFTARAN</th>
                         <th data-sort="statuspendaftaran">STATUS PENDAFTARAN</th>
                         <th data-sort="status">STATUS UKT</th>
                         <th data-sort="action">AKSI</th>
@@ -170,15 +170,15 @@
                           <td class="email">{{ $row->gelombangPendaftaran->nama_gelombang ?? '-' }}</td>
                           <td class="phone">{{ $row->programStudi->name ?? '-' }}</td>
                           <td class="status text-center">
-                            @if ($row->detailPendaftar?->status_pembayaran_pendaftaran == 'sudah')
-                                <span class="badge badge-soft-success text-uppercase">{{ $row->detailPendaftar->status_pembayaran_pendaftaran }}</span>
+                            @if ($row->detailPendaftar?->status_kelengkapan_data == 'sudah')
+                                <span class="badge badge-soft-success text-uppercase">{{ $row->detailPendaftar->status_kelengkapan_data }}</span>
                             @else
                                 {{-- <span class="badge badge-soft-danger text-uppercase">belum</span> --}}
                                 <!-- Button trigger modal -->
                                 <a class="badge badge-soft-danger text-uppercase" 
                                 data-bs-toggle="modal" 
                                 data-bs-target="#exampleModal-{{ $row->detailPendaftar->id ?? '' }}">
-                                {{ $row->detailPendaftar->status_pembayaran_pendaftaran ?? 'Belum' }}
+                                {{ $row->detailPendaftar->status_kelengkapan_data ?? 'Belum' }}
                              </a>
                              
 <!-- Modal -->
@@ -186,16 +186,16 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Update Status Pembayaran Pendaftaran{{$row->detailPendaftar->id ?? ''}}</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Update Status Kelengkapan Data Pendaftaran{{$row->detailPendaftar->id ?? ''}}</h5>
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="{{route('pendaftar.update-status')}}" method="POST">
+      <form action="{{route('pendaftar.update-status-pendaftar')}}" method="POST">
         @csrf
         
       <div class="modal-body">
         Apakah  Anda yakin ingin mengubah status pendaftaran?
-        <input type="hidden" value="sudah" name="status_pembayaran_pendaftaran">
+        <input type="hidden" value="sudah" name="status_kelengkapan_data">
         <input type="hidden" value="{{$row->detailPendaftar->id ?? ''}}" name="id">
         
       </div>
@@ -231,7 +231,7 @@
 <span aria-hidden="true">&times;</span>
 </button>
 </div>
-<form action="{{route('pendaftar.update-status-pendaftar')}}" method="POST">
+<form action="{{route('pendaftar.update-status')}}" method="POST">
 @csrf
 
 <div class="modal-body">

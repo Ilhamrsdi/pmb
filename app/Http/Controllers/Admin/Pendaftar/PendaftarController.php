@@ -83,7 +83,6 @@ class PendaftarController extends Controller
             // Update status pendaftaran
             $detailPendaftar->update([
                 'status_pendaftaran' => $request->status_pendaftaran,
-                'status_pembayaran_pendaftaran' => $request->status_pembayaran_pendaftaran
             ]);
             
             // Redirect kembali dengan pesan sukses
@@ -110,7 +109,7 @@ class PendaftarController extends Controller
             
             // Update status pendaftaran
             $detailPendaftar->update([
-                'status_pendaftaran' => $request->status_pendaftaran,
+                'status_kelengkapan_data' => $request->status_kelengkapan_data,
             ]);
             
             // Redirect kembali dengan pesan sukses

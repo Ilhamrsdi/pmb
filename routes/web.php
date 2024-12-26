@@ -220,7 +220,7 @@ Route::middleware([Pendaftar::class, 'auth'])->prefix('pendaftar')->group(functi
     // Route untuk kelengkapan data pendaftar
     Route::get('kelengkapan-data/{id}', [KelengkapanDataController::class, 'edit'])->name('kelengkapan-data.edit');
     Route::put('kelengkapan-data/{id}', [KelengkapanDataController::class, 'update'])->name('kelengkapan-data.update');
-    Route::get('kelengkapan-data-lanjutan/{id}', [KelengkapanDataController::class, 'index'])->name('kelengkapan-data.index');
+    Route::get('kelengkapan-data-lanjutan/{id}', [KelengkapanDataController::class, 'index'])->name('kelengkapan-data-lanjutan');
     
     Route::get('bukti/{id}', [BuktiController::class, 'show'])->name('bukti.show');
     Route::get('bukti/bukt-pendaftaran/{id}', [BuktiController::class, 'buktiPendaftaran'])->name('bukti.bukti-pendaftaran');

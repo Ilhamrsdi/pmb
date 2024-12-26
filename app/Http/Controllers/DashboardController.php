@@ -202,84 +202,173 @@ class DashboardController extends Controller
     //         }
     //     }
     // }
+    // public function index(Request $request)
+    // {
+    //     if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3) {
+    //         // Admin atau panitia
+    //         $total_pendaftar = Pendaftar::count();
+    //         $total_belum_bayar_pendaftaran = DetailPendaftar::whereNull('status_pendaftaran')->count();
+    //         $total_belum_bayar_ukt = DetailPendaftar::where('status_pembayaran', 'belum')->count();
+    //         $total_diterima = DetailPendaftar::where('status_acc', 'sudah')->count();
+    //         $total_belum_diterima = DetailPendaftar::whereNull('status_acc')->count();
+    
+    //         $data = [
+    //             'total_pendaftar' => $total_pendaftar,
+    //             'total_belum_bayar_pendaftaran' => $total_belum_bayar_pendaftaran,
+    //             'total_belum_bayar_ukt' => $total_belum_bayar_ukt,
+    //             'total_diterima' => $total_diterima,
+    //             'total_belum_diterima' => $total_belum_diterima,
+    //         ];
+    
+    //         return view('admin.dashboard', compact('data'));
+    //     } else {
+    //         // Pendaftar
+    //         $pendaftar = Pendaftar::where('user_id', auth()->user()->id)->get();
+    //         $tata_cara = TataCara::where('jenis', '!=', 'pendaftaran')->get()->groupBy('jenis', 'ASC');
+    
+    //         $data = null;
+    //         foreach ($pendaftar as $value) {
+    //             if ($value->gelombang_id == session('gelombang_id')) {
+    //                 $data = $value;
+    //                 session(['pendaftar_id' => $data->id]);
+    //                 break;
+    //             }
+    //         }
+    
+    //         if ($data == null) {
+    //             Session::flush();
+    //             Auth::logout();
+    //             return redirect('login')->with('error_gelombang', 'Anda tidak terdaftar di gelombang yang dipilih');
+    //         } else {
+    //             if ($data->detailPendaftar) {
+    //                 if ($data->detailPendaftar->status_pembayaran_pendaftaran == null) {
+    //                     $dataPendaftar = $data->detailPendaftar->pendaftar_id;
+    //                     $nomer_va = $data->detailPendaftar->va_pendaftaran;
+    //                     $expired_va = $data->detailPendaftar->datetime_expired;
+    //                     return view('pendaftar.dashboard.dashboard-pendaftaran', compact('nomer_va', 'expired_va', 'tata_cara', 'dataPendaftar'));
+    //                 } elseif ($data->detailPendaftar->status_pembayaran_pendaftaran == 'sudah') {
+    //                     if ($data->detailPendaftar->status_pendaftaran != null) {
+    //                         return redirect()->route('bukti.bukti-pendaftaran', $data->id);
+    //                     } else {
+    //                         // Redirect ke halaman untuk melengkapi biodata diri
+    //                     }
+    //                 }
+    
+    //                 if ($data->detailPendaftar) {
+    //                     if ($data->detailPendaftar->nominal_ukt == null) {
+    //                         return view('pendaftar.dashboard.dashboard-belum-ukt');
+    //                     } elseif ($data->detailPendaftar->status_ukt == 'sudah') {
+    //                         $nomer_va = $data->detailPendaftar->va_ukt;
+    //                         $expired_va = $data->detailPendaftar->datetime_expired_ukt;
+    //                         $nominal_ukt = $data->detailPendaftar->nominal_ukt;
+    //                         $id_pendaftar = $data->detailPendaftar->id;
+    //                         $nama_pendaftar = $data->nama;
+    //                         $dataPendaftar = $data->detailPendaftar->pendaftar_id;
+    //                         if ($data->detailPendaftar->status_acc == 'sudah') {
+    //                             return redirect()->route('bukti.show', $data->id); // Arahkan ke halaman show jika sudah punya NIM
+    //                         } else {
+    //                             return view('pendaftar.dashboard.dashboard-ukt', compact('nomer_va', 'expired_va', 'nominal_ukt', 'nama_pendaftar', 'id_pendaftar', 'dataPendaftar', 'tata_cara'));
+    //                         }
+    //                     } else {
+    //                         return redirect(route('bukti.show', $data->id));
+    //                     }
+    //                 } else {
+    //                     return redirect()->route('error.page');
+    //                 }
+                    
+    //             }
+    //         }
+    //     }
+    // }
     public function index(Request $request)
-    {
-        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3) {
-            // Admin atau panitia
-            $total_pendaftar = Pendaftar::count();
-            $total_belum_bayar_pendaftaran = DetailPendaftar::whereNull('status_pendaftaran')->count();
-            $total_belum_bayar_ukt = DetailPendaftar::where('status_pembayaran', 'belum')->count();
-            $total_diterima = DetailPendaftar::where('status_acc', 'sudah')->count();
-            $total_belum_diterima = DetailPendaftar::whereNull('status_acc')->count();
-    
-            $data = [
-                'total_pendaftar' => $total_pendaftar,
-                'total_belum_bayar_pendaftaran' => $total_belum_bayar_pendaftaran,
-                'total_belum_bayar_ukt' => $total_belum_bayar_ukt,
-                'total_diterima' => $total_diterima,
-                'total_belum_diterima' => $total_belum_diterima,
-            ];
-    
-            return view('admin.dashboard', compact('data'));
-        } else {
-            // Pendaftar
-            $pendaftar = Pendaftar::where('user_id', auth()->user()->id)->get();
-            $tata_cara = TataCara::where('jenis', '!=', 'pendaftaran')->get()->groupBy('jenis', 'ASC');
-    
-            $data = null;
-            foreach ($pendaftar as $value) {
-                if ($value->gelombang_id == session('gelombang_id')) {
-                    $data = $value;
-                    session(['pendaftar_id' => $data->id]);
-                    break;
-                }
+{
+    if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3) {
+        // Admin atau panitia
+        $total_pendaftar = Pendaftar::count();
+        $total_belum_bayar_pendaftaran = DetailPendaftar::whereNull('status_pendaftaran')->count();
+        $total_belum_bayar_ukt = DetailPendaftar::where('status_pembayaran', 'belum')->count();
+        $total_diterima = DetailPendaftar::where('status_acc', 'sudah')->count();
+        $total_belum_diterima = DetailPendaftar::whereNull('status_acc')->count();
+
+        $data = [
+            'total_pendaftar' => $total_pendaftar,
+            'total_belum_bayar_pendaftaran' => $total_belum_bayar_pendaftaran,
+            'total_belum_bayar_ukt' => $total_belum_bayar_ukt,
+            'total_diterima' => $total_diterima,
+            'total_belum_diterima' => $total_belum_diterima,
+        ];
+
+        return view('admin.dashboard', compact('data'));
+    } else {
+        // Pendaftar
+        $pendaftar = Pendaftar::where('user_id', auth()->user()->id)->get();
+        $tata_cara = TataCara::where('jenis', '!=', 'pendaftaran')->get()->groupBy('jenis', 'ASC');
+
+        $data = null;
+        foreach ($pendaftar as $value) {
+            if ($value->gelombang_id == session('gelombang_id')) {
+                $data = $value;
+                session(['pendaftar_id' => $data->id]);
+                break;
             }
-    
-            if ($data == null) {
-                Session::flush();
-                Auth::logout();
-                return redirect('login')->with('error_gelombang', 'Anda tidak terdaftar di gelombang yang dipilih');
-            } else {
+        }
+
+        if ($data == null) {
+            Session::flush();
+            Auth::logout();
+            return redirect('login')->with('error_gelombang', 'Anda tidak terdaftar di gelombang yang dipilih');
+        } else {
+            if ($data->detailPendaftar) {
                 if ($data->detailPendaftar) {
-                    if ($data->detailPendaftar->status_pembayaran_pendaftaran == null) {
+                    if ($data->detailPendaftar->status_pendaftaran === null) {
+                        // Jika status pendaftaran belum diisi
                         $dataPendaftar = $data->detailPendaftar->pendaftar_id;
                         $nomer_va = $data->detailPendaftar->va_pendaftaran;
                         $expired_va = $data->detailPendaftar->datetime_expired;
                         return view('pendaftar.dashboard.dashboard-pendaftaran', compact('nomer_va', 'expired_va', 'tata_cara', 'dataPendaftar'));
-                    } elseif ($data->detailPendaftar->status_pembayaran_pendaftaran == 'sudah') {
-                        if ($data->detailPendaftar->status_acc != null) {
+                    } elseif ($data->detailPendaftar->status_pendaftaran === 'sudah') {
+                        // Jika status pendaftaran adalah "sudah"
+                        if ($data->detailPendaftar->status_kelengkapan_data === 'sudah') {
+                            // Jika kelengkapan data telah divalidasi, redirect ke halaman bukti pendaftaran
                             return redirect()->route('bukti.bukti-pendaftaran', $data->id);
                         } else {
-                            // Redirect ke halaman untuk melengkapi biodata diri
-                        }
-                    }
-    
-                    if ($data->detailPendaftar) {
-                        if ($data->detailPendaftar->nominal_ukt == null) {
-                            return view('pendaftar.dashboard.dashboard-belum-ukt');
-                        } elseif ($data->detailPendaftar->status_ukt == 'sudah') {
-                            $nomer_va = $data->detailPendaftar->va_ukt;
-                            $expired_va = $data->detailPendaftar->datetime_expired_ukt;
-                            $nominal_ukt = $data->detailPendaftar->nominal_ukt;
-                            $id_pendaftar = $data->detailPendaftar->id;
-                            $nama_pendaftar = $data->nama;
-                            $dataPendaftar = $data->detailPendaftar->pendaftar_id;
-                            if ($data->detailPendaftar->status_acc == 'sudah') {
-                                return redirect()->route('bukti.show', $data->id); // Arahkan ke halaman show jika sudah punya NIM
-                            } else {
-                                return view('pendaftar.dashboard.dashboard-ukt', compact('nomer_va', 'expired_va', 'nominal_ukt', 'nama_pendaftar', 'id_pendaftar', 'dataPendaftar', 'tata_cara'));
-                            }
-                        } else {
-                            return redirect(route('bukti.show', $data->id));
+                            // Jika kelengkapan data belum selesai, redirect ke kelengkapan data
+                            return redirect()->route('kelengkapan-data.edit', $data->id);
                         }
                     } else {
-                        return redirect()->route('error.page');
+                        // Default: Jika status pendaftaran tidak null dan tidak "sudah"
+                        return redirect()->route('bukti.bukti-pendaftaran', $data->id);
                     }
-                    
+                
+                }
+                
+
+                if ($data->detailPendaftar) {
+                    if ($data->detailPendaftar->nominal_ukt == null) {
+                        return view('pendaftar.dashboard.dashboard-belum-ukt');
+                    } elseif ($data->detailPendaftar->status_ukt == 'sudah') {
+                        $nomer_va = $data->detailPendaftar->va_ukt;
+                        $expired_va = $data->detailPendaftar->datetime_expired_ukt;
+                        $nominal_ukt = $data->detailPendaftar->nominal_ukt;
+                        $id_pendaftar = $data->detailPendaftar->id;
+                        $nama_pendaftar = $data->nama;
+                        $dataPendaftar = $data->detailPendaftar->pendaftar_id;
+                        if ($data->detailPendaftar->status_acc == 'sudah') {
+                            return redirect()->route('bukti.show', $data->id); // Arahkan ke halaman show jika sudah punya NIM
+                        } else {
+                            return view('pendaftar.dashboard.dashboard-ukt', compact('nomer_va', 'expired_va', 'nominal_ukt', 'nama_pendaftar', 'id_pendaftar', 'dataPendaftar', 'tata_cara'));
+                        }
+                    } else {
+                        return redirect(route('bukti.show', $data->id));
+                    }
+                } else {
+                    return redirect()->route('error.page');
                 }
             }
         }
     }
+}
+
     
 
 
