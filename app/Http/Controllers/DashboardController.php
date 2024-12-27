@@ -328,8 +328,11 @@ class DashboardController extends Controller
                         return view('pendaftar.dashboard.dashboard-pendaftaran', compact('nomer_va', 'expired_va', 'tata_cara', 'dataPendaftar'));
                     } elseif ($data->detailPendaftar->status_pendaftaran === 'sudah') {
                         // Jika status pendaftaran adalah "sudah"
-                        if ($data->detailPendaftar->status_kelengkapan_data === 'sudah') {
-                            // Jika kelengkapan data telah divalidasi, redirect ke halaman bukti pendaftaran
+                        if ($data->detailPendaftar->status_kelengkapan_data === 'sudah' && $data->detailPendaftar->status_acc === 'sudah') {
+                            // Jika kelengkapan data sudah divalidasi dan status acc sudah, muat view kelengkapan-data-lanjutan
+                            return view('pendaftar.kelengkapan-data.kelengkapan-data-lanjutan', compact('data'));
+                        } elseif ($data->detailPendaftar->status_kelengkapan_data === 'sudah') {
+                            // Jika kelengkapan data sudah divalidasi, redirect ke halaman bukti pendaftaran
                             return redirect()->route('bukti.bukti-pendaftaran', $data->id);
                         } else {
                             // Jika kelengkapan data belum selesai, redirect ke kelengkapan data
@@ -339,6 +342,7 @@ class DashboardController extends Controller
                         // Default: Jika status pendaftaran tidak null dan tidak "sudah"
                         return redirect()->route('bukti.bukti-pendaftaran', $data->id);
                     }
+                    
                 
                 }
                 

@@ -28,7 +28,7 @@ class Pendaftar extends Model
 
     public function detailPendaftar()
     {
-        return $this->hasOne(DetailPendaftar::class);
+        return $this->hasOne(DetailPendaftar::class, 'pendaftar_id', 'id');
     }
 
     public function wali()

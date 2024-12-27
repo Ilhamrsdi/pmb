@@ -241,6 +241,7 @@
                                            
                                         </div>
                                         <!--end col-->
+                                        
                                         <div class="col-md-4 mb-3">
                                             <label for="pekerjaan_ibu" class="form-label">Pekerjaan Ibu Kandung</label>
                                             <select id="pekerjaan_ibu" class="form-select" data-choices data-choices-sorting="true"
@@ -314,7 +315,7 @@
                             
                             
                         
-                            <div class="mb-3">
+                            <div class="col-12 mb-3">
                                 <label for="atribut_kaos" class="form-label">Atribut Kaos</label>
                                 <div class="row d-flex justify-content-around">
                                     {{-- @foreach ($ukuran as $item)
