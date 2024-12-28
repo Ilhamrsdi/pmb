@@ -330,7 +330,8 @@ class DashboardController extends Controller
                         // Jika status pendaftaran adalah "sudah"
                         if ($data->detailPendaftar->status_kelengkapan_data === 'sudah' && $data->detailPendaftar->status_acc === 'sudah') {
                             // Jika kelengkapan data sudah divalidasi dan status acc sudah, muat view kelengkapan-data-lanjutan
-                            return view('pendaftar.kelengkapan-data.kelengkapan-data-lanjutan', compact('data'));
+                            // return view('pendaftar.kelengkapan-data.kelengkapan-data-lanjutan', compact('data'));
+                            return redirect()->route('kelengkapan-data.lanjutan.index', $data->id);
                         } elseif ($data->detailPendaftar->status_kelengkapan_data === 'sudah') {
                             // Jika kelengkapan data sudah divalidasi, redirect ke halaman bukti pendaftaran
                             return redirect()->route('bukti.bukti-pendaftaran', $data->id);
@@ -370,6 +371,7 @@ class DashboardController extends Controller
                 }
             }
         }
+        
     }
 }
 

@@ -218,9 +218,20 @@ Route::middleware([Pendaftar::class, 'auth'])->prefix('pendaftar')->group(functi
     Route::post('upload/bukti-bayar-ukt', [BuktiController::class, 'upload_bukti_ukt'])->name('upload-bukti-ukt');
     
     // Route untuk kelengkapan data pendaftar
-    Route::get('kelengkapan-data/{id}', [KelengkapanDataController::class, 'edit'])->name('kelengkapan-data.edit');
-    Route::put('kelengkapan-data/{id}', [KelengkapanDataController::class, 'update'])->name('kelengkapan-data.update');
-    Route::get('kelengkapan-data-lanjutan/{id}', [KelengkapanDataController::class, 'index'])->name('kelengkapan-data.kelengkapan-data-lanjutan');
+    // Kelengkapan Data Dasar
+    Route::get('kelengkapan-data/{id}', [KelengkapanDataController::class, 'edit'])
+    ->name('kelengkapan-data.edit'); // Menampilkan form edit kelengkapan data dasar
+
+    Route::put('kelengkapan-data/{id}', [KelengkapanDataController::class, 'update'])
+    ->name('kelengkapan-data.update'); // Mengupdate kelengkapan data dasar
+
+    // Kelengkapan Data Lanjutan
+    Route::get('kelengkapan-data-lanjutan/{id}', [KelengkapanDataController::class, 'index'])
+    ->name('kelengkapan-data.lanjutan.index'); // Menampilkan form kelengkapan data lanjutan
+
+    Route::put('kelengkapan-data-lanjutan/{id}', [KelengkapanDataController::class, 'updateLanjutan'])
+    ->name('kelengkapan-data.lanjutan.update'); // Mengupdate kelengkapan data lanjutan
+
     
     Route::get('bukti/{id}', [BuktiController::class, 'show'])->name('bukti.show');
     Route::get('bukti/bukt-pendaftaran/{id}', [BuktiController::class, 'buktiPendaftaran'])->name('bukti.bukti-pendaftaran');

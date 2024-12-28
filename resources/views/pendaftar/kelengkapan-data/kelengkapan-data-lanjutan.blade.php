@@ -43,10 +43,10 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-body kelengkapan-data-tab">
-                    {{-- <form id="myform" action="{{ route('kelengkapan-data-lanjutan.update', $pendaftar->id) }}" method="post"
-                        enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT') --}}
+                                        @if ($pendaftar)
+                        <form id="myform" action="{{ route('kelengkapan-data.lanjutan.update', $pendaftar->id) }}" method="post">
+                            @csrf
+                            @method('PUT')
                         <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
                             <ul class="nav nav-pills nav-justified custom-nav" role="tablist">
                                 <li class="nav-item" role="presentation">
@@ -92,8 +92,8 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="nik_ayah" class="form-label">NIK Ayah Kandung</label>
-                                            {{-- <input type="text" class="form-control" placeholder="Masukkan NIK Ayah"
-                                                id="nik_ayah" value="{{ $pendaftar->wali->nik_ayah }}" name="nik_ayah"> --}}
+                                            <input type="text" class="form-control" placeholder="Masukkan NIK Ayah"
+                                                id="nik_ayah" value="{{ $pendaftar->wali->nik_ayah }}" name="nik_ayah">
                                                 <input type="text" class="form-control" placeholder="Masukkan NIK Ayah"
                                                 id="nik_ayah" value="" name="nik_ayah">
                                         </div>
@@ -103,12 +103,12 @@
                                             <select id="status_ayah" class="form-select" data-choices
                                                 data-choices-sorting="true" name="status_ayah">
                                                 <option selected>Pilih Status...</option>
-                                                {{-- <option value="hidup"
+                                                <option value="hidup"
                                                     {{ $pendaftar->wali->status_ayah == 'hidup' ? 'selected' : '' }}>Hidup
                                                 </option>
                                                 <option value="wafat"
                                                     {{ $pendaftar->wali->status_ayah == 'wafat' ? 'selected' : '' }}>Wafat
-                                                </option> --}}
+                                                </option>
                                             </select>
                                         </div>
                                         <!--end col-->
@@ -117,17 +117,17 @@
                                             <input type="text" class="form-control" placeholder="Masukkan Nama Ayah"
                                                 id="nama_ayah" value=""
                                                 name="nama_ayah">
-                                                {{-- <input type="text" class="form-control" placeholder="Masukkan Nama Ayah"
+                                                <input type="text" class="form-control" placeholder="Masukkan Nama Ayah"
                                                 id="nama_ayah" value="{{ $pendaftar->wali->nama_ayah }}"
-                                                name="nama_ayah"> --}}
+                                                name="nama_ayah">
                                         </div>
                                         <!--end col-->
                                         <div class="col-md-6 mb-3">
                                             <label for="tanggal_lahir_ayah" class="form-label">Tanggal Lahir Ayah Kandung</label>
-                                            {{-- <input type="date" class="form-control" placeholder="Masukkan Nama Ayah"
+                                            <input type="date" class="form-control" placeholder="Masukkan Nama Ayah"
                                                 id="tanggal_lahir_ayah"
                                                 value="{{ $pendaftar->wali->tanggal_lahir_ayah }}"
-                                                name="tanggal_lahir_ayah"> --}}
+                                                name="tanggal_lahir_ayah">
                                                 <input type="date" class="form-control" placeholder="Masukkan Nama Ayah"
                                                 id="tanggal_lahir_ayah"
                                                 value=""
@@ -139,11 +139,11 @@
                                             <select id="pendidikan_ayah" class="form-select" data-choices data-choices-sorting="true"
                                                 name="pendidikan_ayah">
                                                 <option selected>Pilih Pendidikan Terakhir...</option>
-                                                {{-- @foreach ($pendidikan as $item)
+                                                @foreach ($pendidikan as $item)
                                                 <option {{ $item->name == $pendaftar->wali->pendidikan_ayah ? 'selected' : '' }}>
                                                     {{ $item->name }}
                                                 </option>
-                                                @endforeach --}}
+                                                @endforeach
                                             </select>
                                         </div>
                                         <!--end col-->
@@ -151,12 +151,12 @@
                                             <label for="pekerjaan_ayah" class="form-label">Pekerjaan Ayah Kandung</label>
                                             <select id="pekerjaan_ayah" class="form-select" data-choices data-choices-sorting="true"
                                             name="pekerjaan_ayah">
-                                            {{-- <option selected>Pilih Pekerjaan...</option>
+                                            <option selected>Pilih Pekerjaan...</option>
                                             @foreach ($profesi as $item)
                                             <option {{ $item->name == $pendaftar->wali->pekerjaan_ayah ? 'selected' : '' }}>
                                                 {{ $item->name }}
                                             </option>
-                                            @endforeach --}}
+                                            @endforeach
                                             <option selected>Pilih Pekerjaan...</option>
                                            
                                             </option>
@@ -170,10 +170,10 @@
                                             <select id="penghasilan_ayah" class="form-select" data-choices data-choices-sorting="true"
                                             name="penghasilan_ayah">
                                             <option selected>Pilih Pendapatan...</option>
-                                            {{-- @foreach ($pendapatan as $item)
+                                            @foreach ($pendapatan as $item)
                                             <option {{ $item->name == $pendaftar->wali->penghasilan_ayah ? 'selected' : '' }}>
                                                 {{ $item->name }}</option>
-                                            @endforeach --}}
+                                            @endforeach
                                         </select>
                                            
                                         </div>
@@ -185,8 +185,8 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="nik_ibu" class="form-label">NIK Ibu Kandung</label>
-                                            {{-- <input type="text" class="form-control" placeholder="Masukkan NIK Ibu"
-                                                id="nik_ibu" value="{{ $pendaftar->wali->nik_ibu }}" name="nik_ibu"> --}}
+                                            <input type="text" class="form-control" placeholder="Masukkan NIK Ibu"
+                                                id="nik_ibu" value="{{ $pendaftar->wali->nik_ibu }}" name="nik_ibu">
                                                 <input type="text" class="form-control" placeholder="Masukkan NIK Ibu"
                                                 id="nik_ibu" value="" name="nik_ibu">
                                         </div>
@@ -195,33 +195,28 @@
                                             <label for="status_ibu" class="form-label">Status Ibu Kandung</label>
                                             <select id="status_ibu" class="form-select" data-choices
                                                 data-choices-sorting="true" name="status_ibu">
-                                                {{-- <option selected>Pilih Status...</option>
+                                                <option selected>Pilih Status...</option>
                                                 <option value="hidup"
                                                     {{ $pendaftar->wali->status_ibu == 'hidup' ? 'selected' : '' }}>Hidup
                                                 </option>
                                                 <option value="wafat"
                                                     {{ $pendaftar->wali->status_ibu == 'wafat' ? 'selected' : '' }}>Wafat
-                                                </option> --}}
-                                                <option selected>Pilih Status...</option>
-                                             
+                                                </option>
                                             </select>
                                         </div>
                                         <!--end col-->
                                         <div class="col-md-6 mb-3">
                                             <label for="nama_ibu" class="form-label">Nama Ibu Kandung</label>
-                                            {{-- <input type="text" class="form-control" placeholder="Masukkan Nama Ibu"
-                                                id="nama_ibu" value="{{ $pendaftar->wali->nama_ibu }}" name="nama_ibu"> --}}
+                                            <input type="text" class="form-control" placeholder="Masukkan Nama Ibu"
+                                                id="nama_ibu" value="{{ $pendaftar->wali->nama_ibu }}" name="nama_ibu">
                                                 <input type="text" class="form-control" placeholder="Masukkan Nama Ibu"
                                                 id="nama_ibu" value="" name="nama_ibu">
                                         </div>
                                         <!--end col-->
                                         <div class="col-md-6 mb-3">
                                             <label for="tanggal_lahir_ibu" class="form-label">Tanggal Lahir Ibu</label>
-                                            {{-- <input type="date" class="form-control" placeholder="Masukkan Nama Ibu"
+                                            <input type="date" class="form-control" placeholder="Masukkan Nama Ibu"
                                                 id="tanggal_lahir_ibu" value="{{ $pendaftar->wali->tanggal_lahir_ibu }}"
-                                                name="tanggal_lahir_ibu"> --}}
-                                                <input type="date" class="form-control" placeholder="Masukkan Nama Ibu"
-                                                id="tanggal_lahir_ibu" value=""
                                                 name="tanggal_lahir_ibu">
                                         </div>
                                         <!--end col-->
@@ -229,11 +224,11 @@
                                             <label for="pendidikan_ibu" class="form-label">Pendidikan Ibu Kandung</label>
                                             <select id="pendidikan_ibu" class="form-select" data-choices data-choices-sorting="true"
                                             name="pendidikan_ibu">
-                                            {{-- <option selected>Pilih Pendidikan Terakhir...</option>
+                                            <option selected>Pilih Pendidikan Terakhir...</option>
                                             @foreach ($pendidikan as $item)
                                             <option {{ $item->name == $pendaftar->wali->pendidikan_ibu ? 'selected' : '' }}>
                                                 {{ $item->name }}</option>
-                                            @endforeach --}}
+                                            @endforeach
                                             <input type="date" class="form-control" placeholder="Masukkan Nama Ibu"
                                             id="tanggal_lahir_ibu" value=""
                                             name="tanggal_lahir_ibu">
@@ -247,11 +242,11 @@
                                             <select id="pekerjaan_ibu" class="form-select" data-choices data-choices-sorting="true"
                                             name="pekerjaan_ibu">
                                             <option selected>Pilih Pekerjaan...</option>
-                                            {{-- @foreach ($profesi as $item)
+                                            @foreach ($profesi as $item)
                                             <option {{ $item->name == $pendaftar->wali->pekerjaan_ibu ? 'selected' : '' }}>
                                                 {{ $item->name }}
                                             </option>
-                                            @endforeach --}}
+                                            @endforeach
                                         </select>
                                         </div>
                                         <!--end col-->
@@ -260,10 +255,10 @@
                                                                         <select id="penghasilan_ibu" class="form-select" data-choices data-choices-sorting="true"
                                                     name="penghasilan_ibu">
                                                     <option selected>Pilih Pendapatan...</option>
-                                                    {{-- @foreach ($pendapatan as $item)
+                                                    @foreach ($pendapatan as $item)
                                                     <option {{ $item->name == $pendaftar->wali->penghasilan_ibu ? 'selected' : '' }}>
                                                         {{ $item->name }}</option>
-                                                    @endforeach --}}
+                                                    @endforeach
                                                 </select>
                                         </div>
                                         <!--end col-->
@@ -290,7 +285,7 @@
                             </div>
                         
                             <!-- Display the existing images from the table -->
-                            {{-- <div class="mb-3">
+                            <div class="mb-3">
                                 <label for="gambarAtribut" class="form-label">Contoh Gambar Atribut</label>
                                 <div class="row">
                                     @php
@@ -311,77 +306,77 @@
                                         <p class="text-muted">Tidak ada gambar atribut tersedia.</p>
                                     @endif
                                 </div>
-                            </div> --}}
+                            </div>
                             
                             
                         
                             <div class="col-12 mb-3">
                                 <label for="atribut_kaos" class="form-label">Atribut Kaos</label>
                                 <div class="row d-flex justify-content-around">
-                                    {{-- @foreach ($ukuran as $item)
+                                    @foreach ($ukuran as $item)
                                         <div class="col-2 form-check card-radio">
                                             <input class="form-check-input" type="radio" name="atribut_kaos"
                                                 id="{{ 'atribut_kaos_' . $item }}" value="{{ $item }}"
                                                 {{ $pendaftar->atribut->atribut_kaos == $item ? 'checked' : '' }}>
                                             <label class="form-check-label" for="{{ 'atribut_kaos_' . $item }}">{{ Str::upper($item) }}</label>
                                         </div>
-                                    @endforeach --}}
+                                    @endforeach
                                 </div>
                             </div>
                         
                             <div class="col-12 mb-3 ">
                                 <label for="atribut_topi" class="form-label">Atribut Topi</label>
                                 <div class="row d-flex justify-content-around">
-                                    {{-- @foreach ($ukuran as $item)
+                                    @foreach ($ukuran as $item)
                                         <div class="col-2 form-check card-radio">
                                             <input class="form-check-input" type="radio" name="atribut_topi"
                                                 id="{{ 'atribut_topi_' . $item }}" value="{{ $item }}"
                                                 {{ $pendaftar->atribut->atribut_topi == $item ? 'checked' : '' }}>
                                             <label class="form-check-label" for="{{ 'atribut_topi_' . $item }}">{{ Str::upper($item) }}</label>
                                         </div>
-                                    @endforeach --}}
+                                    @endforeach
                                 </div>
                             </div>
                         
                             <div class="col-12 mb-3 ">
                                 <label for="atribut_almamater" class="form-label">Atribut Almamater</label>
                                 <div class="row d-flex justify-content-around">
-                                    {{-- @foreach ($ukuran as $item)
+                                    @foreach ($ukuran as $item)
                                         <div class="col-2 form-check card-radio">
                                             <input class="form-check-input" type="radio" name="atribut_almamater"
                                                 id="{{ 'atribut_almamater_' . $item }}" value="{{ $item }}"
                                                 {{ $pendaftar->atribut->atribut_almamater == $item ? 'checked' : '' }}>
                                             <label class="form-check-label" for="{{ 'atribut_almamater_' . $item }}">{{ Str::upper($item) }}</label>
                                         </div>
-                                    @endforeach --}}
+                                    @endforeach
                                 </div>
                             </div>
                         
                             <div class="col-12 mb-3 ">
                                 <label for="atribut_jas_lab" class="form-label">Atribut Jas Lab</label>
                                 <div class="row d-flex justify-content-around">
-                                    {{-- @foreach ($ukuran as $item)
+                                    @foreach ($ukuran as $item)
                                         <div class="col-2 form-check card-radio">
                                             <input class="form-check-input" type="radio" name="atribut_jas_lab"
                                                 id="{{ 'atribut_jas_lab_' . $item }}" value="{{ $item }}"
                                                 {{ $pendaftar->atribut->atribut_jas_lab == $item ? 'checked' : '' }}>
                                             <label class="form-check-label" for="{{ 'atribut_jas_lab_' . $item }}">{{ Str::upper($item) }}</label>
                                         </div>
-                                    @endforeach --}}
+                                    @endforeach
                                 </div>
                             </div>
                         
                             <div class="col-12 mb-3 ">
                                 <label for="atribut_baju_lapangan" class="form-label">Atribut Baju Lapangan</label>
                                 <div class="row d-flex justify-content-around">
-                                    {{-- @foreach ($ukuran as $item)
+                                    @foreach ($ukuran as $item)
                                         <div class="col-2 form-check card-radio">
                                             <input class="form-check-input" type="radio" name="atribut_baju_lapangan"
                                                 id="{{ 'atribut_baju_lapangan_' . $item }}" value="{{ $item }}"
                                                 {{ $pendaftar->atribut->atribut_baju_lapangan == $item ? 'checked' : '' }}>
                                             <label class="form-check-label" for="{{ 'atribut_baju_lapangan_' . $item }}">{{ Str::upper($item) }}</label>
                                         </div>
-                                    @endforeach --}}
+                                    @endforeach
                                 </div>
                             </div>
                         
@@ -402,7 +397,7 @@
                                 <div>
 
                                     <div class="row">
-                                        {{-- @foreach ($list_berkas as $berkas)
+                                        @foreach ($list_berkas as $berkas)
                                           <div class="col-lg-12 mb-3">
                                             <label for="{{ 'file-' . $berkas->berkas->nama_berkas }}"
                                               class="d-flex justify-content-between align-items-center">Upload Berkas
@@ -417,7 +412,7 @@
                                                 accept="application/pdf,image/jpg,image/jpeg,image/png" required>
                                             </label>
                                           </div>
-                                        @endforeach --}}
+                                        @endforeach
                                       </div>
 
                                     <div class="d-flex align-items-start gap-3 mt-4">
@@ -448,7 +443,10 @@
                             <!-- end tab pane -->
                         </div>
                         <!-- end tab content -->
-                    {{-- </form> --}}
+                    </form>
+                    @else
+                        <p>Data pendaftar tidak ditemukan.</p>
+                    @endif
                 </div>
                 <!-- end card body -->
             </div>
