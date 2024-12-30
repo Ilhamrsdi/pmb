@@ -410,34 +410,35 @@
               </div>
               
               
-           <div class="row">
-    <div class="col-lg-4">
-        <div class="mb-4">
-            <label for="program_studi" class="form-label fs-12">Pilihan Program Studi 1</label>
-            <select class="form-select" placeholder="Masukkan" aria-label="Default select example" name="program_studi" id="prodi">
-                <option selected>Pilih Program Studi</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="col-lg-4">
-        <div class="mb-4">
-            <label for="programStudi2" class="form-label fs-12">Pilihan Program Studi 2</label>
-            <select class="form-select" aria-label="Default select example" name="program_studi_lain[]" id="programStudi2">
-                <option value="" selected>Pilih Program Studi</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="col-lg-4">
-        <div class="mb-4">
-            <label for="programStudi3" class="form-label fs-12">Pilihan Program Studi Lain</label>
-            <select id="prodiLain" class="form-control mt-2">
-                <option value="">Pilih Program Studi Lain</option>
-            </select>
-        </div>
-    </div>
-</div>
+              <div class="row">
+                <div class="col-lg-4">
+                    <div class="mb-4">
+                        <label for="program_studi" class="form-label fs-12">Pilihan Program Studi 1</label>
+                        <select class="form-select" name="program_studi" id="prodi">
+                            <option selected>Pilih Program Studi</option>
+                        </select>
+                    </div>
+                </div>
+            
+                <div class="col-lg-4">
+                    <div class="mb-4">
+                        <label for="programStudi2" class="form-label fs-12">Pilihan Program Studi 2</label>
+                        <select class="form-select" name="program_studi_lain[]" id="programStudi2">
+                            <option value="" selected>Pilih Program Studi</option>
+                        </select>
+                    </div>
+                </div>
+            
+                <div class="col-lg-4">
+                    <div class="mb-4">
+                        <label for="programStudi3" class="form-label fs-12">Pilihan Program Studi Lain</label>
+                        <select class="form-select" name="program_studi_lain_lain[]" id="prodiLain">
+                            <option value="">Pilih Program Studi Lain</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
 
               
                 <div class="row">
