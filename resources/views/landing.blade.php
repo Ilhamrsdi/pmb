@@ -384,7 +384,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
+                {{-- <div class="row">
                   <div class="col-lg-12">
                     <div class="mb-4">
                       <label for="sekolah" class="form-label fs-13">Asal Sekolah</label>
@@ -392,7 +392,31 @@
                         name="sekolah" />
                     </div>
                   </div>
-                </div>
+                </div> --}}
+                <div class="row">
+    <div class="col-lg-12">
+        <div class="mb-4">
+            <label for="sekolah" class="form-label fs-13">Asal Sekolah</label>
+            <select name="sekolah" id="sekolah" class="form-select">
+                <option value="" selected>Pilih Asal Sekolah</option>
+                @if(!empty($dataSekolah) && is_array($dataSekolah))
+                    @foreach($dataSekolah as $item)
+                        <option value="{{ $item['npsn'] }}">
+                            {{ $item['sekolah'] }} - {{ $item['kabupaten_kota'] }}
+                        </option>
+                    @endforeach
+                @else
+                    <option value="" disabled>Data sekolah tidak tersedia</option>
+                @endif
+            </select>
+        </div>
+    </div>
+</div>
+
+              
+              
+              
+                
                 <div class="col-lg-12">
                   <div class="mb-4">
                       <label for="gelombang" class="form-label fs-13">Gelombang Pendaftaran</label>
