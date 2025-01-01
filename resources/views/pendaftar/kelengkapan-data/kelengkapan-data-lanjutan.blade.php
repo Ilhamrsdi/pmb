@@ -43,19 +43,23 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-body kelengkapan-data-tab">
-                                        @if ($pendaftar)
-                        <form id="myform" action="{{ route('kelengkapan-data.lanjutan.update', $pendaftar->id) }}" method="post">
-                            @csrf
-                            @method('PUT')
+                    <form id="myform" action="{{ route('kelengkapan-data.update', $pendaftar->id) }}" method="post"
+                        enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
                         <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
                             <ul class="nav nav-pills nav-justified custom-nav" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link fs-15 p-3" id="pills-bio-orangtua-tab" data-bs-toggle="pill"
-                                        data-bs-target="#pills-bio-orangtua" type="button" role="tab"
-                                        aria-controls="pills-bio-orangtua" aria-selected="false"><i
-                                            class="ri-briefcase-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle me-2"></i>
-                                        Biodata Orang Tua</button>
-                                </li>              
+                                    <button class="nav-link fs-15 p-3 active" id="pills-bio-orangtua-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-bio-orangtua" type="button" role="tab"
+                                    aria-controls="pills-bio-orangtua" aria-selected="false"><i
+                                        class="ri-briefcase-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle me-2"></i>
+                                    Biodata Orang Tua</button>
+                                </li>
+                          
+                               
+                               
+
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link fs-15 p-3" id="pills-atribut-tab" data-bs-toggle="pill"
                                         data-bs-target="#pills-atribut" type="button" role="tab"
@@ -63,6 +67,7 @@
                                             class="ri-shirt-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle me-2"></i>
                                         Atribut</button>
                                 </li>
+                               
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link fs-15 p-3" id="pills-berkas-tab" data-bs-toggle="pill"
                                         data-bs-target="#pills-berkas" type="button" role="tab"
@@ -80,6 +85,9 @@
                         </div>
 
                         <div class="tab-content">
+                           
+                            <!-- end tab pane -->
+                          
                             <div class="tab-pane fade show active" id="pills-bio-orangtua" role="tabpanel"
                                 aria-labelledby="pills-bio-orangtua-tab">
                                 <div>
@@ -92,10 +100,8 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="nik_ayah" class="form-label">NIK Ayah Kandung</label>
-                                            <input type="text" class="form-control" placeholder="Masukkan NIK Ayah"
+                                            <input type="number" max="16" class="form-control" placeholder="Masukkan NIK Ayah"
                                                 id="nik_ayah" value="{{ $pendaftar->wali->nik_ayah }}" name="nik_ayah">
-                                                <input type="text" class="form-control" placeholder="Masukkan NIK Ayah"
-                                                id="nik_ayah" value="" name="nik_ayah">
                                         </div>
                                         <!--end col-->
                                         <div class="col-md-6 mb-3">
@@ -115,9 +121,6 @@
                                         <div class="col-md-6 mb-3">
                                             <label for="nama_ayah" class="form-label">Nama Ayah Kandung</label>
                                             <input type="text" class="form-control" placeholder="Masukkan Nama Ayah"
-                                                id="nama_ayah" value=""
-                                                name="nama_ayah">
-                                                <input type="text" class="form-control" placeholder="Masukkan Nama Ayah"
                                                 id="nama_ayah" value="{{ $pendaftar->wali->nama_ayah }}"
                                                 name="nama_ayah">
                                         </div>
@@ -127,10 +130,6 @@
                                             <input type="date" class="form-control" placeholder="Masukkan Nama Ayah"
                                                 id="tanggal_lahir_ayah"
                                                 value="{{ $pendaftar->wali->tanggal_lahir_ayah }}"
-                                                name="tanggal_lahir_ayah">
-                                                <input type="date" class="form-control" placeholder="Masukkan Nama Ayah"
-                                                id="tanggal_lahir_ayah"
-                                                value=""
                                                 name="tanggal_lahir_ayah">
                                         </div>
                                         <!--end col-->
@@ -145,6 +144,8 @@
                                                 </option>
                                                 @endforeach
                                             </select>
+                                            {{-- <input id="pendidikan_ayah" class="form-control" name="pendidikan_ayah"
+                                                value="SMA"> --}}
                                         </div>
                                         <!--end col-->
                                         <div class="col-md-4 mb-3">
@@ -157,12 +158,9 @@
                                                 {{ $item->name }}
                                             </option>
                                             @endforeach
-                                            <option selected>Pilih Pekerjaan...</option>
-                                           
-                                            </option>
-                                            
                                         </select>
-                                           
+                                            {{-- <input id="pekerjaan_ayah" class="form-control" name="pekerjaan_ayah"
+                                                value="Dagang"> --}}
                                         </div>
                                         <!--end col-->
                                         <div class="col-md-4 mb-3">
@@ -175,7 +173,8 @@
                                                 {{ $item->name }}</option>
                                             @endforeach
                                         </select>
-                                           
+                                            {{-- <input id="pekerjaan_ayah" class="form-control" name="penghasilan_ayah"
+                                                value="100000000"> --}}
                                         </div>
                                         <!--end col-->
                                     </div>
@@ -185,10 +184,8 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="nik_ibu" class="form-label">NIK Ibu Kandung</label>
-                                            <input type="text" class="form-control" placeholder="Masukkan NIK Ibu"
+                                            <input type="number" max="16" class="form-control" placeholder="Masukkan NIK Ibu"
                                                 id="nik_ibu" value="{{ $pendaftar->wali->nik_ibu }}" name="nik_ibu">
-                                                <input type="text" class="form-control" placeholder="Masukkan NIK Ibu"
-                                                id="nik_ibu" value="" name="nik_ibu">
                                         </div>
                                         <!--end col-->
                                         <div class="col-md-6 mb-3">
@@ -209,8 +206,6 @@
                                             <label for="nama_ibu" class="form-label">Nama Ibu Kandung</label>
                                             <input type="text" class="form-control" placeholder="Masukkan Nama Ibu"
                                                 id="nama_ibu" value="{{ $pendaftar->wali->nama_ibu }}" name="nama_ibu">
-                                                <input type="text" class="form-control" placeholder="Masukkan Nama Ibu"
-                                                id="nama_ibu" value="" name="nama_ibu">
                                         </div>
                                         <!--end col-->
                                         <div class="col-md-6 mb-3">
@@ -229,14 +224,11 @@
                                             <option {{ $item->name == $pendaftar->wali->pendidikan_ibu ? 'selected' : '' }}>
                                                 {{ $item->name }}</option>
                                             @endforeach
-                                            <input type="date" class="form-control" placeholder="Masukkan Nama Ibu"
-                                            id="tanggal_lahir_ibu" value=""
-                                            name="tanggal_lahir_ibu">
                                         </select>
-                                           
+                                            {{-- <input id="pendidikan_ibu" class="form-control" name="pendidikan_ibu"
+                                                value="SMA"> --}}
                                         </div>
                                         <!--end col-->
-                                        
                                         <div class="col-md-4 mb-3">
                                             <label for="pekerjaan_ibu" class="form-label">Pekerjaan Ibu Kandung</label>
                                             <select id="pekerjaan_ibu" class="form-select" data-choices data-choices-sorting="true"
@@ -248,6 +240,8 @@
                                             </option>
                                             @endforeach
                                         </select>
+                                            {{-- <input id="pekerjaan_ibu" class="form-control" name="pekerjaan_ibu"
+                                                value="Dagang"> --}}
                                         </div>
                                         <!--end col-->
                                         <div class="col-md-4 mb-3">
@@ -260,12 +254,13 @@
                                                         {{ $item->name }}</option>
                                                     @endforeach
                                                 </select>
+                                            {{-- <input id="penghasilan_ibu" class="form-control" name="penghasilan_ibu"
+                                                value="1000000000"> --}}
                                         </div>
                                         <!--end col-->
                                     </div>
 
                                     <div class="d-flex align-items-start gap-3 mt-4">
-                                       
                                         <button type="button" class="btn btn-primary btn-label right ms-auto nexttab"
                                             data-nexttab="pills-atribut-tab"><i
                                                 class="ri-shirt-line label-icon align-middle fs-16 ms-2"></i>Lanjut ke
@@ -274,9 +269,7 @@
                                 </div>
                             </div>
                             
-                          
-                            
-                            <!-- end tab pane -->
+                           
                             <div class="tab-pane fade" id="pills-atribut" role="tabpanel"
                             aria-labelledby="pills-atribut-tab">
                             <div>
@@ -310,7 +303,7 @@
                             
                             
                         
-                            <div class="col-12 mb-3">
+                            <div class="mb-3">
                                 <label for="atribut_kaos" class="form-label">Atribut Kaos</label>
                                 <div class="row d-flex justify-content-around">
                                     @foreach ($ukuran as $item)
@@ -385,6 +378,8 @@
                                         class="ri-file-line label-icon align-middle fs-16 ms-2"></i>Lanjut ke Berkas Pendukung</button>
                             </div>
                         </div>
+                        
+                        
                             <!-- end tab pane -->
 
                             <div class="tab-pane fade" id="pills-berkas" role="tabpanel"
@@ -402,7 +397,8 @@
                                             <label for="{{ 'file-' . $berkas->berkas->nama_berkas }}"
                                               class="d-flex justify-content-between align-items-center">Upload Berkas
                                               {{ Str::upper($berkas->berkas->nama_berkas) }}
-                                          
+                                              {{-- <a class="btn btn-sm btn-primary" href="{{ asset('assets/file/' . $pendaftar->'file-'.$berkas ) }}"
+                                                download>Download Berkas</a> --}}
                                             </label>
                                             <label for="{{ 'file-' . $berkas->berkas->nama_berkas }}" class="drop-container">
                                               <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
@@ -444,9 +440,6 @@
                         </div>
                         <!-- end tab content -->
                     </form>
-                    @else
-                        <p>Data pendaftar tidak ditemukan.</p>
-                    @endif
                 </div>
                 <!-- end card body -->
             </div>
@@ -522,7 +515,7 @@
                   url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
                   type: 'GET',
                   headers: {
-                      'Authorization': '868|NYbbpNJBxmhrV60nNieVQCawhZojP21qkHBTdtzj' // Token Anda
+                      'Authorization': '874|mO9pzhlhLHttWSVPBPXc0hrza1fpMizrM7e6VdqN' // Token Anda
                   },
                   success: function(response) {
                       var kabupatenKotaData = response.data;
@@ -618,7 +611,7 @@
                         url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
                         type: 'GET',
                         headers: {
-                            'Authorization': 'Bearer 868|NYbbpNJBxmhrV60nNieVQCawhZojP21qkHBTdtzj' // Token Anda
+                            'Authorization': 'Bearer 874|mO9pzhlhLHttWSVPBPXc0hrza1fpMizrM7e6VdqN' // Token Anda
                         },
                         success: function(response) {
                             var kabupatenKotaData = response.data;
@@ -664,7 +657,7 @@
                         url: 'http://backend.sepyankristanto.my.id/api/v1/master/sub-districts', // Endpoint untuk mendapatkan kecamatan
                         type: 'GET',
                         headers: {
-                            'Authorization': 'Bearer 868|NYbbpNJBxmhrV60nNieVQCawhZojP21qkHBTdtzj' // Token Anda
+                            'Authorization': 'Bearer 874|mO9pzhlhLHttWSVPBPXc0hrza1fpMizrM7e6VdqN' // Token Anda
                         },
                         success: function(response) {
                             var kecamatanData = response.data;
