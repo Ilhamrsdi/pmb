@@ -419,6 +419,67 @@
                 <input value="{{ $g->nama_gelombang }}" required name="nama_gelombang" type="text"
                   class="form-control" placeholder="nama_gelombang" />
               </div>
+               <!-- Program Studi Ke-1 -->
+               <div class="mb-3">
+                <label for="program_studi_1" class="form-label">Pilihan Program Studi Ke 1</label>
+                <div>
+                    <input type="checkbox" id="select-all-prodi-1" class="form-check-input">
+                    <label for="select-all-prodi-1" class="form-check-label">Select All</label>
+                </div>
+                <div class="row mt-2" id="program-studi-1-container">
+                    @foreach($programStudis as $prodi)
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="program_studi_1[]" value="{{ $prodi->id }}" class="form-check-input prodi-1-checkbox" id="program-studi-1-{{ $prodi->id }}" {{ in_array($prodi->id, $g->program_studi_1->pluck('id')->toArray()) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="program-studi-1-{{ $prodi->id }}">
+                                    <b>[UTAMA]</b> {{ $prodi->name }}
+                                </label>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            
+            
+            
+
+           
+                   <!-- Program Studi Ke-2 -->
+                   <div class="mb-3">
+                    <label for="program_studi_2" class="form-label">Program Studi Ke 2</label>
+                    <div>
+                        <input type="checkbox" id="select-all-prodi-2" class="form-check-input">
+                        <label for="select-all-prodi-2" class="form-check-label">Select All</label>
+                    </div>
+                    <div class="row mt-2" id="program-studi-2-container">
+                        @foreach($programStudis as $prodi)
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input type="checkbox" name="program_studi_2[]" value="{{ $prodi->id }}" class="form-check-input prodi-2-checkbox" id="program-studi-2-{{ $prodi->id }}" {{ in_array($prodi->id, $g->program_studi_2->pluck('id')->toArray()) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="program-studi-2-{{ $prodi->id }}">{{ $prodi->name }}</label>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                
+          
+
+            <!-- Program Studi Lain -->
+            <div class="mb-3">
+              <label for="prodi_lain" class="form-label">Program Studi Lain</label>
+              <div class="row mt-2">
+                  @foreach($prodiLain as $prodi)
+                      <div class="col-md-6">
+                          <div class="form-check">
+                              <input type="radio" name="prodi_lain_id" value="{{ $prodi->id }}" class="form-check-input" {{ $g->prodi_lain_id == $prodi->id ? 'checked' : '' }} required>
+                              <label class="form-check-label" for="prodi_lain_id_{{ $prodi->id }}">{{ $prodi->name }} - {{ $prodi->kampus }}</label>
+                          </div>
+                      </div>
+                  @endforeach
+              </div>
+          </div>
+          
               <div class="mb-3">
                 <label for="id-field" class="form-label">Tahun Ajaran</label>
                 <input value="{{ $g->tahun_ajaran }}" required name="tahun_ajaran" type="text"
@@ -449,14 +510,28 @@
                   placeholder="deskripsi" />
               </div>
               <div class="mb-3">
-                <label for="id-field" class="form-label">Nominal Pendaftaran</label>
-                <input value="{{ $g->nominal_pendaftaran }}" required name="nominal_pendaftaran" type="number"
-                  min="0" class="form-control" placeholder="nominal_pendaftaran" />
+                <label for="id-field" class="form-label">Biaya Pendaftaran</label>
+                <input value="{{ $g->biaya_pendaftaran }}" required name="biaya_pendaftaran" type="number"
+                  min="0" class="form-control" placeholder="biaya_pendaftaran" />
               </div>
+              <div class="mb-3">
+                <label for="id-field" class="form-label">Biaya Administrasi</label>
+                <input value="{{ $g->biaya_administrasi }}" required name="biaya_administrasi" type="number"
+                  min="0" class="form-control" placeholder="biaya_administrasi" />
+              </div>
+              <div class="mb-3">
+                <label for="id-field" class="form-label">Tanggal Ujian</label>
+                <input value="{{$g->tanggal_ujian}}" name="tanggal_ujian" type="date" class="form-control" placeholder="tanggal_ujian" />
+            </div>
               <div class="mb-3">
                 <label for="id-field" class="form-label">Kuota Pendaftar</label>
                 <input value="{{ $g->kuota_pendaftar }}" required name="kuota_pendaftar" type="number"
                   min="0" class="form-control" placeholder="kuota_pendaftar" />
+              </div>
+              <div class="mb-3">
+                <label for="id-field" class="form-label">Tempat Ujian</label>
+                <input value="{{ $g->tempat_ujian }}" required name="tempat_ujian" type="text"
+                 class="form-control" placeholder="tempat_ujian" />
               </div>
             </div>
             <div class="modal-footer">

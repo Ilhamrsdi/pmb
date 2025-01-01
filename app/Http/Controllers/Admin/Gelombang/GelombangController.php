@@ -145,21 +145,43 @@ $programStudi2 = ProdiLain::whereIn('id', $validProgramStudi2Ids)->get();
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $gelombang = GelombangPendaftaran::find($id)->update([
-            "nama_gelombang" => $request->nama_gelombang,
-            "tahun_ajaran"  => $request->tahun_ajaran,
-            "tanggal_mulai"  => $request->tanggal_mulai,
-            "tanggal_selesai" => $request->tanggal_selesai,
-            "status" => $request->status,
-            "deskripsi"  => $request->deskripsi,
-            "nominal_pendaftaran"  => $request->nominal_pendaftaran,
-            "kuota_pendaftar"  => $request->kuota_pendaftar,
-        ]);
-        // dd($gelombang);
+{
+    $gelombang = GelombangPendaftaran::find($id);
 
-        return redirect()->route('gelombang.index');
+    // Program studi 1 IDs harus dalam bentuk array
+    $programStudi1Ids = is_array($request->program_studi_1) ? $request->program_studi_1 : json_decode($request->program_studi_1, true); // decode as array
+    if (is_null($programStudi1Ids)) {
+        $programStudi1Ids = [];
     }
+
+    // Program studi 2 IDs harus dalam bentuk array dan valid UUID
+    $programStudi2Ids = is_array($request->program_studi_2) ? $request->program_studi_2 : json_decode($request->program_studi_2, true); // decode as array
+    if (is_null($programStudi2Ids)) {
+        $programStudi2Ids = []; // jika null, ubah menjadi array kosong
+    }
+
+    $validProgramStudi2Ids = $programStudi2Ids; // ambil semua ID tanpa validasi UUID
+
+    $gelombang->update([
+        'nama_gelombang' => $request->nama_gelombang,
+        'tahun_ajaran' => $request->tahun_ajaran,
+        'tanggal_mulai' => $request->tanggal_mulai,
+        'tanggal_selesai' => $request->tanggal_selesai,
+        'status' => $request->status,
+        'deskripsi' => $request->deskripsi,
+        'biaya_pendaftaran' => $request->biaya_pendaftaran,
+        'biaya_administrasi' => $request->biaya_administrasi,
+        'tanggal_ujian' => $request->tanggal_ujian,
+        'tempat_ujian' => $request->tempat_ujian,
+        'kuota_pendaftar' => $request->kuota_pendaftar,
+        'program_studi_1ids' => json_encode($programStudi1Ids), // encode kembali ke JSON
+        'program_studi_2ids' => json_encode($validProgramStudi2Ids), // encode kembali ke JSON
+        'prodi_lain_id' => $request->prodi_lain_id
+    ]);
+
+    return redirect()->route('gelombang.index');
+}
+
 
     /**
      * Remove the specified resource from storage.

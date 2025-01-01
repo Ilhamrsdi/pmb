@@ -93,7 +93,7 @@
             </table>
             <h6 class="mt-4"><strong>PERNYATAAN</strong></h6>
             <p>
-                Saya menyatakan bahwa data yang saya isikan dalam formulir pendaftaran MANDIRI UTBK POLITEKNIK NEGERI SE-INDONESIA (KONSORSIUM) {{$pendaftar->gelombangPendaftaran->tahun_ajaran}} adalah benar dan saya bersedia menerima ketentuan yang berlaku di Perguruan Tinggi dan Program Studi yang saya pilih. Saya bersedia menerima sanksi pembatalan penerimaan di PTN yang saya pilih apabila melanggar pernyataan ini.
+                Saya menyatakan bahwa data yang saya isikan dalam formulir pendaftaran MANDIRI UTBK {{$pendaftar->gelombangPendaftaran->nama_gelombang}} {{$pendaftar->gelombangPendaftaran->tahun_ajaran}} adalah benar dan saya bersedia menerima ketentuan yang berlaku di Perguruan Tinggi dan Program Studi yang saya pilih. Saya bersedia menerima sanksi pembatalan penerimaan di PTN yang saya pilih apabila melanggar pernyataan ini.
             </p>
             <p class="text-end" style="margin-right: 120px;">Tanda Tangan </p>
             <br>
