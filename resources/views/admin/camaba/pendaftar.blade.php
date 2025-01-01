@@ -368,6 +368,10 @@ Apakah  Anda yakin ingin mengubah status pendaftaran?
                   <td>{{ $row->nama }}</td>
                 </tr>
                 <tr>
+                  <td style="width: 400px">NISN PENDAFTAR</td>
+                  <td>{{ $row->nisn }}</td>
+                </tr>
+                <tr>
                   <td style="width: 400px">EMAIL</td>
                   <td>{{ $row->user->email ?? '-' }}</td>
                 </tr>
@@ -378,14 +382,6 @@ Apakah  Anda yakin ingin mengubah status pendaftaran?
                 <tr>
                   <td style="width: 400px">ASAL SEKOLAH</td>
                   <td>{{ $row->sekolah }}</td>
-                </tr>
-                <tr>
-                  <td>STATUS PEMBAYARAN PENDAFTARAN</td>
-                 <td>
-                  <span class="badge badge-soft-{{ $row->detailPendaftar->status_pembayaran_pendaftaran === 'sudah' ? 'success' : 'danger' }} text-uppercase">
-                    {{ $row->detailPendaftar->status_pembayaran_pendaftaran ?? 'Belum' }}
-                </span>
-                 </td>
                 </tr>
                 <tr>
                   <td style="width: 400px">KODE BAYAR PENDAFTARAN</td>

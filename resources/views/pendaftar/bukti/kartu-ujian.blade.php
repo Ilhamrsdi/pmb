@@ -83,11 +83,11 @@
                     </tr>
                     <tr>
                         <th>Pilihan Jurusan Ke-2</th>
-                        <td>D4 Teknologi Rekayasa Perangkat Lunak - Politeknik Negeri Banyuwangi</td>
+                        <td>{{$pendaftar->programStudi2->name ?? 'Tidak Ada Pilihan'}}</td>
                     </tr>
                     <tr>
                         <th>Pilihan Jurusan Ke-3</th>
-                        <td>D4 Bisnis Digital - Politeknik Negeri Banyuwangi</td>
+                        <td>{{$pendaftar->prodiLain->name ?? 'Tidak Ada Pilihan'}} - {{$pendaftar->prodiLain->kampus}}</td>
                     </tr>
                 </tbody>
             </table>
