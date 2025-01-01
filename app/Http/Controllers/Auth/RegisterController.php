@@ -11,6 +11,7 @@ use App\Mail\EmailNotification;
 use App\Models\DetailPendaftar;
 use App\Http\Controllers\Controller;
 use App\Models\GelombangPendaftaran;
+use App\Models\ProdiLain;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Providers\RouteServiceProvider;
@@ -45,7 +46,9 @@ class RegisterController extends Controller
             'avatar' => ['image', 'mimes:jpg,jpeg,png', 'max:1024'],
             'sekolah' => ['required', 'string'],
             'program_studi' => ['required', 'string'],
-            'gelombang' => ['required', 'integer'],
+            'program_studi_2_id' => 'nullable|exists:program_studi,id',
+            'prodi_lain_id' => 'nullable|exists:prodi_lain,id',
+            'gelombang' => ['required', 'integer']
         ]);
         
         return $validate;
@@ -98,7 +101,8 @@ class RegisterController extends Controller
             'nama' => $data['nama'],
             'sekolah' => $data['sekolah'],
             'program_studi_id' => $data['program_studi'],
-            // 'prodi_lain_id' => $data['prodi_lain'],
+            'program_studi_2_id' => $data['program_studi_2'],
+            'prodi_lain_id' => $data['prodi_lain'],
             'gelombang_id' => $data['gelombang'],
         ]);
 
@@ -125,6 +129,7 @@ class RegisterController extends Controller
 
         $program_studi = RefPorgramStudi::find($pendaftar->program_studi_id);
         $gelombang = GelombangPendaftaran::find($pendaftar->gelombang_id);
+        $prodi_lain = ProdiLain::find($pendaftar->prodi_lain_id);
 
         $mailData = [
             'title' => 'Mail from PMB Poliwangi',
@@ -133,7 +138,7 @@ class RegisterController extends Controller
             'password' => 'password',
             'gelombang' => $gelombang->nama_gelombang . " - " . $gelombang->deskripsi,
             'program_studi' => $program_studi->name ,
-            // 'prodi_lain' => $program_studi->prodi_lain->name ,
+            'prodi_lain' => $prodi_lain->name ,
             
         ];
 
@@ -158,6 +163,8 @@ class RegisterController extends Controller
                 'nama' => $data['nama'],
                 'sekolah' => $data['sekolah'],
                 'program_studi_id' => $data['program_studi'],
+                'program_studi_2_id' => $data['program_studi_2'],
+                'prodi_lain_id' => $data['prodi_lain'],
                 'gelombang_id' => $data['gelombang'],
             ]);
 

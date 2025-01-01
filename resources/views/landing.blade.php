@@ -430,7 +430,7 @@
                 <div class="col-lg-4">
                     <div class="mb-4">
                         <label for="programStudi2" class="form-label fs-12">Pilihan Program Studi 2</label>
-                        <select class="form-select" name="program_studi_lain[]" id="programStudi2">
+                        <select class="form-select" name="program_studi_2" id="programStudi2">
                             <option value="" selected>Pilih Program Studi</option>
                         </select>
                     </div>
@@ -439,7 +439,7 @@
                 <div class="col-lg-4">
                     <div class="mb-4">
                         <label for="programStudi3" class="form-label fs-12">Pilihan Program Studi Lain</label>
-                        <select class="form-select" name="program_studi_lain_lain[]" id="prodiLain">
+                        <select class="form-select" name="prodi_lain" id="prodiLain">
                             <option value="">Pilih Program Studi Lain</option>
                         </select>
                     </div>

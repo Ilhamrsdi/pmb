@@ -33,6 +33,11 @@
       <td>:</td>
       <td>{{ $mailData['program_studi'] }}</td>
     </tr>
+    <tr>
+      <td>Program Studi Lain</td>
+      <td>:</td>
+      <td>{{ $mailData['prodi_lain'] }}</td>
+    </tr>
   </table>
 
 </body>

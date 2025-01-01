@@ -111,12 +111,20 @@
                                             <label for="nik" class="form-label">NIK</label>
                                             <input type="text" class="form-control" placeholder="example@gamil.com" id="nik" value="{{ $pendaftar->user->nik }}" disabled>
                                         </div>
+
+                                       
+
                                         <!-- end col -->
                         
                                         <div class="col-md-6 mb-3">
                                             <label for="nama" class="form-label">Nama</label>
                                             <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <input type="text" class="form-control" placeholder="Masukkan Nama" id="nama" value="{{ $pendaftar->nama }}" name="nama" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="nisn" class="form-label">NISN</label>
+                                            <span class="text-danger" title="Field ini wajib diisi">*</span>
+                                            <input type="text" class="form-control" placeholder="Masukan NISN" id="nisn" value="{{ $pendaftar->nisn }}" name="nisn">
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
@@ -150,7 +158,7 @@
                                                   <div class="mb-4">
                                                     <label for="sekolah" class="form-label fs-13">Asal Sekolah</label>
                                                     <input type="text" class="form-control" placeholder="Masukkan Asal Sekolah" id="sekolah"
-                                                      name="sekolah" />
+                                                      name="sekolah" value="{{$pendaftar->sekolah}}"/>
                                                   </div>
                                         </div>
                                         <!-- end col -->

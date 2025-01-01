@@ -18,7 +18,8 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->foreignId('test_maba_id')->nullable();
             $table->uuid('program_studi_id')->nullable();
-            $table->foreignId('prodi_lain_id')->nullable();
+            $table->uuid('prodi_lain_id')->nullable();
+            $table->uuid('program_studi_2_id')->nullable();
             $table->foreignId('gelombang_id')->nullable();
             $table->foreignId('ukt_id')->nullable();
             $table->string('nama')->nullable();

@@ -16,6 +16,8 @@ class Pendaftar extends Model
         'no_hp',
         'sekolah',
         'program_studi_id',
+        'program_studi_2_id', // Tambahkan ini
+        'prodi_lain_id',
         'gelombang_id',
         'ukt_id',
         'nim'
@@ -44,6 +46,10 @@ class Pendaftar extends Model
     public function programStudi()
     {
         return $this->belongsTo(RefPorgramStudi::class, 'program_studi_id', 'id');
+    }
+    public function programStudi2()
+    {
+        return $this->belongsTo(RefPorgramStudi::class, 'program_studi_2_id');
     }
 
     public function gelombangPendaftaran()
@@ -96,8 +102,8 @@ class Pendaftar extends Model
     //     return static::where('kode_prodi', $this->kode_prodi)->max('nomor_urut') ?? 0;
     // }
     public function prodiLain()
-{
-    return $this->belongsTo(ProdiLain::class, 'prodi_lain_id');
-}
+    {
+        return $this->belongsTo(ProdiLain::class);
+    }
     
 }
