@@ -177,16 +177,16 @@
                                 <!-- Button trigger modal -->
                                 <a class="badge badge-soft-danger text-uppercase" 
                                 data-bs-toggle="modal" 
-                                data-bs-target="#exampleModal-{{ $row->detailPendaftar->id ?? '' }}">
+                                data-bs-target="#ModalKelengkapanData-{{ $row->detailPendaftar->id ?? '' }}">
                                 {{ $row->detailPendaftar->status_kelengkapan_data ?? 'Belum' }}
                              </a>
                              
 <!-- Modal -->
-<div class="modal fade" id="exampleModal-{{$row->detailPendaftar->id ?? ''}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalKelengkapanData-{{$row->detailPendaftar->id ?? ''}}" tabindex="-1" role="dialog" aria-labelledby="ModalKelengkapanData" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Update Status Kelengkapan Data Pendaftaran{{$row->detailPendaftar->id ?? ''}}</h5>
+        <h5 class="modal-title" id="ModalKelengkapanData">Update Status Kelengkapan Data Pendaftaran{{$row->detailPendaftar->id ?? ''}}</h5>
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -214,7 +214,6 @@
   @if ($row->detailPendaftar?->status_pendaftaran == 'sudah')
   <span class="badge badge-soft-success text-uppercase">{{ $row->detailPendaftar->status_pendaftaran }}</span>
 @else
-  {{-- <span class="badge badge-soft-danger text-uppercase">belum</span> --}}
   <!-- Button trigger modal -->
   <a class="badge badge-soft-danger text-uppercase" 
   data-bs-toggle="modal" 
