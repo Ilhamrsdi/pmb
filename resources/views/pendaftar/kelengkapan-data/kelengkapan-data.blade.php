@@ -144,6 +144,15 @@
                                             </select>
                                            
                                         </div>
+
+
+                                        <div class="col-md-6 mb-3">
+                                                  <div class="mb-4">
+                                                    <label for="sekolah" class="form-label fs-13">Asal Sekolah</label>
+                                                    <input type="text" class="form-control" placeholder="Masukkan Asal Sekolah" id="sekolah"
+                                                      name="sekolah" />
+                                                  </div>
+                                        </div>
                                         <!-- end col -->
                         
                                         <div class="col-md-6 mb-3">
@@ -743,7 +752,7 @@
                   url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
                   type: 'GET',
                   headers: {
-                      'Authorization': '868|NYbbpNJBxmhrV60nNieVQCawhZojP21qkHBTdtzj' // Token Anda
+                      'Authorization': '874|mO9pzhlhLHttWSVPBPXc0hrza1fpMizrM7e6VdqN' // Token Anda
                   },
                   success: function(response) {
                       var kabupatenKotaData = response.data;
@@ -839,7 +848,7 @@
                         url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
                         type: 'GET',
                         headers: {
-                            'Authorization': 'Bearer 868|NYbbpNJBxmhrV60nNieVQCawhZojP21qkHBTdtzj' // Token Anda
+                            'Authorization': 'Bearer 874|mO9pzhlhLHttWSVPBPXc0hrza1fpMizrM7e6VdqN' // Token Anda
                         },
                         success: function(response) {
                             var kabupatenKotaData = response.data;
@@ -885,7 +894,7 @@
                         url: 'http://backend.sepyankristanto.my.id/api/v1/master/sub-districts', // Endpoint untuk mendapatkan kecamatan
                         type: 'GET',
                         headers: {
-                            'Authorization': 'Bearer 868|NYbbpNJBxmhrV60nNieVQCawhZojP21qkHBTdtzj' // Token Anda
+                            'Authorization': 'Bearer 874|mO9pzhlhLHttWSVPBPXc0hrza1fpMizrM7e6VdqN' // Token Anda
                         },
                         success: function(response) {
                             var kecamatanData = response.data;

@@ -29,37 +29,6 @@ class LandingController extends Controller
         $prodi_lain = ProdiLain::get();
         $tata_cara = TataCara::where('jenis', 'pendaftaran')->get();
         $pengumuman = Pengumuman::take(5)->get();
-    
-        // Inisialisasi Guzzle client
-        $client = new \GuzzleHttp\Client();
-        $dataSekolah = []; // Inisialisasi variabel default
-    
-        try {
-            // Request data SMA
-            $responseSMA = $client->get('https://api-sekolah-indonesia.vercel.app/sekolah/sma?kab_kota=052500&page=1&perPage=1000');
-            $dataSMA = json_decode($responseSMA->getBody(), true);
-    
-            // Request data SMK
-            $responseSMK = $client->get('https://api-sekolah-indonesia.vercel.app/sekolah/smk?kab_kota=052500&page=1&perPage=1000');
-            $dataSMK = json_decode($responseSMK->getBody(), true);
-    
-            // Gabungkan hasil SMA dan SMK jika data valid
-            if (is_array($dataSMA) && isset($dataSMA['dataSekolah'])) {
-                $dataSekolah = array_merge($dataSekolah, $dataSMA['dataSekolah']);
-            }
-    
-            if (is_array($dataSMK) && isset($dataSMK['dataSekolah'])) {
-                $dataSekolah = array_merge($dataSekolah, $dataSMK['dataSekolah']);
-            }
-    
-            // Batasi jumlah data yang ditampilkan menjadi 100
-            $dataSekolah = array_slice($dataSekolah, 0, 100);
-    
-        } catch (\Exception $e) {
-            // Logging jika terjadi error
-            \Log::error('Error fetching SMA dan SMK data: ' . $e->getMessage());
-        }
-    
         // Return data ke view
         return view('landing', compact([
             'gelombang',
@@ -68,7 +37,7 @@ class LandingController extends Controller
             'pengumuman',
             'alurPendaftaran',
             'prodi_lain',
-            'dataSekolah'
+            
         ]));
     }
     
