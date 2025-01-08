@@ -21,7 +21,7 @@ class Ukt extends Model
     }
     public function gelombangPendaftaran()
     {
-        return $this->belongsTo(GelombangPendaftaran::class, 'gelombang_pendaftaran_id', 'id');
+        return $this->belongsTo(GelombangPendaftaran::class, 'gelombang_id', 'id');
     }
     public function programStudi()
     {

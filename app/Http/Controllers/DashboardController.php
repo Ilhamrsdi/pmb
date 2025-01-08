@@ -281,45 +281,45 @@ class DashboardController extends Controller
     //     }
     // }
     public function index(Request $request)
-{
-    if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3) {
-        // Admin atau panitia
-        $total_pendaftar = Pendaftar::count();
-        $total_belum_bayar_pendaftaran = DetailPendaftar::whereNull('status_pendaftaran')->count();
-        $total_belum_bayar_ukt = DetailPendaftar::where('status_pembayaran', 'belum')->count();
-        $total_diterima = DetailPendaftar::where('status_acc', 'sudah')->count();
-        $total_belum_diterima = DetailPendaftar::whereNull('status_acc')->count();
-
-        $data = [
-            'total_pendaftar' => $total_pendaftar,
-            'total_belum_bayar_pendaftaran' => $total_belum_bayar_pendaftaran,
-            'total_belum_bayar_ukt' => $total_belum_bayar_ukt,
-            'total_diterima' => $total_diterima,
-            'total_belum_diterima' => $total_belum_diterima,
-        ];
-
-        return view('admin.dashboard', compact('data'));
-    } else {
-        // Pendaftar
-        $pendaftar = Pendaftar::where('user_id', auth()->user()->id)->get();
-        $tata_cara = TataCara::where('jenis', '!=', 'pendaftaran')->get()->groupBy('jenis', 'ASC');
-
-        $data = null;
-        foreach ($pendaftar as $value) {
-            if ($value->gelombang_id == session('gelombang_id')) {
-                $data = $value;
-                session(['pendaftar_id' => $data->id]);
-                break;
-            }
-        }
-
-        if ($data == null) {
-            Session::flush();
-            Auth::logout();
-            return redirect('login')->with('error_gelombang', 'Anda tidak terdaftar di gelombang yang dipilih');
+    {
+        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3) {
+            // Admin atau panitia
+            $total_pendaftar = Pendaftar::count();
+            $total_belum_bayar_pendaftaran = DetailPendaftar::whereNull('status_pendaftaran')->count();
+            $total_belum_bayar_ukt = DetailPendaftar::where('status_pembayaran', 'belum')->count();
+            $total_diterima = DetailPendaftar::where('status_acc', 'sudah')->count();
+            $total_belum_diterima = DetailPendaftar::whereNull('status_acc')->count();
+    
+            $data = [
+                'total_pendaftar' => $total_pendaftar,
+                'total_belum_bayar_pendaftaran' => $total_belum_bayar_pendaftaran,
+                'total_belum_bayar_ukt' => $total_belum_bayar_ukt,
+                'total_diterima' => $total_diterima,
+                'total_belum_diterima' => $total_belum_diterima,
+            ];
+    
+            return view('admin.dashboard', compact('data'));
         } else {
-            if ($data->detailPendaftar) {
+            // Pendaftar
+            $pendaftar = Pendaftar::where('user_id', auth()->user()->id)->get();
+            $tata_cara = TataCara::where('jenis', '!=', 'pendaftaran')->get()->groupBy('jenis', 'ASC');
+    
+            $data = null;
+            foreach ($pendaftar as $value) {
+                if ($value->gelombang_id == session('gelombang_id')) {
+                    $data = $value;
+                    session(['pendaftar_id' => $data->id]);
+                    break;
+                }
+            }
+    
+            if ($data == null) {
+                Session::flush();
+                Auth::logout();
+                return redirect('login')->with('error_gelombang', 'Anda tidak terdaftar di gelombang yang dipilih');
+            } else {
                 if ($data->detailPendaftar) {
+                    // Logika berdasarkan status pendaftaran
                     if ($data->detailPendaftar->status_pendaftaran === null) {
                         // Jika status pendaftaran belum diisi
                         $dataPendaftar = $data->detailPendaftar->pendaftar_id;
@@ -329,14 +329,33 @@ class DashboardController extends Controller
                     } elseif ($data->detailPendaftar->status_pendaftaran === 'sudah') {
                         // Jika status pendaftaran adalah "sudah"
                         if ($data->detailPendaftar->status_kelengkapan_data === 'sudah' && $data->detailPendaftar->status_acc === 'sudah') {
-                            // Jika kelengkapan data sudah divalidasi dan status acc sudah, muat view kelengkapan-data-lanjutan
-                            // return view('pendaftar.kelengkapan-data.kelengkapan-data-lanjutan', compact('data'));
-                            return redirect()->route('kelengkapan-data.lanjutan.index', $data->id);
+                            // Jika kelengkapan data sudah divalidasi dan status acc sudah 'sudah'
+                            if ($data->detailPendaftar->status_ukt === 'sudah') {
+                                // Jika status UKT sudah 'sudah', tampilkan view dashboard-ukt
+                                $nomer_va = $data->detailPendaftar->va_ukt;
+                                $expired_va = $data->detailPendaftar->datetime_expired_ukt;
+                                $nominal_ukt = $data->detailPendaftar->nominal_ukt;
+                                $id_pendaftar = $data->detailPendaftar->id;
+                                $nama_pendaftar = $data->nama;
+                                $dataPendaftar = $data->detailPendaftar->pendaftar_id;
+                                return view('pendaftar.dashboard.dashboard-ukt', compact(
+                                    'nomer_va', 
+                                    'expired_va', 
+                                    'nominal_ukt', 
+                                    'nama_pendaftar', 
+                                    'id_pendaftar', 
+                                    'dataPendaftar', 
+                                    'tata_cara'
+                                ));
+                            } else {
+                                // Jika status UKT belum 'sudah', arahkan ke halaman kelengkapan-data-lanjutan
+                                return redirect()->route('kelengkapan-data.lanjutan.index', $data->id);
+                            }
                         } elseif ($data->detailPendaftar->status_kelengkapan_data === 'sudah') {
-                            // Jika kelengkapan data sudah divalidasi, redirect ke halaman bukti pendaftaran
+                            // Jika kelengkapan data sudah divalidasi, tampilkan tampilan bukti pendaftaran
                             return redirect()->route('bukti.bukti-pendaftaran', $data->id);
                         } else {
-                            // Jika kelengkapan data belum selesai, redirect ke kelengkapan data
+                            // Jika kelengkapan data belum selesai, tampilkan halaman kelengkapan data
                             return redirect()->route('kelengkapan-data.edit', $data->id);
                         }
                     } else {
@@ -344,11 +363,10 @@ class DashboardController extends Controller
                         return redirect()->route('bukti.bukti-pendaftaran', $data->id);
                     }
                     
-                
-                }
-                
-
-                if ($data->detailPendaftar) {
+                    
+                    
+    
+                    // Logika berdasarkan status UKT
                     if ($data->detailPendaftar->nominal_ukt == null) {
                         return view('pendaftar.dashboard.dashboard-belum-ukt');
                     } elseif ($data->detailPendaftar->status_ukt == 'sudah') {
@@ -358,10 +376,20 @@ class DashboardController extends Controller
                         $id_pendaftar = $data->detailPendaftar->id;
                         $nama_pendaftar = $data->nama;
                         $dataPendaftar = $data->detailPendaftar->pendaftar_id;
-                        if ($data->detailPendaftar->status_acc == 'sudah') {
+                        
+                        // Logika berdasarkan status acc
+                        if ($data->detailPendaftar->status_pembayaran == 'sudah') {
                             return redirect()->route('bukti.show', $data->id); // Arahkan ke halaman show jika sudah punya NIM
                         } else {
-                            return view('pendaftar.dashboard.dashboard-ukt', compact('nomer_va', 'expired_va', 'nominal_ukt', 'nama_pendaftar', 'id_pendaftar', 'dataPendaftar', 'tata_cara'));
+                            return view('pendaftar.dashboard.dashboard-ukt', compact(
+                                'nomer_va', 
+                                'expired_va', 
+                                'nominal_ukt', 
+                                'nama_pendaftar', 
+                                'id_pendaftar', 
+                                'dataPendaftar', 
+                                'tata_cara'
+                            ));
                         }
                     } else {
                         return redirect(route('bukti.show', $data->id));
@@ -371,9 +399,8 @@ class DashboardController extends Controller
                 }
             }
         }
-        
     }
-}
+    
 
     
 

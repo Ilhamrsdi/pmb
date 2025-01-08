@@ -105,6 +105,7 @@
                                     @foreach ($ukt as $i => $row)
                                         <tr>
                                             <td>{{ ++$i }}</td>
+                                           
                                             <td class="customer_name">{{ $row->gelombangPendaftaran?->tahun_ajaran }}</td>
                                             <td class="date">{{ $row->gelombangPendaftaran?->nama_gelombang }}</td>
                                             <td class="email">{{ $row->golongan->nama_golongan }}</td>
@@ -221,7 +222,7 @@
                                 <div class="mb-3">
                                     <label for="customername-field" class="form-label">PILIH TAHUN AJARAN
                                         & GELOMBANG</label>
-                                    <select name="gelombang_pendaftaran_id" id="customername-field" class="form-control">
+                                    <select name="gelombang_id" id="customername-field" class="form-control">
                                         <option disabled>-</option>
                                         @foreach ($gelombangPendaftaran as $data)
                                             <option value="{{ $data->id }}">
@@ -278,6 +279,12 @@
                                     <input type="number" name="nominal_non_reguler" id="email-field"
                                         class="form-control" required />
                                 </div>
+                                <div class="mb-3">
+                                    <label for="phone-field" class="form-label">NOMINAL POTONGAN UKT</label>
+                                    <input type="number" name="potongan_ukt" id="potongan-ukt-field" class="form-control" />
+                                    <small class="form-text text-danger">*Boleh dikosongkan jika tidak perlu.</small>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>

@@ -16,6 +16,7 @@ class UKTController extends Controller
      */
     public function index()
     {
+        // $ukt = Ukt::with('gelombangPendaftaran')->get();
         return view('admin.golongan_ukt.ukt');
         //
     }
@@ -40,7 +41,7 @@ class UKTController extends Controller
     {
         Ukt::create([
             'golongan_id' => $request->golongan_id,
-            'gelombang_pendaftaran_id' => $request->gelombang_pendaftaran_id,
+            'gelombang_id' => $request->gelombang_id,
             'nominal_reguler' => $request->nominal_reguler,
             'nominal_non_reguler' => $request->nominal_non_reguler,
         ]);
