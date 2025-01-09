@@ -85,6 +85,7 @@
                     <th class="sort" data-sort="email">GELOMBANG</th>
                     <th class="sort" data-sort="phone">PROGRAM STUDI</th>
                     <th class="sort" data-sort="status">STATUS ACC</th>
+                    <th class="sort" data-sort=status-ujian>STATUS UJIAN</th>
                     <th class="sort" data-sort="action">AKSI</th>
                   </tr>
                 </thead>
@@ -107,6 +108,13 @@
                                   <span class="badge badge-soft-danger text-uppercase">{{ $row->detailPendaftar?->status_acc ?? 'Belum' }}</span>
                               @endif
                           </td>
+                          <td class="status-ujian">
+                            @if ($row->detailPendaftar?->status_ujian === 'lulus')
+                                <span class="badge badge-soft-success text-uppercase">{{ $row->detailPendaftar->status_ujian }}</span>
+                            @else
+                                <span class="badge badge-soft-danger text-uppercase">{{ $row->detailPendaftar?->status_ujian ?? 'Belum' }}</span>
+                            @endif
+                        </td>
                           <td>
                               <div class="d-flex gap-2">
                                   <div class="edit">

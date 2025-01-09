@@ -320,6 +320,7 @@ class DashboardController extends Controller
             } else {
                 if ($data->detailPendaftar) {
                     // Logika berdasarkan status pendaftaran
+                    // dd($data->detailPendaftar); // Periksa seluruh data yang ada di detailPendaftar
                     if ($data->detailPendaftar->status_pendaftaran === null) {
                         // Jika status pendaftaran belum diisi
                         $dataPendaftar = $data->detailPendaftar->pendaftar_id;
@@ -328,8 +329,9 @@ class DashboardController extends Controller
                         return view('pendaftar.dashboard.dashboard-pendaftaran', compact('nomer_va', 'expired_va', 'tata_cara', 'dataPendaftar'));
                     } elseif ($data->detailPendaftar->status_pendaftaran === 'sudah') {
                         // Jika status pendaftaran adalah "sudah"
-                        if ($data->detailPendaftar->status_kelengkapan_data === 'sudah' && $data->detailPendaftar->status_acc === 'sudah') {
-                            // Jika kelengkapan data sudah divalidasi dan status acc sudah 'sudah'
+                        if ($data->detailPendaftar->status_kelengkapan_data === 'sudah' && $data->detailPendaftar->status_ujian === 'lulus') {
+                            // Jika kelengkapan data sudah divalidasi dan status ujian lulus
+                            // dd($data->detailPendaftar->status_ukt); // Cek nilai status_ukt
                             if ($data->detailPendaftar->status_ukt === 'sudah') {
                                 // Jika status UKT sudah 'sudah', tampilkan view dashboard-ukt
                                 $nomer_va = $data->detailPendaftar->va_ukt;
@@ -347,8 +349,8 @@ class DashboardController extends Controller
                                     'dataPendaftar', 
                                     'tata_cara'
                                 ));
-                            } else {
-                                // Jika status UKT belum 'sudah', arahkan ke halaman kelengkapan-data-lanjutan
+                            } elseif ($data->detailPendaftar->status_ukt === null) {
+                                // Jika status UKT adalah null, arahkan ke halaman kelengkapan-data-lanjutan
                                 return redirect()->route('kelengkapan-data.lanjutan.index', $data->id);
                             }
                         } elseif ($data->detailPendaftar->status_kelengkapan_data === 'sudah') {
@@ -362,41 +364,8 @@ class DashboardController extends Controller
                         // Default: Jika status pendaftaran tidak null dan tidak "sudah"
                         return redirect()->route('bukti.bukti-pendaftaran', $data->id);
                     }
-                    
-                    
-                    
-    
-                    // Logika berdasarkan status UKT
-                    if ($data->detailPendaftar->nominal_ukt == null) {
-                        return view('pendaftar.dashboard.dashboard-belum-ukt');
-                    } elseif ($data->detailPendaftar->status_ukt == 'sudah') {
-                        $nomer_va = $data->detailPendaftar->va_ukt;
-                        $expired_va = $data->detailPendaftar->datetime_expired_ukt;
-                        $nominal_ukt = $data->detailPendaftar->nominal_ukt;
-                        $id_pendaftar = $data->detailPendaftar->id;
-                        $nama_pendaftar = $data->nama;
-                        $dataPendaftar = $data->detailPendaftar->pendaftar_id;
-                        
-                        // Logika berdasarkan status acc
-                        if ($data->detailPendaftar->status_pembayaran == 'sudah') {
-                            return redirect()->route('bukti.show', $data->id); // Arahkan ke halaman show jika sudah punya NIM
-                        } else {
-                            return view('pendaftar.dashboard.dashboard-ukt', compact(
-                                'nomer_va', 
-                                'expired_va', 
-                                'nominal_ukt', 
-                                'nama_pendaftar', 
-                                'id_pendaftar', 
-                                'dataPendaftar', 
-                                'tata_cara'
-                            ));
-                        }
-                    } else {
-                        return redirect(route('bukti.show', $data->id));
-                    }
-                } else {
-                    return redirect()->route('error.page');
                 }
+                
             }
         }
     }
