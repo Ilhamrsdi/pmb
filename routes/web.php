@@ -220,8 +220,9 @@ Route::middleware([Pendaftar::class, 'auth'])->prefix('pendaftar')->group(functi
     Route::post('keringanan-ukt/ajukan', [UKTController::class, 'ajukanKeringanan'])->name('pendaftar.keringanan-ukt.ajukan');
 
     // Route untuk pengajuan pencicilan UKT
-    Route::get('pencicilan-ukt', [UKTController::class, 'formPencicilan'])->name('pendaftar.pencicilan-ukt.form');
-    Route::post('pencicilan-ukt/ajukan', [UKTController::class, 'ajukanPencicilan'])->name('pendaftar.pencicilan-ukt.ajukan');
+    Route::get('pencicilan-ukt', [DashboardController::class, 'formPencicilan'])->name('pendaftar.pencicilan-ukt.form');
+    Route::post('/pencicilan-ukt/ajukan', [DashboardController::class, 'ajukanPencicilan'])->name('pendaftar.pencicilan-ukt.ajukan');
+
     
     // Route untuk kelengkapan data pendaftar
     // Kelengkapan Data Dasar

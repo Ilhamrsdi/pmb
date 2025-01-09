@@ -340,6 +340,7 @@ class DashboardController extends Controller
                                 $id_pendaftar = $data->detailPendaftar->id;
                                 $nama_pendaftar = $data->nama;
                                 $dataPendaftar = $data->detailPendaftar->pendaftar_id;
+                                $detailPendaftar = $data->detailPendaftar;
                                 return view('pendaftar.dashboard.dashboard-ukt', compact(
                                     'nomer_va', 
                                     'expired_va', 
@@ -347,7 +348,8 @@ class DashboardController extends Controller
                                     'nama_pendaftar', 
                                     'id_pendaftar', 
                                     'dataPendaftar', 
-                                    'tata_cara'
+                                    'tata_cara',
+                                    'detailPendaftar'
                                 ));
                             } elseif ($data->detailPendaftar->status_ukt === null) {
                                 // Jika status UKT adalah null, arahkan ke halaman kelengkapan-data-lanjutan
@@ -811,4 +813,57 @@ class DashboardController extends Controller
 
         return $va_pembayaran;
     }
+
+    public function ajukanPencicilan(Request $request)
+    {
+        // Ambil ID pengguna yang sedang login
+        $user_id = Auth::id();
+        
+        // Cek apakah pendaftar ada
+        $pendaftar = Pendaftar::where('user_id', $user_id)->first();
+        
+        if (!$pendaftar) {
+            return back()->withErrors(['error' => 'Pendaftar tidak ditemukan.']);
+        }
+    
+        // Cek apakah detail_pendaftar ada
+        $detail_pendaftar = $pendaftar->detailPendaftar;
+        if (!$detail_pendaftar) {
+            return back()->withErrors(['error' => 'Data detail pendaftar tidak ditemukan.']);
+        }
+    
+        // Validasi input form
+        $validated = $request->validate([
+            'nominal_ukt' => 'required|numeric|min:0',
+            'cicilan_pertama' => 'required|numeric|min:0',
+            'cicilan_kedua' => 'required|numeric|min:0',
+            'cicilan_ketiga' => 'required|numeric|min:0',
+            'dokumen' => 'required|file|mimes:docx,pdf,gif,jpeg,png|max:2048',
+        ]);
+        
+        try {
+            // Simpan dokumen pengajuan
+            $filePath = $request->file('dokumen')->store('dokumen_pencicilan', 'public');
+        
+            // Update data pencicilan di tabel detail_pendaftar
+            $detail_pendaftar->update([
+                'nominal_ukt' => $validated['nominal_ukt'],
+                'cicilan_pertama' => $validated['cicilan_pertama'],
+                'cicilan_kedua' => $validated['cicilan_kedua'],
+                'cicilan_ketiga' => $validated['cicilan_ketiga'],
+                'dokumen_cicilan' => $filePath,  // Pastikan kolom ini ada di database
+                'status_cicilan' => 'Pending', // Status bisa disesuaikan
+            ]);
+        
+            return back()->with('success', 'Pengajuan pencicilan berhasil diajukan.');
+        } catch (\Exception $e) {
+            // Tangani error
+            return back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()]);
+        }
+    }
+    
+    
+    
+    
+
 }

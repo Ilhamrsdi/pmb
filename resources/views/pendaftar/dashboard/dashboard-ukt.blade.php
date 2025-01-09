@@ -52,6 +52,15 @@
                   Anda belum membayar UKT
                 </div>
               </div>
+              @if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
            <!-- Tombol untuk membuka Modal Pengajuan Keringanan/Pencicilan UKT -->
 <button type="button" class="btn btn-secondary px-3 py-1 mt-3" data-bs-toggle="modal" data-bs-target="#modalPencicilan">
   Ajukan Pencicilan UKT
@@ -173,6 +182,50 @@
         @endforeach
       </div>
     </div>
+
+    @if($detailPendaftar->status_cicilan === 'disetujui')
+    <div class="col-xl-6">
+      <div class="card">
+        <div class="card-header bg-info text-white">
+          <h5 class="mb-0">Cicilan UKT Anda</h5>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <h6>Total UKT: <span class="fw-bold">Rp. {{ number_format($detailPendaftar->nominal_ukt, 0, ',', '.') }}</span></h6>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead class="bg-light">
+                <tr>
+                  <th scope="col">Bulan</th>
+                  <th scope="col">Nominal Cicilan</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ $detailPendaftar->bulan }}</td>
+                  <td>Rp. {{ number_format($detailPendaftar->nominal_ukt, 0, ',', '.') }}</td>
+                  <td>
+                    @if ($detailPendaftar->status_cicilan === 'lunas')
+                      <span class="badge bg-success">Lunas</span>
+                    @elseif ($detailPendaftar->status_cicilan === 'belum')
+                      <span class="badge bg-danger">Belum Lunas</span>
+                    @else
+                      <span class="badge bg-warning">Dalam Proses</span>
+                    @endif
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endif
+  
+   
+    
     <!--end col -->
   </div> <!-- end row-->
 
@@ -185,29 +238,48 @@
           <h5 class="modal-title" id="modalPencicilanLabel">Pengajuan Pencicilan UKT</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
         <form action="{{ route('pendaftar.pencicilan-ukt.ajukan') }}" method="POST" enctype="multipart/form-data">
           @csrf
           <div class="modal-body">
+            @if($detailPendaftar && $detailPendaftar->status_cicilan === 'Pending')
             <div id="alertStatus" class="alert alert-warning" role="alert">
-              Pengajuan pencicilan UKT Anda dalam proses.
+                Pengajuan keringanan UKT Anda dalam proses.
             </div>
+        @endif
+        
             <div class="mb-3">
               <label for="jumlahUkt" class="form-label">Jumlah Total UKT</label>
-              <input type="number" class="form-control" id="jumlahUkt" name="jumlah_ukt" value="{{ $nominal_ukt }}" readonly required>
+              <input type="number" class="form-control" id="jumlahUkt" name="nominal_ukt" value="{{ old('nominal_ukt') }}"  required>
             </div>
             <div class="mb-3">
               <label for="jumlahCicilan1" class="form-label">Jumlah Cicilan Bulan 1</label>
-              <input type="text" class="form-control uang" id="jumlahCicilan1" name="jumlah_cicilan_1" required>
+              <input type="text" class="form-control uang" id="jumlahCicilan1" name="cicilan_pertama" required>
               <small class="form-text text-muted">Cicilan bulan pertama</small>
             </div>
             <div class="mb-3">
               <label for="jumlahCicilan2" class="form-label">Jumlah Cicilan Bulan 2</label>
-              <input type="text" class="form-control uang" id="jumlahCicilan2" name="jumlah_cicilan_2" required>
+              <input type="text" class="form-control uang" id="jumlahCicilan2" name="cicilan_kedua" required>
               <small class="form-text text-muted">Cicilan bulan kedua</small>
             </div>
             <div class="mb-3">
               <label for="jumlahCicilan3" class="form-label">Jumlah Cicilan Bulan 3</label>
-              <input type="text" class="form-control uang" id="jumlahCicilan3" name="jumlah_cicilan_3" required>
+              <input type="text" class="form-control uang" id="jumlahCicilan3" name="cicilan_ketiga" required>
               <small class="form-text text-muted">Cicilan bulan ketiga</small>
             </div>
             <!-- Input File untuk Dokumen Pengajuan -->
@@ -327,108 +399,6 @@
 
     });
   </script>
-<script>
-  // Fungsi untuk format input uang (Rupiah)
-  function formatRupiah(angka, prefix) {
-    var number_string = angka.replace(/[^,\d]/g, '').toString(),
-      split = number_string.split(','),
-      remainder = split[0].length % 3,
-      rupiah = split[0].substr(0, remainder),
-      thousands = split[0].substr(remainder).match(/\d{3}/gi);
-
-    if (thousands) {
-      separator = remainder ? '.' : '';
-      rupiah += separator + thousands.join('.');
-    }
-
-    rupiah = split[1] ? rupiah + ',' + split[1] : rupiah;
-    return prefix == undefined ? rupiah : rupiah ? 'Rp. ' + rupiah : '';
-  }
-
-  // Fungsi untuk membersihkan format Rupiah dan hanya mengambil nilai angka
-  function bersihkanRupiah(angka) {
-    return parseFloat(angka.replace(/[^0-9,-]+/g, ""));
-  }
-
-  // Menggunakan formatRupiah untuk input cicilan
-  document.querySelectorAll('.uang').forEach(function(input) {
-    input.addEventListener('input', function(e) {
-      e.target.value = formatRupiah(e.target.value);
-    });
-  });
-
-  // Script untuk validasi jika total cicilan tidak sesuai dengan jumlah nominal_ukt
-  document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form');
-    form.addEventListener('submit', function (e) {
-      // Mengambil nilai nominal UKT dari input
-      const jumlahUkt = bersihkanRupiah(document.getElementById('jumlahUkt').value);
-
-      // Mengambil nilai cicilan per bulan dari input
-      const cicilan1 = bersihkanRupiah(document.getElementById('jumlahCicilan1').value);
-      const cicilan2 = bersihkanRupiah(document.getElementById('jumlahCicilan2').value);
-      const cicilan3 = bersihkanRupiah(document.getElementById('jumlahCicilan3').value);
-
-      // Menghitung total cicilan
-      const totalCicilan = cicilan1 + cicilan2 + cicilan3;
-
-      // Validasi jika total cicilan tidak sesuai dengan jumlah nominal_ukt
-      if (totalCicilan !== jumlahUkt) {
-        e.preventDefault(); // Mencegah form dikirim jika validasi gagal
-        alert('Jumlah cicilan per bulan harus sama dengan total UKT (' + formatRupiah(jumlahUkt) + ').');
-      }
-    });
-  });
-</script>
-
-<script>
-  // Fungsi untuk format input uang (Rupiah)
-  function formatRupiah(angka, prefix) {
-    var number_string = angka.replace(/[^,\d]/g, '').toString(),
-      split = number_string.split(','),
-      remainder = split[0].length % 3,
-      rupiah = split[0].substr(0, remainder),
-      thousands = split[0].substr(remainder).match(/\d{3}/gi);
-
-    if (thousands) {
-      separator = remainder ? '.' : '';
-      rupiah += separator + thousands.join('.');
-    }
-
-    rupiah = split[1] ? rupiah + ',' + split[1] : rupiah;
-    return prefix == undefined ? rupiah : rupiah ? 'Rp. ' + rupiah : '';
-  }
-
-  // Fungsi untuk membersihkan format Rupiah dan hanya mengambil nilai angka
-  function bersihkanRupiah(angka) {
-    return parseFloat(angka.replace(/[^0-9,-]+/g, ""));
-  }
-
-  // Menggunakan formatRupiah untuk input keringanan
-  document.querySelectorAll('.uang').forEach(function(input) {
-    input.addEventListener('input', function(e) {
-      e.target.value = formatRupiah(e.target.value);
-    });
-  });
-
-  // Script untuk validasi jika nominal keringanan tidak lebih dari nominal_ukt
-  document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form');
-    form.addEventListener('submit', function (e) {
-      // Mengambil nilai nominal UKT dari input
-      const nominalUkt = bersihkanRupiah(document.getElementById('nominalUkt').value);
-
-      // Mengambil nilai nominal keringanan dari input
-      const nominalKeringanan = bersihkanRupiah(document.getElementById('nominalKeringanan').value);
-
-      // Validasi jika nominal keringanan lebih besar dari nominal_ukt
-      if (nominalKeringanan > nominalUkt) {
-        e.preventDefault(); // Mencegah form dikirim jika validasi gagal
-        alert('Nominal keringanan tidak boleh lebih besar dari nominal UKT.');
-      }
-    });
-  });
-</script>
 
 @endsection
 @section('script')
