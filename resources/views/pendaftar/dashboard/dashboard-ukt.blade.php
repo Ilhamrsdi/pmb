@@ -87,7 +87,16 @@
                       </button>
                     @else
                       <h3 class="fw-semibold">{{ $nomer_va }}</h3>
-                      <p class="fw-semibold">Nominal Pembayaran UKT: Rp. {{ number_format($nominal_ukt, 0, ',', '.') }}</p>
+                      <p class="fw-semibold">
+                        Nominal Pembayaran UKT: 
+                        Rp. 
+                        {{ 
+                            $detailPendaftar->status_cicilan === 'disetujui' 
+                            ? number_format($detailPendaftar->cicilan_pertama, 0, ',', '.') 
+                            : number_format($detailPendaftar->nominal_ukt, 0, ',', '.') 
+                        }}
+                    </p>
+                    
                       <p class="text-muted">Pembayaran paling lambat tanggal
                         {{ Carbon\Carbon::parse($expired_va)->format('d-m-Y') }}</p>
                     
@@ -197,15 +206,29 @@
             <table class="table table-bordered table-hover">
               <thead class="bg-light">
                 <tr>
-                  <th scope="col">Bulan</th>
-                  <th scope="col">Nominal Cicilan</th>
-                  <th scope="col">Status</th>
+                  <th scope="col">Deskripsi</th>
+                  <th scope="col">Nilai</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>{{ $detailPendaftar->bulan }}</td>
-                  <td>Rp. {{ number_format($detailPendaftar->nominal_ukt, 0, ',', '.') }}</td>
+                  <td><strong>Jatuh Tempo</strong></td>
+                  <td>{{ $detailPendaftar->jatuh_tempo }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Cicilan Pertama</strong></td>
+                  <td>Rp. {{ number_format($detailPendaftar->cicilan_pertama, 0, ',', '.') }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Cicilan Kedua</strong></td>
+                  <td>Rp. {{ number_format($detailPendaftar->cicilan_kedua, 0, ',', '.') }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Cicilan Ketiga</strong></td>
+                  <td>Rp. {{ number_format($detailPendaftar->cicilan_ketiga, 0, ',', '.') }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Status Cicilan</strong></td>
                   <td>
                     @if ($detailPendaftar->status_cicilan === 'lunas')
                       <span class="badge bg-success">Lunas</span>
@@ -222,6 +245,7 @@
         </div>
       </div>
     </div>
+    
   @endif
   
    
@@ -259,7 +283,7 @@
           <div class="modal-body">
             @if($detailPendaftar && $detailPendaftar->status_cicilan === 'Pending')
             <div id="alertStatus" class="alert alert-warning" role="alert">
-                Pengajuan keringanan UKT Anda dalam proses.
+                Pengajuan cicilan UKT Anda dalam proses.
             </div>
         @endif
         

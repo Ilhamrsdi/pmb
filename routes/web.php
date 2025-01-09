@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\Pendaftar\SoalTesMabaController;
 use App\Http\Controllers\AccessLogController;
 use App\Http\Controllers\Admin\Alur\AlurPendaftaranController;
 use App\Http\Controllers\Admin\Atribut_gambar\AtributGambarController;
+use App\Http\Controllers\Admin\CicilanPenurunanUKT\CicilanUktPenurunanController;
 use App\Http\Controllers\PdfController;
 
 use App\Http\Controllers\Admin\Prodi_lain\ProdiLainController;
@@ -179,6 +180,7 @@ Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
     // Golongan & UKT
     Route::resource('golongan-ukt', GolonganUKTController::class);
     Route::resource('ukt', UKTController::class);
+    
     Route::get('listPendaftar/{id}', [PendaftarUKTController::class, 'listPendaftar'])->name('listPendaftar.ukt');
     Route::post('pendaftarCreateUKT', [PendaftarUKTController::class, 'pendaftarCreateUKT'])->name('pendaftarCreateUKT.ukt');
     Route::post('pendaftarDeleteUKT/', [PendaftarUKTController::class, 'pendaftarDeleteUKT'])->name('pendaftarDeleteUKT.ukt');
@@ -197,6 +199,14 @@ Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
     Route::get('lainnya/alur-pendaftaran/{id}/edit', [AlurPendaftaranController::class, 'edit'])->name('alurPendaftaran.edit');
     Route::put('lainnya/alur-pendaftaran/{id}', [AlurPendaftaranController::class, 'update'])->name('alurPendaftaran.update');
     Route::delete('lainnya/alur-pendaftaran/{id}', [AlurPendaftaranController::class, 'destroy'])->name('alurPendaftaran.destroy');
+
+    // Cicilan UKT
+    Route::get('lainnya/cicilan-ukt', [CicilanUktPenurunanController::class, 'index'])->name('cicilanUkt');
+    Route::put('lainnya/cicilan-ukt/{id}', [CicilanUktPenurunanController::class, 'update'])->name('cicilanUkt.update');
+    Route::delete('lainnya/cicilan-ukt/{id}', [CicilanUktPenurunanController::class, 'destroy'])->name('cicilanUkt.destroy');
+    Route::put('lainnya/cicilan-ukt/update-status/{id}', [CicilanUktPenurunanController::class, 'updateStatus'])->name('cicilanUkt.updateStatus');
+
+
     // Pesan Siaran
     Route::get('pesan-siaran', [PesanSiaranController::class, 'index'])->name('pesanSiaran');
     Route::post('pesan-siaran/kirim', [PesanSiaranController::class, 'kirimPesan'])->name('admin.pesan-siaran.kirim');
