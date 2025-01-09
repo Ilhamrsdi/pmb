@@ -216,6 +216,12 @@ Route::middleware([Pendaftar::class, 'auth'])->prefix('pendaftar')->group(functi
     Route::post('/store-answers', [SoalTesMabaController::class, 'storeAnswers'])->name('storeAnswers');
     Route::post('ujian/result', [SoalTesMabaController::class, 'result'])->name('pendaftar.ujian.result');
     Route::post('upload/bukti-bayar-ukt', [BuktiController::class, 'upload_bukti_ukt'])->name('upload-bukti-ukt');
+    Route::get('keringanan-ukt', [UKTController::class, 'formKeringanan'])->name('pendaftar.keringanan-ukt.form');
+    Route::post('keringanan-ukt/ajukan', [UKTController::class, 'ajukanKeringanan'])->name('pendaftar.keringanan-ukt.ajukan');
+
+    // Route untuk pengajuan pencicilan UKT
+    Route::get('pencicilan-ukt', [UKTController::class, 'formPencicilan'])->name('pendaftar.pencicilan-ukt.form');
+    Route::post('pencicilan-ukt/ajukan', [UKTController::class, 'ajukanPencicilan'])->name('pendaftar.pencicilan-ukt.ajukan');
     
     // Route untuk kelengkapan data pendaftar
     // Kelengkapan Data Dasar
