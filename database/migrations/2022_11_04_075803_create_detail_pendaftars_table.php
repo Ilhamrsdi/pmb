@@ -39,7 +39,11 @@ return new class extends Migration
             $table->integer('cicilan_pertama')->nullable();
             $table->integer('cicilan_kedua')->nullable();
             $table->integer('cicilan_ketiga')->nullable();
-            $table->string('status_cicilan')->nullable(); // Pending, Disetujui, Ditolak
+            $table->string('status_cicilan')->nullable(); 
+            $table->timestamp('jatuh_tempo_cicilan_pertama')->nullable();
+            $table->timestamp('jatuh_tempo_cicilan_kedua')->nullable();
+            $table->timestamp('jatuh_tempo_cicilan_ketiga')->nullable();
+
             $table->timestamps();
         });
     }

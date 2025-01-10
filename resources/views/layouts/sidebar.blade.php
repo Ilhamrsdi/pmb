@@ -165,10 +165,20 @@
             </a>
           </li> <!-- end Golongan dan UKT Menu -->
           <li class="nav-item">
-            <a class="nav-link menu-link" href="{{ route('cicilanUkt')}}">
-              <i class="las la-credit-card"></i>
-              <span>Cicilan dan Penurunan UKT</span>
+              <a class="nav-link menu-link" href="#sidebarCicilanPenurunanUKT" data-bs-toggle="collapse" role="button"
+              aria-expanded="false" aria-controls="sidebarCicilanPenurunanUKT">
+              <i class="las la-credit-card"></i> <span>Cicilan dan Penurunan UKT</span>
             </a>
+            <div class="collapse menu-dropdown" id="sidebarLaporan">
+              <ul class="nav nav-sm flex-column">
+                <li class="nav-item">
+                  <a href="{{route('cicilanUkt') }}" class="nav-link">Cicilan UKT Pendaftar</a>
+                </li>
+                <li class="nav-item">
+                  <a href="" class="nav-link">Penurunan UKT Pendaftar</a>
+                </li>
+              </ul>
+            </div>
           </li>
           <li class="nav-item">
             <a class="nav-link menu-link" href="#sidebarLaporan" data-bs-toggle="collapse" role="button"

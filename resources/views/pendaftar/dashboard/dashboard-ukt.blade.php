@@ -98,7 +98,12 @@
                     </p>
                     
                       <p class="text-muted">Pembayaran paling lambat tanggal
-                        {{ Carbon\Carbon::parse($expired_va)->format('d-m-Y') }}</p>
+
+                        {{
+                          $detailPendaftar->status_cicilan === 'disetujui' 
+                          ? Carbon\Carbon::parse($detailPendaftar->jatuh_tempo_cicilan_pertama)
+                          : Carbon\Carbon::parse($expired_va)->format('d-m-Y') 
+                           }}</p>
                     
                     @endif
                   </div>
