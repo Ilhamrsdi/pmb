@@ -28,8 +28,6 @@
   <link href="{{ asset('assets/libs/swiper/swiper.min.css') }}" />
   <!-- custom Css-->
   <link href="{{ asset('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
-  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.7/dist/sweetalert2.min.css" rel="stylesheet">
-  {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 
@@ -69,7 +67,7 @@
     <nav class="navbar navbar-expand-lg navbar-landing fixed-top" id="navbar">
       <div class="container">
         <a class="navbar-brand" href="/">
-          <img src="assets/images/logo-dark.png" class="card-logo card-logo-dark" alt="logo dark" height="50">
+          <img src="assets/images/logo-dark.svg" class="card-logo card-logo-dark" alt="logo dark" height="50">
           {{-- <img src="assets/images/logo-light.png" class="card-logo card-logo-light" alt="logo light" height="50"> --}}
         </a>
         <button class="navbar-toggler py-0 fs-20 text-body" type="button" data-bs-toggle="collapse"
@@ -132,10 +130,10 @@
 
             <div class="mt-4 mt-sm-5 pt-sm-5 mb-sm-n5 demo-carousel">
               <div class="demo-img-patten-top d-none d-sm-block">
-                <img src="assets/images/landing/img-pattern.png" class="d-block img-fluid" alt="...">
+                <img src="assets/images/landing/img-pattern.svg" class="d-block img-fluid" alt="...">
               </div>
               <div class="demo-img-patten-bottom d-none d-sm-block">
-                <img src="assets/images/landing/img-pattern.png" class="d-block img-fluid" alt="...">
+                <img src="assets/images/landing/img-pattern.svg" class="d-block img-fluid" alt="...">
               </div>
               <div class="carousel slide carousel-fade" data-bs-ride="carousel">
                 <div class="carousel-inner shadow-lg p-2 bg-white rounded">
@@ -531,7 +529,7 @@
           <div class="col-lg-4">
             <div class="process-card mt-4">
               <div class="process-arrow-img d-none d-lg-block">
-                <img src="assets/images/landing/process-arrow-img.png" alt="" class="img-fluid">
+                <img src="assets/images/landing/process-arrow-img.svg" alt="" class="img-fluid">
               </div>
               <div class="avatar-sm icon-effect mx-auto mb-4">
                 <div class="avatar-title bg-transparent text-success rounded-circle h1">
@@ -549,7 +547,7 @@
           <div class="col-lg-4">
             <div class="process-card mt-4">
               <div class="process-arrow-img d-none d-lg-block">
-                <img src="assets/images/landing/process-arrow-img.png" alt="" class="img-fluid">
+                <img src="assets/images/landing/process-arrow-img.svg" alt="" class="img-fluid">
               </div>
               <div class="avatar-sm icon-effect mx-auto mb-4">
                 <div class="avatar-title bg-transparent text-success rounded-circle h1">
@@ -570,7 +568,7 @@
           <div class="col-lg-4">
             <div class="process-card mt-4">
                <div class="process-arrow-img d-none d-lg-block">
-                <img src="assets/images/landing/process-arrow-img.png" alt="" class="img-fluid">
+                <img src="assets/images/landing/process-arrow-img.svg" alt="" class="img-fluid">
               </div>
               <div class="avatar-sm icon-effect mx-auto mb-4">
                 <div class="avatar-title bg-transparent text-success rounded-circle h1">
@@ -795,13 +793,7 @@
 
   <!-- JAVASCRIPT -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="{{ asset('assets/libs/bootstrap/bootstrap.min.js') }}"></script>
   <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
-  <script src="{{ asset('assets/libs/node-waves/node-waves.min.js') }}"></script>
-  <script src="{{ asset('assets/libs/feather-icons/feather-icons.min.js') }}"></script>
-  <script src="{{ asset('assets/js/pages/lord-icon-2.1.0.js') }}"></script>
-  <script src="{{ asset('assets/js/plugins.js') }}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.7/dist/sweetalert2.all.min.js"></script>
   <script type="text/javascript">
     $.ajaxSetup({
       headers: {
@@ -855,22 +847,8 @@
     lastScrollPosition = currentScrollPosition;
   });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.7/dist/sweetalert2.all.min.js"></script>
+
 <script>
-function showAlert(title, message, type = 'success') {
-  // Mengatur tipe alert (success, danger, info, warning)
-  const alertBox = document.getElementById('alertBox');
-  const alertTitle = document.getElementById('alertTitle');
-  const alertMessage = document.getElementById('alertMessage');
-
-  alertTitle.textContent = title;
-  alertMessage.textContent = message;
-
-  // Menambahkan kelas untuk alert
-  alertBox.className = `alert alert-${type} alert-dismissible fade show`;
-  alertBox.style.display = 'block'; // Menampilkan alert
-}
-
 function copyCode() {
   const kodeInput = document.getElementById('kode');
   
@@ -919,10 +897,8 @@ function copyCode() {
   <!--Card Gelombang js-->
 
   <!--Swiper slider js-->
-  <script src="{{ asset('assets/libs/swiper/swiper-bundle.min.js') }}"></script>
 
   <!-- landing init -->
-  <script src="{{ asset('assets/js/pages/landing.init.js') }}"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.10/iframeResizer.min.js"></script>
 

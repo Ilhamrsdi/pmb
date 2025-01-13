@@ -12,6 +12,7 @@ use App\Models\RefPorgramStudi;
 use App\Models\TataCara;
 use App\Models\AlurPendaftaran;
 use App\Models\ProdiLain;
+use Illuminate\Support\Facades\Cache;
 
 class LandingController extends Controller
 {
@@ -22,13 +23,24 @@ class LandingController extends Controller
      */
     public function index()
     {
-        // Ambil data dari database
-        $gelombang = GelombangPendaftaran::get();
-        $alurPendaftaran = AlurPendaftaran::first();
-        $prodi = RefPorgramStudi::with('jurusan')->get();
-        $prodi_lain = ProdiLain::get();
-        $tata_cara = TataCara::where('jenis', 'pendaftaran')->get();
-        $pengumuman = Pengumuman::take(5)->get();
+        // Menggunakan caching untuk data yang jarang berubah
+        $gelombang = GelombangPendaftaran::all(); // Caching tidak diterapkan karena data lebih dinamis
+        $alurPendaftaran = Cache::remember('alur_pendaftaran', 60, function () {
+            return AlurPendaftaran::first();
+        });
+        $prodi = Cache::remember('prodi', 60, function () {
+            return RefPorgramStudi::with('jurusan')->get(); // Pastikan relasi 'jurusan' sudah terindeks dengan baik
+        });
+        $prodi_lain = Cache::remember('prodi_lain', 60, function () {
+            return ProdiLain::all();
+        });
+        $tata_cara = Cache::remember('tata_cara', 60, function () {
+            return TataCara::where('jenis', 'pendaftaran')->get();
+        });
+        $pengumuman = Cache::remember('pengumuman', 60, function () {
+            return Pengumuman::take(5)->get();
+        });
+
         // Return data ke view
         return view('landing', compact([
             'gelombang',
@@ -37,118 +49,118 @@ class LandingController extends Controller
             'pengumuman',
             'alurPendaftaran',
             'prodi_lain',
-            
         ]));
     }
-    
-    
-    
-    
-    
-    
-    
-    
 
     /**
-     * Show the form for creating a new resource.
+     * Cek kode untuk validasi NIK dan Gelombang
      *
      * @return \Illuminate\Http\Response
      */
-
     public function cekkode(Request $request)
     {
-        // dd($request->gelombang);
         $cek_nik = $request->nik;
+
+        // Optimasi query dengan hanya mengambil field yang dibutuhkan
         $cekkode = Pendaftar::whereHas('user', function ($query) use ($cek_nik) {
-            return $query->where('nik', '=', $cek_nik);
-        })
-            ->whereHas('detailPendaftar', function ($query) use ($cek_nik) {
-                return $query->select('va_pendaftaran');
+                $query->where('nik', '=', $cek_nik);
             })
             ->where('gelombang_id', $request->gelombang)
-            ->first();
-        // dd($cekkode);
-        $data = $cekkode->detailPendaftar->va_pendaftaran;
-        // dd($cekkode);
-        return response()->json($data);
+            ->first(['id', 'gelombang_id']); // Hanya ambil kolom yang diperlukan
+
+        if ($cekkode) {
+            $data = $cekkode->detailPendaftar->va_pendaftaran;
+            return response()->json($data);
+        }
+
+        return response()->json(['error' => 'Data tidak ditemukan'], 404);
     }
 
+    /**
+     * Menampilkan pengumuman berdasarkan ID
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function pengumuman($id)
     {
         $pengumuman = Pengumuman::findOrFail($id);
-        $pengumumans = Pengumuman::get()->take(5);
+        $pengumumans = Pengumuman::take(5)->get(); // Anda bisa mengganti ini dengan pagination jika banyak data
         return view('pengumuman', compact('pengumuman', 'pengumumans'));
     }
 
-
-    public function cekVa(Request $request){
+    /**
+     * Halaman cek VA
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function cekVa(Request $request)
+    {
         return view('pendaftar.cekva.index');
     }
-    
+
+    /**
+     * Mendapatkan Program Studi berdasarkan Gelombang
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function getProdiByGelombang(Request $request)
-{
-    $gelombangId = $request->input('gelombang_id');
+    {
+        $gelombangId = $request->input('gelombang_id');
 
-    // Cari gelombang berdasarkan ID
-    $gelombangId = $request->input('gelombang_id');
-    \Log::info('Gelombang ID:', [$gelombangId]);
+        // Cari gelombang berdasarkan ID
+        $gelombang = GelombangPendaftaran::find($gelombangId);
+        if (!$gelombang) {
+            return response()->json(['error' => 'Gelombang tidak ditemukan'], 404);
+        }
 
-    $gelombang = GelombangPendaftaran::find($gelombangId);
-    if (!$gelombang) {
-        return response()->json(['error' => 'Gelombang tidak ditemukan'], 404);
+        // Ambil data program_studi_1_ids
+        $programStudiIds = json_decode($gelombang->program_studi_1ids);
+
+        if (empty($programStudiIds)) {
+            return response()->json(['error' => 'Tidak ada program studi pada gelombang ini'], 404);
+        }
+
+        // Mengambil data program studi dengan seleksi kolom yang diperlukan
+        $prodi = RefPorgramStudi::whereIn('id', $programStudiIds)
+            ->select('id', 'name') // Mengambil hanya kolom yang dibutuhkan
+            ->get();
+
+        return response()->json($prodi);
     }
 
-    \Log::info('Data Gelombang:', [$gelombang]);
+    /**
+     * Mendapatkan Program Studi 2 dan Prodi Lain
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getProgramStudi2(Request $request)
+    {
+        $gelombangId = $request->input('gelombang_id');
 
-    $programStudiIds = json_decode($gelombang->program_studi_1ids);
-    \Log::info('Program Studi IDs:', [$programStudiIds]);
+        // Validasi apakah gelombang ID ada di database
+        $gelombang = GelombangPendaftaran::find($gelombangId);
+        if (!$gelombang) {
+            return response()->json(['error' => 'Gelombang tidak ditemukan'], 404);
+        }
 
-    if (empty($programStudiIds)) {
-        return response()->json(['error' => 'Tidak ada program studi pada gelombang ini'], 404);
+        // Ambil data program_studi_2_ids dan decode JSON
+        $programStudi2Ids = json_decode($gelombang->program_studi_2ids);
+
+        if (!is_array($programStudi2Ids) || empty($programStudi2Ids)) {
+            return response()->json(['error' => 'Tidak ada program studi 2 pada gelombang ini'], 404);
+        }
+
+        // Ambil data program studi berdasarkan ID dari tabel RefProgramStudi atau tabel terkait lainnya
+        $programStudi2 = RefPorgramStudi::whereIn('id', $programStudi2Ids)
+            ->select('id', 'name') // Ambil hanya kolom yang dibutuhkan
+            ->get();
+
+        // Ambil semua Prodi Lain
+        $prodiLain = ProdiLain::select('id', 'name', 'kampus')->get();
+
+        return response()->json([
+            'program_studi_2' => $programStudi2,
+            'prodi_lain' => $prodiLain
+        ]);
     }
-
-    $prodi = RefPorgramStudi::whereIn('id', $programStudiIds)->get();
-    \Log::info('Program Studi:', [$prodi]);
-
-    return response()->json($prodi);
-}
-public function getProgramStudi2(Request $request)
-{
-    $gelombangId = $request->input('gelombang_id');
-
-    // Validasi apakah gelombang ID ada di database
-    $gelombang = GelombangPendaftaran::find($gelombangId);
-    if (!$gelombang) {
-        return response()->json(['error' => 'Gelombang tidak ditemukan'], 404);
-    }
-
-    // Ambil data program_studi_2_ids dan decode JSON
-    $programStudi2Ids = json_decode($gelombang->program_studi_2ids);
-
-    // Validasi apakah hasil decode adalah array yang valid
-    if (!is_array($programStudi2Ids) || empty($programStudi2Ids)) {
-        return response()->json(['error' => 'Tidak ada program studi 2 pada gelombang ini'], 404);
-    }
-
-    // Ambil data program studi berdasarkan ID dari tabel RefProgramStudi atau tabel terkait lainnya
-    $programStudi2 = RefPorgramStudi::whereIn('id', $programStudi2Ids)->get(['id', 'name']);
-    
-    // Ambil semua Prodi Lain
-    $prodiLain = ProdiLain::all(['id', 'name', 'kampus']);
-
-    // Jika tidak ada program studi ditemukan
-    if ($programStudi2->isEmpty()) {
-        return response()->json(['error' => 'Program studi 2 tidak ditemukan'], 404);
-    }
-
-    // Kembalikan data program studi dalam bentuk JSON
-    return response()->json([
-        'program_studi_2' => $programStudi2,
-        'prodi_lain' => $prodiLain
-    ]);
-}
-
-
-
-
 }
