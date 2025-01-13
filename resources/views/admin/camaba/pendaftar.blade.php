@@ -645,8 +645,6 @@ Apakah  Anda yakin ingin mengubah status pendaftaran?
     }
   </script>
   <!--=========================== End Filter & Seearch on Select ===========================-->
-  <script src="{{ URL::asset('assets/libs/prismjs/prismjs.js') }}"></script>
-  <script src="{{ URL::asset('assets/libs/list.js/list.min.js') }}"></script>
   <script src="{{ URL::asset('assets/libs/list.pagination.js/list.pagination.min.js') }}"></script>
   <!-- listjs init -->
   <script src="{{ URL::asset('assets/js/pages/listjs.init.js') }}"></script>

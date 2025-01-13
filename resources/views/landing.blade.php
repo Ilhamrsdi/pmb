@@ -29,25 +29,6 @@
   <!-- custom Css-->
   <link href="{{ asset('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-
-  {{-- <style>
-    @keyframes movePattern {
-      0% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-20px);
-      }
-      100% {
-        transform: translateY(0);
-      }
-    }
-  
-    .demo-img-patten-top img {
-      animation: movePattern 3s ease-in-out infinite;
-    }
-  </style> --}}
   <style>
     .demo-img-patten-top img {
       position: relative;
