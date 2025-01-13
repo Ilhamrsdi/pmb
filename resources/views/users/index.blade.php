@@ -3,7 +3,6 @@
   @lang('Data User ')
 @endsection
 @section('css')
-  {{-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" /> --}}
   <style>
     .drop-container {
       position: relative;
@@ -48,8 +47,10 @@
         <div class="row">
           <div class="col-lg-12">
             <div id="#customerList">
-              <a href="{{ route('users.create') }}" class="btn btn-success">Create New User</a>
-            <div class="card">
+              <!-- Tombol untuk membuka modal Create -->
+              <a href="javascript:void(0)" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">Create New User</a>
+              
+              <div class="card">
                 <div id="customerList">
                 <div class="card-header">
                 <div class="row g-4">
@@ -73,12 +74,6 @@
                     <thead class="table-light">
                       <tr>
                         <th>ID</th>
-                        {{-- <th scope="col" style="width: 50px;">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="checkAll"
-                                                            value="option">
-                                                    </div>
-                                                </th> --}}
                         <th data-sort="customer_name">Nama</th>
                         <th data-sort="date">Email</th>
                         <th data-sort="email">Roles</th>
@@ -86,36 +81,19 @@
                       </tr>
                     </thead>
                     <tbody class="list form-check-all" id="tbodyPendaftarID">
-                      @foreach ($users as $user => $row)
+                      @foreach ($users as $row)
                         <tr>
-                          {{-- <th scope="row">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="checkAll"
-                                                                value="option1">
-                                                        </div>
-                                                    </th> --}}
-                          <td class="id" style="display:none;"><a href="javascript:void(0);"
-                              class="fw-medium link-primary">#VZ2101</a></td>
                           <td class="customer_name">{{ $row->id }}</td>
-                          {{-- <!--<td class="date">{{ $row->detailPendaftar->tanggal_daftar }}</td>--> --}}
-                          <td class="name">
-                          {{$row->username}}
-                          </td>
-                          <td class="email">{{ $row->email}}</td>
-                          <td class="role">{{ $row->role?->roles }}</td>
+                          <td class="name">{{ $row->username }}</td>
+                          <td class="email">{{ $row->email }}</td>
+                          <td class="role">{{ $row->role->role }}</td>
                           <td>
                             <div class="d-flex gap-2">
-                              <div class="edit">
-                                <button type="button"
-                                  class="btn btn-warning btn-icon waves-effect waves-light rounded-pill"
-                                  data-bs-toggle="modal" data-bs-target="#showModal{{ $row->id }}"><i
-                                    class="ri-information-line"></i></button>
-                              </div>
-                              <div class="remove">
-                                <button type="button" class="btn btn-danger btn-icon waves-effect waves-light rounded-pill"
-                                  data-bs-toggle="modal" data-bs-target="#deleteRecordModal{{ $row->id }}"><i
-                                    class="ri-delete-bin-fill"></i></button>
-                              </div>
+                              <!-- Tombol Edit -->
+                              <button type="button" class="btn btn-warning btn-icon waves-effect waves-light rounded-pill" data-bs-toggle="modal" data-bs-target="#editModal{{ $row->id }}"><i class="ri-pencil-line"></i></button>
+                              
+                              <!-- Tombol Delete -->
+                              <button type="button" class="btn btn-danger btn-icon waves-effect waves-light rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteRecordModal{{ $row->id }}"><i class="ri-delete-bin-fill"></i></button>
                             </div>
                           </td>
                         </tr>
@@ -150,178 +128,104 @@
       </div>
   </div><!-- end card -->
   <!-- end row -->
-  @foreach ($users as $row)
-    <!--=================== Modal Show Data ========================-->
-    <div class="modal fade" id="showModal{{ $row->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-          <div class="modal-header bg-warning p-3">
-            <h5 class="modal-title" id="exampleModalLabel">DETAIL DATA {{ $row->username }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-              id="close-modal"></button>
-          </div>
-          <div class="modal-body">
-            <table class="table table-striped">
-              <tbody>
-                <tr>
-                  <td style="width: 400px">NIK</td>
-                  <td>{{ $row->user?->nik }}</td>
-                </tr>
-                <tr>
-                  <td style="width: 400px">NAMA PENDAFTAR</td>
-                  <td>{{ $row->username }}</td>
-                </tr>
-                <tr>
-                  <td style="width: 400px">EMAIL</td>
-                  <td>{{ $row->user?->email }}</td>
-                </tr>
-                <tr>
-                  <td style="width: 400px">NO. TELP</td>
-                  <td>{{ $row->no_hp }}</td>
-                </tr>
-                <tr>
-                  <td style="width: 400px">ASAL SEKOLAH</td>
-                  <td>{{ $row->sekolah }}</td>
-                </tr>
-                <tr>
-                  <td style="width: 400px">KODE BAYAR PENDAFTARAN</td>
-                  <td>{{ $row->detailPendaftar?->kode_pendaftaran }}</td>
-                </tr>
-                <tr>
-                  <td style="width: 400px">NOMINAL PEMBAYARAN PENDAFTARAN</td>
-                  <td>{{ $row->gelombangPendaftaran?->nominal_pendaftaran }}</td>
-                </tr>
-                <tr>
-                  <td style="width: 400px">STATUS PENDAFTARAN</td>
-                  @if ($row->detailPendaftar?->status_pendaftaran === 'belum')
-                    <td><span class="badge badge-soft-danger text-uppercase">BELUM BAYAR</span></td>
-                  @else 
-                    <td><span class="badge badge-soft-success text-uppercase">SUDAH BAYAR</span></td>
-                  @endif
-                </tr>
-                <tr>
-                  <td style="width: 400px">KODE BAYAR UKT</td>
-                  <td>{{ $row->detailPendaftar?->kode_bayar }}</td>
-                </tr>
-                <tr>
-                  <td style="width: 400px">NOMINAL PEMBAYARAN UKT</td>
-                  <td>{{ $row->detailPendaftar?->nominal_ukt }}</td>
-                </tr>
-                <tr>
-                  <td style="width: 400px">STATUS UKT</td>
-                  @if ($row->detailPendaftar?->status_ukt == 'belum')
-                    <td><span class="badge badge-soft-danger text-uppercase">BELUM BAYAR</span></td>
-                  @else
-                    <td><span class="badge badge-soft-success text-uppercase">SUDAH BAYAR</span></td>
-                  @endif
-                </tr>
-                <tr>
-                  <td style="width: 400px">THN AJAR & GELOMBANG PENDAFTARAN</td>
-                  <td>{{ $row->gelombangPendaftaran?->nama_gelombang . ' & ' . $row->gelombangPendaftaran?->tahun_ajaran }}
-                  </td>
-                </tr>
-                <tr>
-                  <td style="width: 400px">PEMBAYARAN MELALUI</td>
-                  <td>{{ $row->detailPendaftar?->va_pendaftaran }}</td>
-                </tr>
-                <tr>
-                  <td style="width: 400px">TGL DAFTAR</td>
-                  <td>{{ $row->detailPendaftar?->tanggal_daftar }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--==================== Modal Delete Data =====================-->
-    <div class="modal fade zoomIn" id="deleteRecordModal{{ $row->id }}" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-              id="btn-close"></button>
-          </div>
-          <div class="modal-body">
-            <form action="{{ route('users.destroy', $row->id) }}" method="POST" enctype="multipart/form-data">
-              @csrf
-              @method('DELETE')
-              <div class="mt-2 text-center">
-                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
-                  colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px">
-                </lord-icon>
-                <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                  <h4>Are you Sure ?</h4>
-                  <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove {{ $row->nama }} ?
-                  </p>
-                </div>
-              </div>
-              <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn w-sm btn-danger " id="delete-record">Yes, Delete
-                  It!</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-        <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn w-sm btn-danger " id="delete-record">Yes, Delete
-          It!</button>
-      </div>
-      </form>
-    </div>
-  @endforeach
-  <!--end modal -->
-  <!-- end row -->
-@endsection
-@section('script')
-{{-- <script>
-  $(document).ready(function() {
-      // Menangkap perubahan pada dropdown status
-      $(document).on('change', '.status-selector', function() {
-          var id = $(this).data('id'); // Mengambil ID pendaftar dari data-id
-          var status = $(this).val();  // Mengambil nilai status yang dipilih
 
-          // Mengirimkan AJAX request untuk update status
-          $.ajax({
-              url: "{{ route('pendaftar.update-status') }}", // Route untuk update status
-              type: "POST",
-              data: {
-                  _token: "{{ csrf_token() }}", // Token CSRF untuk keamanan
-                  id: id,                       // ID pendaftar
-                  status_pendaftaran: status    // Status yang dipilih
-              },
-              success: function(response) {
-                  if (response.success) {
-                      alert('Status berhasil diperbarui');
-                  } else {
-                      alert('Terjadi kesalahan, silakan coba lagi.');
-                  }
-              },
-              error: function() {
-                  alert('Gagal memperbarui status, silakan coba lagi.');
-              }
-          });
-      });
-  });
-</script> --}}
-  <!--=========================== Filter & Seearch on Select ===============================-->
-  <script>
-    //Form Select Search
-    $('.form-select').select2({
-      // theme: "bootstrap-5",
-      width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-      placeholder: $(this).data('placeholder'),
-    });
-  </script>
-  <!--=========================== End Filter & Seearch on Select ===========================-->
-  <script src="{{ URL::asset('assets/libs/prismjs/prismjs.js') }}"></script>
-  <script src="{{ URL::asset('assets/libs/list.js/list.min.js') }}"></script>
-  <script src="{{ URL::asset('assets/libs/list.pagination.js/list.pagination.min.js') }}"></script>
-  <!-- listjs init -->
-  <script src="{{ URL::asset('assets/js/pages/listjs.init.js') }}"></script>
-  <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
+  <!-- Modal Create -->
+  <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success p-3">
+                <h5 class="modal-title" id="createModalLabel">Create New User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Role</label>
+                        <select class="form-select" id="role" name="role" required>
+                            <option value="admin">Admin</option>
+                            <option value="user">User</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <!-- Modal Edit -->
+  @foreach ($users as $row)
+  <div class="modal fade" id="editModal{{ $row->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $row->id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-warning p-3">
+                <h5 class="modal-title" id="editModalLabel{{ $row->id }}">Edit User: {{ $row->username }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('users.update', $row->id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" value="{{ $row->username }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ $row->email }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Role</label>
+                        <select class="form-select" id="role" name="role" required>
+                            <option value="admin" {{ $row->role->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="user" {{ $row->role->role == 'user' ? 'selected' : '' }}>User</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-warning">Update</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
+  @endforeach
+
+  <!-- Modal Delete -->
+  @foreach ($users as $row)
+  <div class="modal fade zoomIn" id="deleteRecordModal{{ $row->id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('users.destroy', $row->id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <h5 class="text-center">Are you sure you want to delete this user?</h5>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
+  @endforeach
+
 @endsection

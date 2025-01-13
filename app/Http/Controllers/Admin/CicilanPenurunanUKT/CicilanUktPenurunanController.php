@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\CicilanPenurunanUKT;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DetailPendaftar;
+use App\Models\TemplateDokumen;
 
 class CicilanUktPenurunanController extends Controller
 {
@@ -97,6 +98,45 @@ public function updateStatus(Request $request, $id)
 
     return redirect()->back()->with('success', 'Status cicilan berhasil diperbarui');
 }
+
+
+public function upload(Request $request)
+{
+    // Validasi file upload
+    $request->validate([
+        'file_path' => 'required|mimes:pdf,docx,doc,xlsx,xls|max:2048', // sesuaikan dengan tipe file yang diterima
+    ]);
+
+    try {
+        // Ambil file dari request
+        $file = $request->file('file_path');
+        
+        // Periksa apakah file ada
+        if ($file) {
+            // Simpan file ke folder public/assets/templates
+            $fileName = 'template_' . time() . '.' . $file->getClientOriginalExtension();
+            $filePath = $file->move(public_path('assets/templates'), $fileName);
+
+            // Simpan informasi ke database
+            TemplateDokumen::create([
+                'nama_dokumen' => $file->getClientOriginalName(),
+                'file_path' => 'assets/templates/' . $fileName, // pastikan path disesuaikan dengan struktur folder Anda
+            ]);
+            
+            return back()->with('success', 'Template berhasil diupload.');
+        } else {
+            return back()->with('error', 'File tidak ditemukan.');
+        }
+    } catch (\Exception $e) {
+        // Tangkap exception dan tampilkan pesan error
+        return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+    }
+}
+
+
+
+
+
 
 
 

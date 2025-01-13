@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('GOLONGAN')
+    @lang('DATA PENDAFTAR CICILAN UKT')
 @endsection
 @section('content')
     @component('components.breadcrumb')
@@ -8,7 +8,7 @@
             Calon Maba
         @endslot
         @slot('title')
-            Golongan
+            DATA PENDAFTAR CICILAN UKT
         @endslot
     @endcomponent
     @if (Session::has('success'))
@@ -29,6 +29,72 @@
                     </div><!-- end card header -->
                     <div class="card-body">
                         <div class="row g-4 mb-3">
+                            <div class="col-sm-auto">
+                                <div>
+                                    <!-- Button untuk Upload -->
+                                    <button type="button" class="btn btn-primary add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#addModal">
+                                        <i class="ri-add-line align-bottom me-1"></i> Upload Template Dokumen Pendukung
+                                    </button>
+                            
+                                    <!-- Button untuk Lihat Dokumen -->
+                                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewModal">
+                                        <i class="ri-eye-line align-bottom me-1"></i> Lihat Dokumen
+                                    </button>
+                            
+                                    <!-- Modal Upload Dokumen -->
+                                    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="addModalLabel">Upload Template Dokumen Pendukung</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form action="{{ route('cicilanUkt.upload') }}" method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label for="template" class="form-label">Pilih File Template</label>
+                                                            <input type="file" class="form-control" id="template" name="file_path" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">Upload</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                            
+                                    <!-- Modal Lihat Dokumen -->
+                                    <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="viewModalLabel">Lihat Dokumen Pendukung</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <!-- Dynamic File -->
+                                                    @php
+                                                        // Ambil file_path dari database (sesuaikan dengan model dan kolom yang digunakan)
+                                                        $filePath = isset($document) ? $document->file_path : ''; // Gantilah dengan query atau data yang sesuai
+                                                    @endphp
+                                                
+                                                    @if($filePath)
+                                                        <embed src="{{ asset('assets/templates/' . $filePath) }}" type="application/pdf" width="100%" height="500px">
+                                                    @else
+                                                        <p>Tidak ada dokumen yang ditampilkan</p>
+                                                    @endif
+                                                </div>
+                                                
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                            
                             <div class="col-sm">
                                 <div class="d-flex justify-content-sm-end">
                                     <div class="search-box ms-2">

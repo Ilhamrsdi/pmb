@@ -205,7 +205,7 @@ Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
     Route::put('lainnya/cicilan-ukt/{id}', [CicilanUktPenurunanController::class, 'update'])->name('cicilanUkt.update');
     Route::delete('lainnya/cicilan-ukt/{id}', [CicilanUktPenurunanController::class, 'destroy'])->name('cicilanUkt.destroy');
     Route::put('lainnya/cicilan-ukt/update-status/{id}', [CicilanUktPenurunanController::class, 'updateStatus'])->name('cicilanUkt.updateStatus');
-
+    Route::post('lainnya/cicilan-ukt/upload', [CicilanUktPenurunanController::class, 'upload'])->name('cicilanUkt.upload');
 
     // Pesan Siaran
     Route::get('pesan-siaran', [PesanSiaranController::class, 'index'])->name('pesanSiaran');

@@ -71,9 +71,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        // Return the view to edit the user
-        return view('users.edit', compact('user'));
+        return response()->json($user);
     }
+    
 
     /**
      * Update the specified user in the database.
