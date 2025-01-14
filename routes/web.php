@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\RegisterController;
 // Admin Controller
+
+use App\Exports\PendaftarExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Pendaftar\BuktiController;
 use App\Http\Controllers\Admin\Prodi\ProdiController;
 use App\Http\Controllers\Admin\Jurusan\JurusanController;
@@ -106,6 +109,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('aut
 
 Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
     // Pendaftar
+    Route::get('/export-pendaftar', [PendaftarController::class, 'exportPendaftar'])->name('pendaftar.export');
     Route::resource('pendaftar', PendaftarController::class);
     Route::get('/access-logs', [AccessLogController::class, 'index'])->name('access-logs.index');
     Route::delete('/access-logs/{id}', [AccessLogController::class, 'destroy'])->name('access-logs.destroy');

@@ -63,6 +63,15 @@
                     class="las la-file-excel label-icon align-middle fs-16 me-2"></i>
                   DOWNLOAD TEMPLATE EXCEL ADD PENDAFTAR</button>
               </a>
+              <a href="{{ route('pendaftar.export') }}">
+                <button type="button" class="btn btn-primary btn-label btn-sm mb-2"><i
+                  class="ri-download-2-line label-icon align-middle fs-16 me-2"></i>
+                EXPORT EXCEL PENDAFTAR</button>
+            </a>
+                {{-- <i class="ri-download-2-line"></i> Export to Excel --}}
+            </a>
+            
+            
               <!--================= Filter Dropdown ===============================-->
               <div class="card">
                 <div class="card-body">

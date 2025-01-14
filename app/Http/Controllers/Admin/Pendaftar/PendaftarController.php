@@ -9,6 +9,8 @@ use App\Models\Pendaftar;
 use App\Models\ProgramStudi;
 use App\Models\Wali;
 use Illuminate\Http\Request;
+use App\Exports\PendaftarExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PendaftarController extends Controller
 {
@@ -151,4 +153,12 @@ class PendaftarController extends Controller
 
         return redirect()->back()->with('success', 'Data Berhasil Dihapus');
     }
+    public function exportPendaftar(Request $request)
+{
+    // Jika Anda ingin mengirim data khusus ke export
+   
+
+    // Menjalankan export
+    return Excel::download(new PendaftarExport(), 'pendaftar.xlsx');
+}
 }
