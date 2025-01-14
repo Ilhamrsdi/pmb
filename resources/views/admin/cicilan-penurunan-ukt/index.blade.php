@@ -137,7 +137,7 @@
                                                 @elseif ($row->status_cicilan === 'disetujui')
                                                     <span class="badge bg-success text-white">Disetujui</span>
                                                 @else
-                                                    <span class="badge bg-secondary text-white">Tidak Diketahui</span>
+                                                    <span class="badge bg-secondary text-white">Tidak Pengajuan Cicilan</span>
                                                 @endif
                                             </td>
                                             

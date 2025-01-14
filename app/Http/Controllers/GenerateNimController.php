@@ -53,54 +53,55 @@ class GenerateNimController extends Controller
 //        return redirect()->back();
 // }
 public function generateNIMMassal(Request $request)
-    {
-        // Mendapatkan tahun masuk dengan format empat angka, misalnya "2024"
-        $tahun_masuk = date('Y');
+{
+    // Mendapatkan tahun masuk dengan format empat angka, misalnya "2024"
+    $tahun_masuk = date('Y');
 
-        // Kode kampus tetap diatur ke 36
-        $kode_kampus = 36;
+    // Kode kampus tetap diatur ke 36
+    $kode_kampus = 36;
 
-        // Pastikan 'id_pendaftar' adalah array
-        if (is_array($request->id_pendaftar)) {
-            foreach ($request->id_pendaftar as $id) {
-                // Ambil data pendaftar berdasarkan ID
-                $pendaftar = Pendaftar::with('programStudi')->find($id);
-                // Lanjutkan ke pendaftar berikutnya jika data tidak ditemukan atau pendaftar tidak memiliki kode NIM
-                if (!$pendaftar || !$pendaftar->programStudi || !$pendaftar->programStudi->kode_nim) {
-                    continue;
-                }
-                
-                // Ambil kode NIM berdasarkan program studi pendaftar
-                $kode_nim = $pendaftar->programStudi->kode_nim;
+    // Pastikan 'id_pendaftar' adalah array
+    if (is_array($request->id_pendaftar)) {
+        foreach ($request->id_pendaftar as $id) {
+            // Ambil data pendaftar beserta program studi
+            $pendaftar = Pendaftar::with('programStudi')->find($id);
 
-                // Cari NIM terakhir yang sudah terdaftar untuk program studi ini
-                $maba_nim = Pendaftar::whereHas('detailPendaftar', function ($query) {
-                    $query->where('nim', '!=', null);
-                })
-                    ->whereHas('programStudi', function ($query) use ($kode_nim) {
-                        $query->where('kode_nim', $kode_nim);
-                    })
-                    ->latest()
-                    ->first();
-                    // Mendapatkan nomor urut dari program studi
-                    $nomer_urut = ProgramStudi::where('kode_nim', $kode_nim)->first();
-
-                // Generate NIM berdasarkan data terakhir atau mulai dari nomor urut program studi
-                if ($maba_nim == null || $maba_nim->nim == null) {
-                    // Jika belum ada NIM, mulai dari nomor urut default program studi
-                    $nim_mhs = $kode_kampus . substr($tahun_masuk, -2) . $kode_nim . $nomer_urut->nomer_urut_nim;
-                } else {
-                    // Jika ada NIM, tambahkan 1 dari NIM terakhir
-                    $nim_mhs = $maba_nim->nim + 1;
-                }
-
-                // Update NIM untuk pendaftar saat ini
-              $pendaftar->update(['nim' => $nim_mhs]) ;
-                
+            // Lanjutkan ke pendaftar berikutnya jika data tidak ditemukan
+            if (!$pendaftar || !$pendaftar->programStudi) {
+                continue;
             }
-        }
 
-        // Kembali ke halaman sebelumnya setelah proses selesai
-        return redirect()->back();
+            // Ambil kode dari kolom 'code' di tabel Program Studi
+            $kode_nim = $pendaftar->programStudi->code;
+
+            // Ambil angka belakang dari kode_nim (misal 21401 -> ambil "401")
+            $kode_belakang_prodi = substr($kode_nim, -3);
+
+            // Ambil nomor urut terakhir berdasarkan program studi (kode_nim)
+            $maba_nim = Pendaftar::whereHas('programStudi', function ($query) use ($kode_nim) {
+                $query->where('code', $kode_nim);
+            })->latest()->first();
+
+            // Tentukan nomor urut baru
+            $nomor_urut_baru = 1; // Default nomor urut awal jika belum ada data
+            if ($maba_nim && $maba_nim->nim) {
+                // Ambil 4 digit terakhir dari NIM sebelumnya dan tambahkan 1
+                $nomor_urut_baru = (int) substr($maba_nim->nim, -4) + 1;
+            }
+
+            // Generate NIM
+            $nim_mhs = $kode_kampus
+                . substr($tahun_masuk, -2)
+                . $kode_belakang_prodi
+                . str_pad($nomor_urut_baru, 4, '0', STR_PAD_LEFT);
+
+            // Update NIM ke database
+            $pendaftar->update(['nim' => $nim_mhs]);
+            $pendaftar->detailPendaftar->update(['status_mahasiswa' => 'aktif']);
+        }
     }
+
+    return back()->with('success', 'NIM berhasil di-generate secara massal!');
+}
+
 }

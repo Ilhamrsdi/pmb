@@ -16,8 +16,8 @@
             <strong>Success: </strong>{{ Session::get('success') }}
         </div>
     @endif
-    {{-- <a href="{{ route('camaba.export-excel', request()->all()) }}"> --}}
-        <a href="#">
+    <a href="{{ route('camaba.export-excel', request()->all()) }}">
+       
         <button type="button" class="btn btn-primary btn-label btn-sm mb-2"><i
             class="las la-file-excel label-icon align-middle fs-16 me-2"></i>
           EXPORT DATA EXCEL MABA SUDAH BAYAR UKT</button>
@@ -84,6 +84,7 @@
                                         <th class="sort" data-sort="email">GELOMBANG PENDAFTARAN</th>
                                         <th class="sort" data-sort="phone">PROGRAM STUDI</th>
                                         <th class="sort" data-sort="status">TGL DAFTAR</th>
+                                        <th class="sort" data-sort="statusmahasiswa">STATUS MAHASISWA</th>
                                         <th class="sort" data-sort="action">AKSI</th>
                                     </tr>
                                 </thead>
@@ -100,6 +101,13 @@
                                             <td class="phone">{{ $row->programStudi?->name }}</td>
                                             <td class="status">
                                                 <span>{{ $row->created_at->format('d-m-Y') }}</span>
+                                            </td>
+                                            <td class="status text-center">
+                                                @if ($row->status_mahasiswa == 'aktif')
+                                                    <span class="badge badge-soft-success text-uppercase">{{ $row->status_mahasiswa }}</span>
+                                                @else
+                                                    <span class="badge badge-soft-danger text-uppercase">Belum Aktif</span>
+                                                @endif
                                             </td>
                                             <td>
                                                 <div class="d-flex gap-2">

@@ -65,23 +65,27 @@
   <script>
     var data = @json($data);
     var data_prodi = @json($data_prodi);
-    var prodi = data_prodi.map((value) => value.nama_program_studi)
-
-    var total = []
-
+    var prodi = data_prodi.map((value) => value.name);
+  
+    var total = [];
+  
+    // Inisialisasi array total dengan nilai 0
     for (let i = 0; i < prodi.length; i++) {
-      total.push(0)
+      total.push(0);
     }
-
+  
+    // Mengisi nilai total berdasarkan data yang ada
     prodi.map((value, index) => {
       data.forEach(element => {
-        if (element.prodi == value) {
-          total[index] = element.total
+        if (element.prodi === value) {
+          total[index] = element.total;
         }
       });
-    })
-
-
+    });
+  
+    // Cek apakah total sudah terisi dengan benar
+    console.log(total);
+  
     function getChartColorsArray(e) {
       if (null !== document.getElementById(e)) {
         var t = document.getElementById(e).getAttribute("data-colors");
@@ -89,50 +93,44 @@
           return (t = JSON.parse(t)).map(function(e) {
             var t = e.replace(" ", "");
             if (-1 === t.indexOf(",")) {
-              var r = getComputedStyle(
-                document.documentElement
-              ).getPropertyValue(t);
+              var r = getComputedStyle(document.documentElement).getPropertyValue(t);
               return r || t;
             }
             e = e.split(",");
-            return 2 != e.length ?
-              t :
-              "rgba(" +
-              getComputedStyle(
-                document.documentElement
-              ).getPropertyValue(e[0]) +
-              "," +
-              e[1] +
-              ")";
+            return 2 !== e.length ? t : "rgba(" + getComputedStyle(document.documentElement).getPropertyValue(e[0]) + "," + e[1] + ")";
           });
         console.warn("data-colors Attribute not found on:", e);
       }
     }
+  
     var linechartcustomerColors = getChartColorsArray("grafik-prodi");
-
-    barChart()
-
+  
+    barChart();
+  
     function barChart() {
       let optionsBar = {
         chart: {
           height: 350,
           type: "bar",
-          toolbar: {
-            show: !1
-          }
+          toolbar: { show: false }
         },
         plotOptions: {
           bar: {
-            horizontal: !0
+            horizontal: false,
+            columnWidth: '50%' // Menyesuaikan lebar bar
           }
         },
         dataLabels: {
-          enabled: !1
+          enabled: true, // Menampilkan label data di dalam bar
+          style: {
+            fontSize: '12px',
+            colors: ['#fff'] // Warna teks label
+          }
         },
         series: [{
-          name: 'Total pendaftar',
+          name: 'Total Pendaftar',
           data: total
-        }, ],
+        }],
         colors: linechartcustomerColors,
         grid: {
           borderColor: "#f1f1f1"
@@ -140,208 +138,21 @@
         xaxis: {
           categories: prodi,
         },
-      }
-      document.querySelector("#grafik-prodi") &&
-        (chart = new ApexCharts(
-          document.querySelector("#grafik-prodi"),
-          optionsBar
-        )).render();
-    }
-
-    function lineChart() {
-      let optionsLine = {
-        series: [{
-          name: "Pendaftar",
-          data: total
-        }, ],
-        chart: {
-          height: 350,
-          type: "line",
-          zoom: {
-            enabled: !1
-          },
-          toolbar: {
-            show: !1
-          },
-        },
-        markers: {
-          size: 4
-        },
-        dataLabels: {
-          enabled: !1
-        },
-        stroke: {
-          curve: "straight"
-        },
-        colors: linechartcustomerColors,
-        xaxis: {
-          categories: prodi,
-        },
-      }
-      document.querySelector("#grafik-prodi") &&
-        (chart = new ApexCharts(
-          document.querySelector("#grafik-prodi"),
-          optionsLine
-        )).render();
-    }
-
-    function donutChart() {
-      let optionsDonut = {
-        series: total,
-        chart: {
-          height: 300,
-          type: "pie"
-        },
-        labels: prodi,
-        theme: {
-          monochrome: {
-            enabled: !0,
-            color: "#6691E7",
-            shadeTo: "light",
-            shadeIntensity: 0.6,
-          },
-        },
-        plotOptions: {
-          pie: {
-            dataLabels: {
-              offset: -5
-            }
-          }
-        },
-        dataLabels: {
-          formatter: function(e, t) {
-            return [t.w.globals.labels[t.seriesIndex], e.toFixed(1) + "%"];
-          },
-          dropShadow: {
-            enabled: !1
-          },
-        },
-        legend: {
-          show: !1
-        },
-      };
-      document.querySelector("#grafik-prodi") &&
-        (chart = new ApexCharts(
-          document.querySelector("#grafik-prodi"),
-          optionsDonut
-        )).render();
-    }
-
-    function polarChart() {
-      let optionsPolar = {
-        series: total,
-        chart: {
-          width: 400,
-          type: "polarArea"
-        },
-        labels: prodi,
-        fill: {
-          opacity: 1
-        },
-        stroke: {
-          width: 1,
-          colors: void 0
-        },
         yaxis: {
-          show: !1
-        },
-        legend: {
-          position: "bottom"
-        },
-        plotOptions: {
-          polarArea: {
-            rings: {
-              strokeWidth: 0
-            },
-            spokes: {
-              strokeWidth: 0
-            },
-          },
-        },
-        theme: {
-          mode: "light",
-          palette: "palette1",
-          monochrome: {
-            enabled: !0,
-            shadeTo: "light",
-            color: "#6691E7",
-            shadeIntensity: 0.6,
-          },
-        },
+          title: {
+            text: 'Jumlah Pendaftar'
+          }
+        }
       };
-      document.querySelector("#grafik-prodi") &&
-        (chart = new ApexCharts(
-          document.querySelector("#grafik-prodi"),
-          optionsPolar
-        )).render();
-    }
-
-    let select = document.getElementById('tipe')
-    select.addEventListener('change', () => {
-      let tipe = select.value
-
-      switch (tipe) {
-        case 'bar':
-          chart.destroy();
-          return barChart()
-          break;
-
-        case 'line':
-          chart.destroy();
-          return lineChart()
-          break;
-
-        case 'donut':
-          chart.destroy();
-          return donutChart()
-          break;
-
-        case 'polar':
-          chart.destroy();
-          return polarChart()
-          break;
-
-        default:
-          return barChart
-          break;
+  
+      // Render grafik jika elemen #grafik-prodi ada
+      if (document.querySelector("#grafik-prodi")) {
+        const chart = new ApexCharts(document.querySelector("#grafik-prodi"), optionsBar);
+        chart.render();
       }
-
-    })
-
-    // linechartcustomerColors &&
-    //   ((options = {
-    //       chart: {
-    //         height: 350,
-    //         type: "bar",
-    //         toolbar: {
-    //           show: !1
-    //         }
-    //       },
-    //       plotOptions: {
-    //         bar: {
-    //           horizontal: !0
-    //         }
-    //       },
-    //       dataLabels: {
-    //         enabled: !1
-    //       },
-    //       series: [{
-    //         name: 'Total pendaftar',
-    //         data: total
-    //       }, ],
-    //       colors: linechartcustomerColors,
-    //       grid: {
-    //         borderColor: "#f1f1f1"
-    //       },
-    //       xaxis: {
-    //         categories: prodi,
-    //       },
-    //     }),
-    //     (chart = new ApexCharts(
-    //       document.querySelector("#grafik-prodi"),
-    //       options
-    //     )).render());
+    }
   </script>
+  
 
   {{-- <script src="{{ URL::asset('/assets/js/pages/dashboard-projects.init.js') }}"></script> --}}
   <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>

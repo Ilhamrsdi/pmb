@@ -64,7 +64,7 @@
 
   {{-- chart --}}
   <script>
-    var data = @json($data);
+  var data = @json($data);
     var total = data.map((value) => value.total)
     var provinsi = data.map((value) => value.provinsi)
 

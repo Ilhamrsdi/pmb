@@ -8,6 +8,9 @@ use App\Models\Pendaftar;
 use App\Models\ProgramStudi;
 use App\Models\RefPorgramStudi;
 use Illuminate\Http\Request;
+use App\Exports\MabaSudhBayarExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class MabaUKTController extends Controller
 {
@@ -167,5 +170,13 @@ class MabaUKTController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function exportToExcel(Request $request)
+    {
+        // Jika Anda ingin mengirim data khusus ke export
+       
+    
+        // Menjalankan export
+        return Excel::download(new MabaSudhBayarExport(), 'maba_sudahBayar.xlsx');
     }
 }

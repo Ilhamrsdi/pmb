@@ -123,7 +123,7 @@ Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
 
     Route::post('pendaftar-excel', [ExcelController::class, 'import'])->name('import.pendaftar');
     Route::post('ukt-excel', [ExcelController::class, 'import_ukt'])->name('import.ukt');
-    Route::get('camaba/export-excel', [ExcelController::class, 'exportToExcel'])->name('camaba.export-excel');
+    Route::get('camaba/export-excel', [MabaUKTController::class, 'exportToExcel'])->name('camaba.export-excel');
     
     
     
