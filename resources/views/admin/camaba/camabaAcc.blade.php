@@ -78,6 +78,9 @@
               <table class="table align-middle table-nowrap" id="customerTable">
                 <thead class="table-light">
                   <tr>
+                    <th>
+                      <input type="checkbox" id="selectAll">
+                    </th>
                     <th>No</th>
                     <th class="sort" data-sort="customer_name">NIK</th>
                     <th class="sort" data-sort="customer_name">NAMA PENDAFTAR</th>
@@ -92,10 +95,14 @@
                 <tbody class="list form-check-all" id="tbodyPendaftarID">
                   @foreach ($camaba_acc as $i => $row)
                       <tr>
+                        <td>
+                          <input type="checkbox" class="selectCheckbox" data-id="{{ $row->detailPendaftar->id }}">
+                      </td>
                           <td>{{ ++$i }}</td>
                           <td class="id" style="display:none;">
                               <a href="javascript:void(0);" class="fw-medium link-primary">#VZ2101</a>
                           </td>
+                          
                           <td class="customer_name">{{ $row->user->nik ?? 'Tidak Ada' }}</td>
                           <td class="customer_name">{{ $row->nama ?? 'Tidak Ada' }}</td>
                           <td class="date">{{ $row->detailPendaftar->tanggal_daftar ?? 'Tidak Ada' }}</td>
@@ -108,13 +115,47 @@
                                   <span class="badge badge-soft-danger text-uppercase">{{ $row->detailPendaftar?->status_acc ?? 'Belum' }}</span>
                               @endif
                           </td>
-                          <td class="status-ujian">
-                            @if ($row->detailPendaftar?->status_ujian === 'lulus')
-                                <span class="badge badge-soft-success text-uppercase">{{ $row->detailPendaftar->status_ujian }}</span>
-                            @else
-                                <span class="badge badge-soft-danger text-uppercase">{{ $row->detailPendaftar?->status_ujian ?? 'Belum' }}</span>
-                            @endif
-                        </td>
+                          <td class="status-ujian text-center">
+                            @if ($row->detailPendaftar?->status_ujian == 'sudah')
+                                  <span class="badge badge-soft-success text-uppercase">Lulus</span>
+                                                        @else
+                                                          <!-- Button trigger modal -->
+                                                          <!-- Button trigger modal -->
+                                  <a class="badge badge-soft-danger text-uppercase" 
+                                  data-bs-toggle="modal" 
+                                  data-bs-target="#exampleModal-{{ $row->detailPendaftar->id ?? '' }}">
+                                  {{ $row->detailPendaftar?->status_ujian ? ucfirst($row->detailPendaftar->status_ujian) : 'Belum Ujian' }}
+                              </a>
+                          
+                          <!-- Modal -->
+                          <div class="modal fade" id="exampleModal-{{$row->detailPendaftar->id ?? ''}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                          <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Update Status Ujian{{$row->detailPendaftar->id ?? ''}}</h5>
+                          <span aria-hidden="true">&times;</span>
+                          </button>
+                          </div>
+                          <form action="{{ route('status-ujian.update', ['id' => $row->detailPendaftar->id ?? '']) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div class="modal-body">
+                                Apakah Anda yakin ingin mengubah status Ujian?
+                                <input type="hidden" value="sudah" name="status_ujian">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                                <button type="submit" class="btn btn-primary">Ya</button>
+                            </div>
+                        </form>
+                        
+                          
+                          </div>
+                          </div>
+                          </div>
+                          @endif
+                          </td>
+                        
                           <td>
                               <div class="d-flex gap-2">
                                   <div class="edit">
@@ -134,7 +175,11 @@
                                               data-bs-toggle="modal" data-bs-target="#deleteRecordModal{{ $row->id }}">
                                           <i class="ri-delete-bin-fill"></i>
                                       </button>
+                                  </div> 
+                                  <div class="d-flex gap-2">
+                                    <button type="button" id="updateSelected" class="btn btn-primary">Update Status</button>
                                   </div>
+                                                     
                               </div>
                           </td>
                       </tr>
@@ -806,6 +851,9 @@
       </div>
     </div>
   @endforeach
+
+
+
   <!--end modal -->
   <!-- end row -->
 @endsection
@@ -933,6 +981,11 @@
                                                     data-bs-toggle="modal" data-bs-target="#deleteRecordModal${camaba_acc[i]['id']}"><i
                                                     class="ri-delete-bin-fill"></i></button>
                                           </div>
+                                          <div class="statusujian">
+                                            <button class="btn btn-primary waves-effect waves-light rounded-pill" data-bs-toggle="modal" data-bs-target="#validateStatusModal${camaba_acc[i]['id']}">
+                                                <i class="ri-mark-pen-fill"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                   </td>
                               </tr>`;
@@ -962,6 +1015,91 @@
       });
     }
   </script>
+  <script>
+    // Ketika checkbox "Select All" diklik
+    document.getElementById('selectAll').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.selectCheckbox');
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = document.getElementById('selectAll').checked;
+        });
+    });
+
+    // Ketika salah satu checkbox di baris diklik, periksa apakah semua checkbox sudah dicentang
+    document.querySelectorAll('.selectCheckbox').forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            const allChecked = [...document.querySelectorAll('.selectCheckbox')].every(function(checkbox) {
+                return checkbox.checked;
+            });
+            document.getElementById('selectAll').checked = allChecked;
+        });
+    });
+</script>
+<script>
+  document.getElementById('updateSelected').addEventListener('click', function() {
+      // Ambil semua checkbox yang terpilih
+      const selectedCheckboxes = document.querySelectorAll('.selectCheckbox:checked');
+      
+      if (selectedCheckboxes.length === 0) {
+          // Menampilkan SweetAlert jika tidak ada data yang dipilih
+          Swal.fire({
+              icon: 'warning',
+              title: 'Peringatan!',
+              text: 'Pilih data yang ingin diupdate.'
+          });
+          return;
+      }
+
+      // Ambil ID dari checkbox yang terpilih
+      const selectedIds = [...selectedCheckboxes].map(function(checkbox) {
+          return checkbox.getAttribute('data-id');
+      });
+
+      // Kirim data ke server untuk diupdate
+      fetch("{{ route('status-ujian.update.selected') }}", {
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': '{{ csrf_token() }}'
+          },
+          body: JSON.stringify({
+              ids: selectedIds,
+              status_ujian: 'sudah' // Status yang ingin diupdate
+          })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.success) {
+              // Menampilkan SweetAlert sukses
+              Swal.fire({
+                  icon: 'success',
+                  title: 'Berhasil!',
+                  text: 'Status ujian berhasil diperbarui.'
+              }).then(() => {
+                  location.reload(); // Reload halaman untuk melihat perubahan
+              });
+          } else {
+              // Menampilkan SweetAlert gagal
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Gagal!',
+                  text: 'Gagal mengupdate status ujian.'
+              });
+          }
+      })
+      .catch(error => {
+          console.error("Terjadi kesalahan:", error);
+          // Menampilkan SweetAlert jika ada error
+          Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              text: 'Terjadi kesalahan saat memproses permintaan.'
+          });
+      });
+  });
+</script>
+
+
+
   <!--=========================== End Filter & Seearch on Select ===========================-->
   <script src="{{ URL::asset('assets/libs/prismjs/prismjs.js') }}"></script>
   <script src="{{ URL::asset('assets/libs/list.js/list.min.js') }}"></script>

@@ -319,19 +319,24 @@ class DashboardController extends Controller
                 return redirect('login')->with('error_gelombang', 'Anda tidak terdaftar di gelombang yang dipilih');
             } else {
                 if ($data->detailPendaftar) {
-                    // Logika berdasarkan status pendaftaran
-                    // dd($data->detailPendaftar); // Periksa seluruh data yang ada di detailPendaftar
+                    // Logika berdasarkan status pembayaran, status UKT, dan status acc
+                    if ($data->detailPendaftar->status_ukt === 'sudah' &&
+                        $data->detailPendaftar->status_pembayaran === 'sudah' &&
+                        $data->detailPendaftar->status_acc === 'sudah') {
+                        // Jika status_ukt, status_pembayaran, dan status_acc sudah 'sudah'
+                        return redirect()->route('bukti.show', $data->id);
+                    }
+                
+                    // Jika status pendaftaran masih null
                     if ($data->detailPendaftar->status_pendaftaran === null) {
-                        // Jika status pendaftaran belum diisi
                         $dataPendaftar = $data->detailPendaftar->pendaftar_id;
                         $nomer_va = $data->detailPendaftar->va_pendaftaran;
                         $expired_va = $data->detailPendaftar->datetime_expired;
                         return view('pendaftar.dashboard.dashboard-pendaftaran', compact('nomer_va', 'expired_va', 'tata_cara', 'dataPendaftar'));
                     } elseif ($data->detailPendaftar->status_pendaftaran === 'sudah') {
-                        // Jika status pendaftaran adalah "sudah"
+                        // Jika status pendaftaran sudah 'sudah'
                         if ($data->detailPendaftar->status_kelengkapan_data === 'sudah' && $data->detailPendaftar->status_ujian === 'lulus') {
                             // Jika kelengkapan data sudah divalidasi dan status ujian lulus
-                            // dd($data->detailPendaftar->status_ukt); // Cek nilai status_ukt
                             if ($data->detailPendaftar->status_ukt === 'sudah') {
                                 // Jika status UKT sudah 'sudah', tampilkan view dashboard-ukt
                                 $nomer_va = $data->detailPendaftar->va_ukt;
@@ -366,7 +371,7 @@ class DashboardController extends Controller
                         // Default: Jika status pendaftaran tidak null dan tidak "sudah"
                         return redirect()->route('bukti.bukti-pendaftaran', $data->id);
                     }
-                }
+                }                
                 
             }
         }

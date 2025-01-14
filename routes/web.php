@@ -120,7 +120,14 @@ Route::middleware([Admin::class, 'auth'])->prefix('admin')->group(function () {
     Route::post('pendaftar-excel', [ExcelController::class, 'import'])->name('import.pendaftar');
     Route::post('ukt-excel', [ExcelController::class, 'import_ukt'])->name('import.ukt');
     Route::get('camaba/export-excel', [ExcelController::class, 'exportToExcel'])->name('camaba.export-excel');
+    
+    
+    
+    Route::put('/status-ujian/{id}', [CamabaAccController::class, 'statusujian'])->name('status-ujian.update');
+    Route::put('/status-ujian/update-selected', [CamabaAccController::class, 'updateSelected'])->name('status-ujian.update.selected');
+
     Route::resource('camaba-acc', CamabaAccController::class);
+
     Route::resource('camaba-ukt', CamabaSdhBlmUKTController::class);
     Route::resource('maba-ukt', MabaUKTController::class);
     Route::resource('tes-maba', TesMabaController::class);

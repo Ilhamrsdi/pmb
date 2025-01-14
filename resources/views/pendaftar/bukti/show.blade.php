@@ -85,15 +85,15 @@
                             <td></td>
                           </tr>
                           <tr>
-                            <td class="fw-medium column">Tahun Ajar Mahasiswa</td>
+                            <td class="fw-medium column">Tahun Ajar Mahasiswa :</td>
                             <td class="fw-medium column">:</td>
                             <td>{{ $pendaftar->gelombangPendaftaran->tahun_ajaran }}</td>
                             <td></td>
                             <td></td>
                           </tr>
                           <tr>
-                            <td class="fw-medium column">Program Studi</td>
-                            <td class="fw-medium column">:</td>
+                            <td class="fw-medium column">Program Studi :</td>
+                         
                             <td>{{ $pendaftar->programStudi->nama_program_studi }}</td>
                             <td></td>
                             <td></td>

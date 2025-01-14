@@ -10,6 +10,8 @@ use App\Models\ProgramStudi;
 use App\Models\RefPorgramStudi;
 use App\Models\Wali;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 
 class CamabaAccController extends Controller
 {
@@ -136,4 +138,46 @@ class CamabaAccController extends Controller
         // Alert::success('success', 'Data Berhasil Dihapus');
         return redirect()->back();
     }
+    
+    public function statusujian(Request $request, $id)
+{
+    // Log data yang diterima
+    Log::info('Request Data:', $request->all());
+    Log::info('ID:', ['id' => $id]);
+
+    // Cari data
+    $pendaftar = DetailPendaftar::find($id);
+
+    if (!$pendaftar) {
+        Log::error('Data tidak ditemukan:', ['id' => $id]);
+        return redirect()->back()->with('error', 'Data tidak ditemukan.');
+    }
+
+    // Update data
+    $pendaftar->status_ujian = $request->status_ujian;
+    $pendaftar->save();
+
+    // Log setelah update
+    Log::info('Data setelah update:', $pendaftar->toArray());
+
+    return redirect()->back()->with('success', 'Status ujian berhasil diperbarui.');
+}
+public function updateSelected(Request $request)
+{
+    // Validasi data
+    $request->validate([
+        'ids' => 'required|array',
+        'status_ujian' => 'required|string'
+    ]);
+
+    // Update status ujian untuk semua pendaftar yang dipilih
+    DetailPendaftar::whereIn('id', $request->ids)
+                   ->update(['status_ujian' => $request->status_ujian]);
+
+    // Kembalikan response JSON
+    return response()->json(['success' => true]);
+}
+
+
+
 }
