@@ -358,7 +358,7 @@ class DashboardController extends Controller
                                 ));
                             } elseif ($data->detailPendaftar->status_ukt === null) {
                                 // Jika status UKT adalah null dan status ujian sudah, arahkan ke halaman kelengkapan-data-lanjutan
-                                return redirect()->route('kelengkapan-data-lanjutan', $data->id);
+                                return redirect()->route('kelengkapan-data.lanjutan.index', $data->id);
                             }
                         } elseif ($data->detailPendaftar->status_kelengkapan_data === 'sudah') {
                             // Jika kelengkapan data sudah divalidasi, tampilkan tampilan bukti pendaftaran
@@ -369,7 +369,7 @@ class DashboardController extends Controller
                         }
                     } else {
                         // Jika status UKT adalah null, arahkan ke halaman kelengkapan-data-lanjutan
-                        return redirect()->route('kelengkapan-data-lanjutan', $data->id);
+                        return redirect()->route('kelengkapan-data.lanjutan.index', $data->id);
                     }
                 }
                              

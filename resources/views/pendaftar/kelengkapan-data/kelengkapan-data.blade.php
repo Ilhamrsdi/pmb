@@ -117,7 +117,7 @@
                                         <!-- end col -->
                         
                                         <div class="col-md-6 mb-3">
-                                            <label for="nama" class="form-label">Nama</label>
+                                            <label for="nama" class="form-label">Nama Lengkap</label>
                                             <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             <input type="text" class="form-control" placeholder="Masukkan Nama" id="nama" value="{{ $pendaftar->nama }}" name="nama" required>
                                         </div>
@@ -221,9 +221,10 @@
                                                 Kabupaten
                                                 <span class="text-danger" title="Field ini wajib diisi">*</span>
                                             </label>
-                                            <select data-select="kabupaten" id="kabupaten" class="form-select" name="kabupaten" required>
-                                                <option value="">-- Pilih Kabupaten/Kota --</option>
-                                            </select>
+                                            <select data-select="kabupaten" id="kabupaten" class="form-select"
+                                            name="kabupaten">
+                                            <option value="">-- Pilih Kabupaten/Kota --</option>
+                                        </select>
                                         </div>
                                         
                                         <!-- end col -->
@@ -231,9 +232,10 @@
                                         <div class="col-md-4 mb-3" id="select_kecamatan">
                                             <label for="kecamatan" class="form-label">Kecamatan</label>
                                             <span class="text-danger" title="Field ini wajib diisi">*</span>
-                                            <select id="kecamatan" data-select="kecamatan" class="form-select" name="kecamatan" required>
-                                                <option>Pilih Kecamatan...</option>
-                                            </select>
+                                            <select id="kecamatan" data-select="kecamatan" class="form-select"
+                                            name="kecamatan">
+                                            <option>Pilih Kecamatan...</option>
+                                        </select>
                                         </div>
                                         <!-- end col -->
                         
@@ -746,46 +748,104 @@
     });
   </script>
 <script>
-  $(document).ready(function() {
-      $('#provinsi').change(function() {
-          var provinsiId = $(this).val();
-  
-          // Kosongkan dropdown kabupaten
-          $('#kabupaten').empty();
-          $('#kabupaten').append('<option value="">-- Pilih Kabupaten/Kota --</option>');
-  
-          // Cek jika provinsiId tidak kosong
-          if (provinsiId) {
-              $.ajax({
-                  url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
-                  type: 'GET',
-                  headers: {
-                      'Authorization': '885|wJYQYM8dcji9AA8aFLOuRFYAu7OZofLPlhp5Cvnm' // Token Anda
-                  },
-                  success: function(response) {
-                      var kabupatenKotaData = response.data;
-  
-                      // Filter data kabupaten/kota berdasarkan provinsi
-                      $.each(kabupatenKotaData, function(key, kabupaten) {
-                          // Cek apakah ID parent kabupaten sama dengan ID provinsi
-                          if (kabupaten.parent.id == provinsiId) { 
-                              $('#kabupaten').append('<option value="' + kabupaten.id + '">' + kabupaten.name.trim() + '</option>'); // Menggunakan trim untuk menghilangkan spasi
-                          }
-                      });
-                      
-                      // Cek apakah ada kabupaten yang ditambahkan
-                      if ($('#kabupaten option').length <= 1) {
-                          $('#kabupaten').append('<option value="">Tidak ada Kabupaten/Kota</option>');
-                      }
-                  },
-                  error: function(xhr, status, error) {
-                      console.error('Error fetching data:', error);
-                  }
-              });
-          }
-      });
-  });
+    $(document).ready(function() {
+        $('#provinsi').change(function() {
+            var provinsiId = $(this).val();
+
+            // Kosongkan dropdown kabupaten
+            $('#kabupaten').empty();
+            $('#kabupaten').append('<option value="">-- Pilih Kabupaten/Kota --</option>');
+
+
+            // Cek jika provinsiId tidak kosong
+            if (provinsiId) {
+                $.ajax({
+                    url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
+                    type: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer 987|n5zdbFBJX7C94ROXgTyKNLaUMRHFiOT5GhElkvxd' // Token Anda
+                    },
+                    success: function(response) {
+                        var kabupatenKotaData = response.data;
+
+
+                        // Filter data kabupaten/kota berdasarkan provinsi
+                        $.each(kabupatenKotaData, function(key, kabupaten) {
+                            // Cek apakah ID parent kabupaten sama dengan ID provinsi
+                            if (kabupaten.parent.id == provinsiId) {
+                                $('#kabupaten').append('<option value="' + kabupaten
+                                    .id + '">' + kabupaten.name.trim() +
+                                    '</option>'
+                                ); // Menggunakan trim untuk menghilangkan spasi
+                            }
+                        });
+
+                        // Cek apakah ada kabupaten yang ditambahkan
+                        if ($('#kabupaten option').length <= 1) {
+                            $('#kabupaten').append(
+                                '<option value="">Tidak ada Kabupaten/Kota</option>');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }
+        });
+    });
 </script>
+
+
+<script>
+    $(document).ready(function() {
+        $('#kabupaten').change(function() {
+            var kabupatenId = $(this).val(); // Ambil ID kabupaten yang dipilih
+
+            // Kosongkan dropdown kecamatan
+            $('#kecamatan').empty();
+            $('#kecamatan').append('<option value="">-- Pilih Kecamatan --</option>');
+
+            // Cek jika kabupatenId tidak kosong
+            if (kabupatenId) {
+                $.ajax({
+                    url: 'http://backend.sepyankristanto.my.id/api/v1/master/sub-districts', // Endpoint untuk mendapatkan kecamatan
+                    type: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer 987|n5zdbFBJX7C94ROXgTyKNLaUMRHFiOT5GhElkvxd' // Token Anda
+                    },
+                    success: function(response) {
+                        var kecamatanData = response.data;
+
+                        // Filter kecamatan berdasarkan parent.id (ID kabupaten)
+                        $.each(kecamatanData, function(key, kecamatan) {
+                            // Pastikan parent tidak null sebelum mengakses id-nya
+                            if (kecamatan.parent && kecamatan.parent.id ==
+                                kabupatenId) {
+                                $('#kecamatan').append('<option value="' + kecamatan
+                                    .id + '">' + kecamatan.name.trim() +
+                                    '</option>');
+                            }
+                        });
+
+                        // Cek apakah ada kecamatan yang ditambahkan
+                        if ($('#kecamatan option').length <= 1) {
+                            $('#kecamatan').append(
+                                '<option value="">Tidak ada Kecamatan</option>');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            } else {
+                $('#kecamatan').empty();
+                $('#kecamatan').append('<option value="">Pilih Kecamatan</option>');
+            }
+        });
+    });
+</script>
+
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var e = document.querySelectorAll('[data-plugin="choices"]');
@@ -903,6 +963,15 @@
             form.submit()
             console.log(form);
         })
+    </script>
+    <script>
+      $(document).ready(function() {
+        // Cek jika ada session 'tab' yang diset dari controller
+        @if(session('tab') === 'finish')
+            $('#pills-finish-tab').tab('show');  // Ubah tab ke 'finish'
+        @endif
+    });
+
     </script>
     <script src="{{ asset('assets/js/app.min.js') }}"></script>
 @endsection
