@@ -645,7 +645,7 @@
                                               {{-- <a class="btn btn-sm btn-primary" href="{{ asset('assets/file/' . $pendaftar->'file-'.$berkas ) }}"
                                                 download>Download Berkas</a> --}}
                                             </label>
-                                            <label for="{{ 'file-' . $berkas->berkas->nama_berkas }}" class="drop-container">
+                                            <label for="{{ 'file-' . $berkas->berkas->nama_berkas  }}" class="drop-container">
                                               <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
                                               <h4 class="drop-title">Drop files here or click to upload.</h4>
                                               <input type="file" name="{{ 'file[' . $berkas->berkas->nama_berkas . ']' }}"
@@ -760,7 +760,7 @@
                   url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
                   type: 'GET',
                   headers: {
-                      'Authorization': '874|mO9pzhlhLHttWSVPBPXc0hrza1fpMizrM7e6VdqN' // Token Anda
+                      'Authorization': '885|wJYQYM8dcji9AA8aFLOuRFYAu7OZofLPlhp5Cvnm' // Token Anda
                   },
                   success: function(response) {
                       var kabupatenKotaData = response.data;
@@ -840,101 +840,7 @@
             })
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            $('#provinsi').change(function() {
-                var provinsiId = $(this).val();
 
-                // Kosongkan dropdown kabupaten
-                $('#kabupaten').empty();
-                $('#kabupaten').append('<option value="">-- Pilih Kabupaten/Kota --</option>');
-
-
-                // Cek jika provinsiId tidak kosong
-                if (provinsiId) {
-                    $.ajax({
-                        url: 'http://backend.sepyankristanto.my.id/api/v1/master/cities', // Endpoint untuk mendapatkan kabupaten/kota
-                        type: 'GET',
-                        headers: {
-                            'Authorization': 'Bearer 874|mO9pzhlhLHttWSVPBPXc0hrza1fpMizrM7e6VdqN' // Token Anda
-                        },
-                        success: function(response) {
-                            var kabupatenKotaData = response.data;
-
-
-                            // Filter data kabupaten/kota berdasarkan provinsi
-                            $.each(kabupatenKotaData, function(key, kabupaten) {
-                                // Cek apakah ID parent kabupaten sama dengan ID provinsi
-                                if (kabupaten.parent.id == provinsiId) {
-                                    $('#kabupaten').append('<option value="' + kabupaten
-                                        .id + '">' + kabupaten.name.trim() +
-                                        '</option>'
-                                    ); // Menggunakan trim untuk menghilangkan spasi
-                                }
-                            });
-
-                            // Cek apakah ada kabupaten yang ditambahkan
-                            if ($('#kabupaten option').length <= 1) {
-                                $('#kabupaten').append(
-                                    '<option value="">Tidak ada Kabupaten/Kota</option>');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error fetching data:', error);
-                        }
-                    });
-                }
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#kabupaten').change(function() {
-                var kabupatenId = $(this).val(); // Ambil ID kabupaten yang dipilih
-
-                // Kosongkan dropdown kecamatan
-                $('#kecamatan').empty();
-                $('#kecamatan').append('<option value="">-- Pilih Kecamatan --</option>');
-
-                // Cek jika kabupatenId tidak kosong
-                if (kabupatenId) {
-                    $.ajax({
-                        url: 'http://backend.sepyankristanto.my.id/api/v1/master/sub-districts', // Endpoint untuk mendapatkan kecamatan
-                        type: 'GET',
-                        headers: {
-                            'Authorization': 'Bearer 874|mO9pzhlhLHttWSVPBPXc0hrza1fpMizrM7e6VdqN' // Token Anda
-                        },
-                        success: function(response) {
-                            var kecamatanData = response.data;
-
-                            // Filter kecamatan berdasarkan parent.id (ID kabupaten)
-                            $.each(kecamatanData, function(key, kecamatan) {
-                                // Pastikan parent tidak null sebelum mengakses id-nya
-                                if (kecamatan.parent && kecamatan.parent.id ==
-                                    kabupatenId) {
-                                    $('#kecamatan').append('<option value="' + kecamatan
-                                        .id + '">' + kecamatan.name.trim() +
-                                        '</option>');
-                                }
-                            });
-
-                            // Cek apakah ada kecamatan yang ditambahkan
-                            if ($('#kecamatan option').length <= 1) {
-                                $('#kecamatan').append(
-                                    '<option value="">Tidak ada Kecamatan</option>');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error fetching data:', error);
-                        }
-                    });
-                } else {
-                    $('#kecamatan').empty();
-                    $('#kecamatan').append('<option value="">Pilih Kecamatan</option>');
-                }
-            });
-        });
-    </script>
 
     {{-- <script>
   provinsi.addEventListener('change', (event) => {

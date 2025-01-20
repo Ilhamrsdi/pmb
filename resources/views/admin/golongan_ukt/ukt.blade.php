@@ -279,11 +279,6 @@
                                     <input type="number" name="nominal_non_reguler" id="email-field"
                                         class="form-control" required />
                                 </div>
-                                <div class="mb-3">
-                                    <label for="phone-field" class="form-label">NOMINAL POTONGAN UKT</label>
-                                    <input type="number" name="potongan_ukt" id="potongan-ukt-field" class="form-control" />
-                                    <small class="form-text text-danger">*Boleh dikosongkan jika tidak perlu.</small>
-                                </div>
                                 
                             </div>
                         </div>

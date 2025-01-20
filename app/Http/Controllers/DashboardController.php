@@ -335,7 +335,7 @@ class DashboardController extends Controller
                         return view('pendaftar.dashboard.dashboard-pendaftaran', compact('nomer_va', 'expired_va', 'tata_cara', 'dataPendaftar'));
                     } elseif ($data->detailPendaftar->status_pendaftaran === 'sudah') {
                         // Jika status pendaftaran sudah 'sudah'
-                        if ($data->detailPendaftar->status_kelengkapan_data === 'sudah' && $data->detailPendaftar->status_ujian === 'lulus') {
+                        if ($data->detailPendaftar->status_kelengkapan_data === 'sudah' && $data->detailPendaftar->status_ujian === 'sudah') {
                             // Jika kelengkapan data sudah divalidasi dan status ujian lulus
                             if ($data->detailPendaftar->status_ukt === 'sudah') {
                                 // Jika status UKT sudah 'sudah', tampilkan view dashboard-ukt
@@ -357,8 +357,8 @@ class DashboardController extends Controller
                                     'detailPendaftar'
                                 ));
                             } elseif ($data->detailPendaftar->status_ukt === null) {
-                                // Jika status UKT adalah null, arahkan ke halaman kelengkapan-data-lanjutan
-                                return redirect()->route('kelengkapan-data.lanjutan.index', $data->id);
+                                // Jika status UKT adalah null dan status ujian sudah, arahkan ke halaman kelengkapan-data-lanjutan
+                                return redirect()->route('kelengkapan-data-lanjutan', $data->id);
                             }
                         } elseif ($data->detailPendaftar->status_kelengkapan_data === 'sudah') {
                             // Jika kelengkapan data sudah divalidasi, tampilkan tampilan bukti pendaftaran
@@ -368,14 +368,76 @@ class DashboardController extends Controller
                             return redirect()->route('kelengkapan-data.edit', $data->id);
                         }
                     } else {
-                        // Default: Jika status pendaftaran tidak null dan tidak "sudah"
-                        return redirect()->route('bukti.bukti-pendaftaran', $data->id);
+                        // Jika status UKT adalah null, arahkan ke halaman kelengkapan-data-lanjutan
+                        return redirect()->route('kelengkapan-data-lanjutan', $data->id);
                     }
-                }                
+                }
+                             
                 
             }
         }
     }
+    // public function index(Request $request)
+    // {
+    //     if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3) {
+    //         // Admin atau panitia
+    //         $data = [
+    //             'total_pendaftar' => Pendaftar::count(),
+    //             'total_belum_bayar_pendaftaran' => DetailPendaftar::whereNull('status_pendaftaran')->count(),
+    //             'total_belum_bayar_ukt' => DetailPendaftar::where('status_pembayaran', 'belum')->count(),
+    //             'total_diterima' => DetailPendaftar::where('status_acc', 'sudah')->count(),
+    //             'total_belum_diterima' => DetailPendaftar::whereNull('status_acc')->count(),
+    //         ];
+    
+    //         return view('admin.dashboard', compact('data'));
+    //     } else {
+    //         // Pendaftar
+    //         $pendaftar = Pendaftar::where('user_id', auth()->user()->id)->first();
+    //         $tata_cara = TataCara::where('jenis', '!=', 'pendaftaran')->get()->groupBy('jenis');
+    
+    //         if (!$pendaftar || $pendaftar->gelombang_id != session('gelombang_id')) {
+    //             Session::flush();
+    //             Auth::logout();
+    //             return redirect('login')->with('error_gelombang', 'Anda tidak terdaftar di gelombang yang dipilih');
+    //         }
+    
+    //         $data = $pendaftar;
+    //         session(['pendaftar_id' => $data->id]);
+    
+    //         if ($data->detailPendaftar) {
+    //             $detailPendaftar = $data->detailPendaftar;
+    //             $statusUkt = $detailPendaftar->status_ukt;
+    //             $statusPembayaran = $detailPendaftar->status_pembayaran;
+    //             $statusAcc = $detailPendaftar->status_acc;
+    //             $statusPendaftaran = $detailPendaftar->status_pendaftaran;
+    
+    //             // Mengelola status pendaftaran berdasarkan logika yang sama
+    //             if ($statusUkt === 'sudah' && $statusPembayaran === 'sudah' && $statusAcc === 'sudah') {
+    //                 return redirect()->route('bukti.show', $data->id);
+    //             }
+    
+    //             if ($statusPendaftaran === null) {
+    //                 return view('pendaftar.dashboard.dashboard-pendaftaran', compact('detailPendaftar', 'tata_cara'));
+    //             }
+    
+    //             if ($statusPendaftaran === 'sudah') {
+    //                 if ($detailPendaftar->status_kelengkapan_data === 'sudah') {
+    //                     if ($detailPendaftar->status_ujian === 'sudah') {
+    //                         if ($statusUkt === 'sudah') {
+    //                             return view('pendaftar.dashboard.dashboard-ukt', compact('detailPendaftar', 'tata_cara'));
+    //                         } elseif ($statusUkt === null) {
+    //                             return redirect()->route('kelengkapan-data.lanjutan.index', $data->id);
+    //                         }
+    //                     }
+    //                     return redirect()->route('bukti.bukti-pendaftaran', $data->id);
+    //                 }
+    //                 return redirect()->route('kelengkapan-data.edit', $data->id);
+    //             }
+    //         }
+    //     }
+    // }
+    
+
     
 
     
