@@ -17,8 +17,8 @@ class BniHelper {
 
 	function __construct()
 	{
-		// $this->url = "http://103.109.210.37/api/v1/localva";//env('BNI_URL');
-		$this->url = "https://apibeta.bni-ecollection.com/";
+		$this->url = "http://103.109.210.37/api/v1/localva";//env('BNI_URL');
+		// $this->url = "https://apibeta.bni-ecollection.com/";
 		$this->secret_key = env('BNI_SECRET_KEY');
 		$this->client_id = env('BNI_CLIENT_ID');
 		$this->TIME_DIFF_LIMIT = 480;
