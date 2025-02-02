@@ -799,7 +799,7 @@
         },
         success: function(data) {
           $("#kode").val(data);
-          // console.log(data);
+          console.log(data);
           //  alert(data);
         }
       });
