@@ -145,7 +145,37 @@ class BniHelper {
 		return $rs;
 	}
 
-	
+	public function createVA($nik)
+    {
+        // Data untuk request API
+        $data = [
+            'nik' => $nik,
+            'amount' => 100000,  // Misalnya jumlah tagihan, sesuaikan dengan kebutuhan Anda
+            // Anda bisa menambahkan parameter lain yang diperlukan oleh API BNI
+        ];
+
+        try {
+            // Encrypt data sebelum dikirim ke API
+            $encryptedData = $this->encrypt($data);
+
+            // Kirim request untuk membuat virtual account
+            $response = $this->getContent($encryptedData);
+
+            // Parse hasil respons
+            $responseData = $this->decrypt($response);
+
+            if ($responseData && isset($responseData['virtual_account'])) {
+                return $responseData['virtual_account']; // Ambil nomor VA dari response
+            }
+
+            // Jika gagal atau tidak ada VA, kembalikan null
+            return null;
+        } catch (Exception $e) {
+            // Tangani exception jika terjadi kesalahan
+            return null;
+        }
+    }
+
 	public static function create()
 	{
 		return self::$url;
