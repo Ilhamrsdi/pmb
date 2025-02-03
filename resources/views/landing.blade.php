@@ -36,6 +36,12 @@
       max-width: 100%; /* Ensure images are responsive */
       height: auto; /* Maintain aspect ratio */
     }
+    .navbar {
+    background: rgba(255, 255, 255, 0.8) !important; /* Warna putih dengan transparansi */
+    backdrop-filter: blur(10px); /* Efek blur di belakang navbar */
+    transition: all 0.3s ease-in-out;
+}
+
   </style>
     
 
