@@ -250,7 +250,7 @@
           <div class="row justify-content-center">
             <div class="col-lg-10">
               <div class="text-center mb-4">
-                <h4 class="fw-semibold">Tanggal Penting Pendaftaran PMB</h4>
+                <h4 class="fw-semibold">Tanggal Penting Pendaftaran</h4>
               </div>
               <table class="table table-bordered">
                 <thead class="table-dark">
@@ -746,12 +746,7 @@
         </div>
       </div>
     
-      <!-- Iframe -->
-      <div id="floating-iframe-container" 
-      style="position: fixed; bottom: 20px; right: 20px; width: 300px; height: 200px; overflow: hidden;">
-      <iframe src="https://369d7c3875414be19f88e682f82ec916.elf.site/" 
-        style="width: 320px; height: 220px; border: none; z-index: 9999;">
-      </iframe>
+      <!-- Iframe -->>
     </div>
     </footer>
     

@@ -16,7 +16,7 @@ jobs:
         coverage: none
 
     - name: 🧩 Install Composer Dependencies
-      run: composer install --no-dev --prefer-dist --no-ansi --no-interaction --optimize-autoloader
+      run: composer install --no-dev -prefer-dist --no-ansi --no-interaction --optimize-autoloader
     
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
