@@ -255,36 +255,36 @@
               <table class="table table-bordered">
                 <thead class="table-dark">
                   <tr>
-                    <th>No</th>
-                    <th>Nama Kegiatan</th>
-                    <th>Tanggal Mulai</th>
-                    <th>Tanggal Selesai</th>
+                    <th class="text-center">No</th>
+                    <th class="text-center">Nama Kegiatan</th>
+                    <th class="text-center">Tanggal Mulai</th>
+                    <th class="text-center">Tanggal Selesai</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>1</td>
-                    <td>Pembukaan Pendaftaran</td>
-                    <td>01 Januari 2025</td>
-                    <td>31 Maret 2025</td>
+                    <td class="text-center">1</td>
+                    <td class="text-center">Pembukaan Pendaftaran</td>
+                    <td class="text-center">01 Januari 2025</td>
+                    <td class="text-center">31 Maret 2025</td>
                   </tr>
                   <tr>
-                    <td>2</td>
-                    <td>Seleksi Administrasi</td>
-                    <td>01 April 2025</td>
-                    <td>15 April 2025</td>
+                    <td class="text-center">2</td>
+                    <td class="text-center">Seleksi Administrasi</td>
+                    <td class="text-center">01 April 2025</td>
+                    <td class="text-center">15 April 2025</td>
                   </tr>
                   <tr>
-                    <td>3</td>
-                    <td>Ujian Tulis</td>
-                    <td>20 April 2025</td>
-                    <td>21 April 2025</td>
+                    <td class="text-center">3</td>
+                    <td class="text-center">Ujian Tulis</td>
+                    <td class="text-center">20 April 2025</td>
+                    <td class="text-center">21 April 2025</td>
                   </tr>
                   <tr>
-                    <td>4</td>
-                    <td>Pengumuman Hasil</td>
-                    <td>30 April 2025</td>
-                    <td>-</td>
+                    <td class="text-center">4</td>
+                    <td class="text-center">Pengumuman Hasil</td>
+                    <td class="text-center">30 April 2025</td>
+                    <td class="text-center">-</td>
                   </tr>
                 </tbody>
               </table>
