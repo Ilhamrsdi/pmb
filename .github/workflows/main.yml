@@ -11,31 +11,16 @@ jobs:
     - name: 🛠️ Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.1'
-        extensions: mbstring, intl, xml, pdo, pdo_mysql
+        php-version: '8.1' # Sesuaikan versi PHP dengan kebutuhan
+        extensions: mbstring, intl, xml, pdo, pdo_mysql # Tambahkan extension yang diperlukan
         coverage: none
 
-    - name: 🧩 Check if vendor exists
-      id: check-vendor
-      run: |
-        if [ -d "vendor" ]; then
-          echo "Vendor folder exists."
-          echo "install_needed=false" >> $GITHUB_ENV
-        else
-          echo "Vendor folder does not exist. Running composer install."
-          echo "install_needed=true" >> $GITHUB_ENV
-        fi
-
     - name: 🧩 Install Composer Dependencies
-      if: env.install_needed == 'true'
-      run: composer install --no-dev "--prefer-dist" --no-ansi --no-interaction --optimize-autoloader
-
-
+      run: composer install --no-dev --prefer-dist --no-ansi --no-interaction --optimize-autoloader
+    
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
         server: 103.109.210.103
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
-        protocol: ftp
-        port: 2222
