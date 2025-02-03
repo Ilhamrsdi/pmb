@@ -245,6 +245,53 @@
         </div>
       </div>  
       </section>
+      <section class="tanggalPenting" id="tanggalPenting">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-10">
+              <div class="text-center mb-4">
+                <h4 class="fw-semibold">Tanggal Penting Pendaftaran PMB</h4>
+              </div>
+              <table class="table table-bordered">
+                <thead class="table-dark">
+                  <tr>
+                    <th>No</th>
+                    <th>Nama Kegiatan</th>
+                    <th>Tanggal Mulai</th>
+                    <th>Tanggal Selesai</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Pembukaan Pendaftaran</td>
+                    <td>01 Januari 2025</td>
+                    <td>31 Maret 2025</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Seleksi Administrasi</td>
+                    <td>01 April 2025</td>
+                    <td>15 April 2025</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Ujian Tulis</td>
+                    <td>20 April 2025</td>
+                    <td>21 April 2025</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>Pengumuman Hasil</td>
+                    <td>30 April 2025</td>
+                    <td>-</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
       <!-- end container -->
     </section>
   <!-- end layanan -->
