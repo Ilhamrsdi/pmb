@@ -89,7 +89,7 @@
           </ul>
 
           <div class="">
-            <a href="{{ url('login') }}" class="btn btn-primary">Sign InI</a>
+            <a href="{{ url('login') }}" class="btn btn-primary">Sign In</a>
           </div>
         </div>
 
