@@ -24,3 +24,5 @@ jobs:
         server: 103.109.210.103
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
+        protocol: ftp
+        port: 2222  # Gunakan port yang baru
