@@ -258,32 +258,40 @@
                     <div class="text-center mb-4">
                         <h4 class="fw-semibold">Tanggal Penting Pendaftaran</h4>
                     </div>
-                    <table class="table table-bordered">
-                        <thead class="table-dark">
-                            <tr>
-                                <th class="text-center">No</th>
-                                <th class="text-center">Nama Kegiatan</th>
-                                <th class="text-center">Tanggal Mulai</th>
-                                <th class="text-center">Tanggal Selesai</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($tanggal_penting as $key => $item)
-                            <tr>
-                                <td class="text-center">{{ $key + 1 }}</td>
-                                <td class="text-center">{{ $item->nama_kegiatan }}</td>
-                                <td class="text-center">{{ \Carbon\Carbon::parse($item->tanggal_mulai)->translatedFormat('d F Y') }}</td>
-                                <td class="text-center">
-                                    {{ $item->tanggal_selesai ? \Carbon\Carbon::parse($item->tanggal_selesai)->translatedFormat('d F Y') : '-' }}
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+    
+                    @if($tanggal_penting->isEmpty())
+                        <div class="alert alert-warning text-center">
+                            Maaf, tanggal penting masih belum ada.
+                        </div>
+                    @else
+                        <table class="table table-bordered">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="text-center">No</th>
+                                    <th class="text-center">Nama Kegiatan</th>
+                                    <th class="text-center">Tanggal Mulai</th>
+                                    <th class="text-center">Tanggal Selesai</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($tanggal_penting as $key => $item)
+                                <tr>
+                                    <td class="text-center">{{ $key + 1 }}</td>
+                                    <td class="text-center">{{ $item->nama_kegiatan }}</td>
+                                    <td class="text-center">{{ \Carbon\Carbon::parse($item->tanggal_mulai)->translatedFormat('d F Y') }}</td>
+                                    <td class="text-center">
+                                        {{ $item->tanggal_selesai ? \Carbon\Carbon::parse($item->tanggal_selesai)->translatedFormat('d F Y') : '-' }}
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @endif
                 </div>
             </div>
         </div>
     </section>
+    
     
       <!-- end container -->
     </section>
