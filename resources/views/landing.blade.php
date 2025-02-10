@@ -261,7 +261,7 @@
     
                     @if($tanggal_penting->isEmpty())
                         <div class="alert alert-warning text-center">
-                            Maaf, tanggal penting pendaftaran masih belum ada.
+                            Tanggal penting pendaftaran masih belum ada.
                         </div>
                     @else
                         <table class="table table-bordered">
