@@ -253,51 +253,38 @@
       </section>
       <section class="tanggalPenting" id="tanggalPenting">
         <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-10">
-              <div class="text-center mb-4">
-                <h4 class="fw-semibold">Tanggal Penting Pendaftaran</h4>
-              </div>
-              <table class="table table-bordered">
-                <thead class="table-dark">
-                  <tr>
-                    <th class="text-center">No</th>
-                    <th class="text-center">Nama Kegiatan</th>
-                    <th class="text-center">Tanggal Mulai</th>
-                    <th class="text-center">Tanggal Selesai</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="text-center">1</td>
-                    <td class="text-center">Pembukaan Pendaftaran</td>
-                    <td class="text-center">01 Januari 2025</td>
-                    <td class="text-center">31 Maret 2025</td>
-                  </tr>
-                  <tr>
-                    <td class="text-center">2</td>
-                    <td class="text-center">Seleksi Administrasi</td>
-                    <td class="text-center">01 April 2025</td>
-                    <td class="text-center">15 April 2025</td>
-                  </tr>
-                  <tr>
-                    <td class="text-center">3</td>
-                    <td class="text-center">Ujian Tulis</td>
-                    <td class="text-center">20 April 2025</td>
-                    <td class="text-center">21 April 2025</td>
-                  </tr>
-                  <tr>
-                    <td class="text-center">4</td>
-                    <td class="text-center">Pengumuman Hasil</td>
-                    <td class="text-center">30 April 2025</td>
-                    <td class="text-center">-</td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="text-center mb-4">
+                        <h4 class="fw-semibold">Tanggal Penting Pendaftaran</h4>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th class="text-center">No</th>
+                                <th class="text-center">Nama Kegiatan</th>
+                                <th class="text-center">Tanggal Mulai</th>
+                                <th class="text-center">Tanggal Selesai</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($tanggal_penting as $key => $item)
+                            <tr>
+                                <td class="text-center">{{ $key + 1 }}</td>
+                                <td class="text-center">{{ $item->nama_kegiatan }}</td>
+                                <td class="text-center">{{ \Carbon\Carbon::parse($item->tanggal_mulai)->translatedFormat('d F Y') }}</td>
+                                <td class="text-center">
+                                    {{ $item->tanggal_selesai ? \Carbon\Carbon::parse($item->tanggal_selesai)->translatedFormat('d F Y') : '-' }}
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
-          </div>
         </div>
-      </section>
+    </section>
+    
       <!-- end container -->
     </section>
   <!-- end layanan -->

@@ -8,10 +8,11 @@ use App\Models\GelombangPendaftaran;
 use App\Models\Pendaftar;
 use App\Models\Pengumuman;
 use App\Models\RefJurusan;
-use App\Models\RefPorgramStudi;
+// use App\Models\RefPorgramStudi;
 use App\Models\TataCara;
 use App\Models\AlurPendaftaran;
 use App\Models\ProdiLain;
+use App\Models\TanggalPenting;
 use Illuminate\Support\Facades\Cache;
 
 class LandingController extends Controller
@@ -29,7 +30,7 @@ class LandingController extends Controller
             return AlurPendaftaran::first();
         });
         $prodi = Cache::remember('prodi', 60, function () {
-            return RefPorgramStudi::with('jurusan')->get(); // Pastikan relasi 'jurusan' sudah terindeks dengan baik
+            return ProgramStudi::with('jurusan')->get(); // Pastikan relasi 'jurusan' sudah terindeks dengan baik
         });
         $prodi_lain = Cache::remember('prodi_lain', 60, function () {
             return ProdiLain::all();
@@ -40,6 +41,10 @@ class LandingController extends Controller
         $pengumuman = Cache::remember('pengumuman', 60, function () {
             return Pengumuman::take(5)->get();
         });
+        $tanggal_penting = Cache::remember('tanggal_penting', 60, function () {
+            return TanggalPenting::orderBy('tanggal_mulai')->get();
+        });
+        
 
         // Return data ke view
         return view('landing', compact([
@@ -49,6 +54,7 @@ class LandingController extends Controller
             'pengumuman',
             'alurPendaftaran',
             'prodi_lain',
+            'tanggal_penting',
         ]));
     }
 
